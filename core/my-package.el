@@ -34,8 +34,6 @@
         ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
         ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 
-(setq package-user-dir (expand-file-name "elpa" my/root-dir))
-
 (package-initialize)
 (defun require-package (package)
   "Install PACKAGE unless already installed."
@@ -54,8 +52,8 @@
 
 (use-package auto-package-update
   :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
+  (setq auto-package-update-delete-old-versions t
+        auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
 (use-package gnu-elpa-keyring-update)

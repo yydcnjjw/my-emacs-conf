@@ -29,6 +29,8 @@
 (require 'my-smartparens)
 (require 'my-company)
 (require 'my-lsp)
+(require 'my-ivy)
+(require 'my-yasnippet)
 (provide 'my-modules)
 
 ;;; my-modules.el ends here

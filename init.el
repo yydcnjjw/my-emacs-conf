@@ -41,6 +41,7 @@
 
 (defvar my/root-dir (file-name-directory load-file-name)
   "The root dir of my Emacs.")
+(setq user-emacs-directory my/root-dir)
 
 (defvar my/core-dir (expand-file-name "core" my/root-dir)
   "Core dir.")
@@ -52,6 +53,9 @@
 
 (defvar my/vendor-dir (expand-file-name "vendor" my/root-dir)
   "Vendor dir.")
+
+(defvar my/var-dir (expand-file-name "var" my/root-dir)
+  "Var dir.")
 
 ;; add directories to Emacs's `load-path'
 (add-to-list 'load-path my/core-dir)

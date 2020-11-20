@@ -1,1 +1,7 @@
-elpa
+*
+!core
+!modules
+!init.el
+!my-modules.el
+!vendor
+
