@@ -1,0 +1,82 @@
+;;; init.el --- configuration entry point -*- lexical-binding: t -*-
+
+;; Author: yydcnjjw
+;; Maintainer: yydcnjjw
+;; Version: 0.0.1
+;; Homepage: yydcnjjw
+;; Keywords: yydcnjjw
+
+
+;; This file is not part of GNU Emacs
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; For a full copy of the GNU General Public License
+;; see <http://www.gnu.org/licenses/>.
+
+
+;;; Commentary:
+
+;; commentary
+
+;;; Code:
+
+;; (defvar my-user
+;;   (getenv
+;;    (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+
+;; (when (version< emacs-version "25.1")
+;;   (error "[Prelude] Prelude requires GNU Emacs 25.1 or newer, but you're running %s" emacs-version))
+
+;; Always load newest byte code
+(setq load-prefer-newer t)
+
+(defvar my/root-dir (file-name-directory load-file-name)
+  "The root dir of my Emacs.")
+
+(defvar my/core-dir (expand-file-name "core" my/root-dir)
+  "Core dir.")
+
+(defvar my/modules-dir (expand-file-name "modules" my/root-dir)
+  "Modules dir.")
+(defvar my/modules-file (expand-file-name "my-modules.el" my/root-dir)
+  "This file contains a list of modules that will be loaded.")
+
+(defvar my/vendor-dir (expand-file-name "vendor" my/root-dir)
+  "Vendor dir.")
+
+;; add directories to Emacs's `load-path'
+(add-to-list 'load-path my/core-dir)
+(add-to-list 'load-path my/modules-dir)
+(add-to-list 'load-path my/vendor-dir)
+(defun add-subdirs-to-load-path (dir)
+  "Recursive add directory DIR to `load-path'."
+  (mapcar
+   (lambda (path) (add-to-list 'load-path path))
+   (delete-dups (mapcar 'file-name-directory (directory-files-recursively dir "\.el$")))))
+(add-subdirs-to-load-path my/vendor-dir)
+
+;; reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 50000000)
+
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
+;; load the core stuff
+(require 'my-package)
+(require 'my-ui)
+(require 'my-editor)
+
+;; modules
+(load my/modules-file)
+
+;;; init.el ends here
