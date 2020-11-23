@@ -1,8 +1,7 @@
-;;; my-lsp.el --- lsp -*- lexical-binding: t -*-
+;;; my-modules.el --- modules -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-mode lsp-ui dap-mode)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,32 +26,14 @@
 
 ;;; Code:
 
-(use-package lsp-mode
-  :defer t
-  :config
-  (progn
-    (setq lsp-keymap-prefix "s-l"))
-  :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+(require 'my-dashboard)
+(require 'my-smartparens)
+(require 'my-company)
+(require 'my-lsp)
+(require 'my-ivy)
+(require 'my-yasnippet)
+(require 'my-c-cpp)
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(provide 'my-modules)
 
-(use-package lsp-ui
-  :defer t
-  :commands lsp-ui-mode)
-
-(use-package lsp-ivy
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
-
-;; for debugger
-(use-package dap-mode
-  :defer t)
-
-(provide 'my-lsp)
-
-;;; my-lsp.el ends here
+;;; my-modules.el ends here

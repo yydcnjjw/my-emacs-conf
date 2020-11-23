@@ -1,8 +1,8 @@
-;;; my-lsp.el --- lsp -*- lexical-binding: t -*-
+;;; my-dashboard.el --- dashboard -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-mode lsp-ui dap-mode)
+;; Package-Requires: (dashboard)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,32 +27,10 @@
 
 ;;; Code:
 
-(use-package lsp-mode
-  :defer t
+(use-package dashboard
   :config
-  (progn
-    (setq lsp-keymap-prefix "s-l"))
-  :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+  (dashboard-setup-startup-hook))
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(provide 'my-dashboard)
 
-(use-package lsp-ui
-  :defer t
-  :commands lsp-ui-mode)
-
-(use-package lsp-ivy
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
-
-;; for debugger
-(use-package dap-mode
-  :defer t)
-
-(provide 'my-lsp)
-
-;;; my-lsp.el ends here
+;;; my-dashboard.el ends here

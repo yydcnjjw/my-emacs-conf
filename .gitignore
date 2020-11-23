@@ -1,7 +1,7 @@
-*
-!core
-!modules
-!init.el
-!my-modules.el
-!vendor
+elpa
+url
+snippets
+
+.*
+recentf
 

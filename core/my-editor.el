@@ -49,6 +49,11 @@
 
 (setq blink-matching-paren nil)
 
+;; auto save
+(setq auto-save-visited-interval 1)
+(add-hook 'prog-mode-hook #'auto-save-visited-mode)
+(add-hook 'text-mode-hook #'auto-save-visited-mode)
+
 (use-package which-key
   :config
   (which-key-mode))

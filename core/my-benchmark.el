@@ -1,8 +1,8 @@
-;;; my-lsp.el --- lsp -*- lexical-binding: t -*-
+;;; my-benchmark.el --- my-benchmark -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-mode lsp-ui dap-mode)
+;; Package-Requires: (benchmark-init esup)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,32 +27,10 @@
 
 ;;; Code:
 
-(use-package lsp-mode
-  :defer t
+(use-package benchmark-init
   :config
-  (progn
-    (setq lsp-keymap-prefix "s-l"))
-  :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(provide 'my-benchmark)
 
-(use-package lsp-ui
-  :defer t
-  :commands lsp-ui-mode)
-
-(use-package lsp-ivy
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
-
-;; for debugger
-(use-package dap-mode
-  :defer t)
-
-(provide 'my-lsp)
-
-;;; my-lsp.el ends here
+;;; my-benchmark.el ends here

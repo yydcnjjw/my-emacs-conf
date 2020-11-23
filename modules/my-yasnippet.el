@@ -1,8 +1,8 @@
-;;; my-lsp.el --- lsp -*- lexical-binding: t -*-
+;;; my-yasnippet.el --- yasnippet -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-mode lsp-ui dap-mode)
+;; Package-Requires: (yasnippet)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,32 +27,16 @@
 
 ;;; Code:
 
-(use-package lsp-mode
-  :defer t
-  :config
-  (progn
-    (setq lsp-keymap-prefix "s-l"))
+(use-package yasnippet
   :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+  ((prog-mode . yas-minor-mode)
+   (text-mode . yas-minor-mode))
+  :bind
+  ("C-c y" . #'company-yasnippet))
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(use-package yasnippet-snippets
+  :after (yasnippet))
 
-(use-package lsp-ui
-  :defer t
-  :commands lsp-ui-mode)
+(provide 'my-yasnippet)
 
-(use-package lsp-ivy
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
-
-;; for debugger
-(use-package dap-mode
-  :defer t)
-
-(provide 'my-lsp)
-
-;;; my-lsp.el ends here
+;;; my-yasnippet.el ends here

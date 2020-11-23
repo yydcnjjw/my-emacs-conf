@@ -1,8 +1,8 @@
-;;; my-modules.el --- modules -*- lexical-binding: t -*-
+;;; my-c-cpp.el --- my-c-cpp -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-
+;; Package-Requires: (dependencies)
 
 ;; This file is not part of GNU Emacs
 
@@ -26,11 +26,14 @@
 
 ;;; Code:
 
-(require 'my-smartparens)
-(require 'my-company)
-(require 'my-lsp)
-(require 'my-ivy)
-(require 'my-yasnippet)
-(provide 'my-modules)
+(use-package ccls
+  :defer t
+  :hook
+  ((c-mode c++-mode objc-mode cuda-mode) .
+   (lambda ()
+     (require 'ccls)
+     (lsp))))
 
-;;; my-modules.el ends here
+(provide 'my-c-cpp)
+
+;;; my-c-cpp.el ends here

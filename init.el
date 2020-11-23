@@ -48,8 +48,6 @@
 
 (defvar my/modules-dir (expand-file-name "modules" my/root-dir)
   "Modules dir.")
-(defvar my/modules-file (expand-file-name "my-modules.el" my/root-dir)
-  "This file contains a list of modules that will be loaded.")
 
 (defvar my/vendor-dir (expand-file-name "vendor" my/root-dir)
   "Vendor dir.")
@@ -76,11 +74,9 @@
 (setq large-file-warning-threshold 100000000)
 
 ;; load the core stuff
-(require 'my-package)
-(require 'my-ui)
-(require 'my-editor)
+(require 'my-core)
 
 ;; modules
-(load my/modules-file)
+(require 'my-modules)
 
 ;;; init.el ends here

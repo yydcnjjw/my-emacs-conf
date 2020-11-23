@@ -1,8 +1,8 @@
-;;; my-company.el --- company -*- lexical-binding: t -*-
+;;; my-ivy.el --- ivy -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (company company-quickhelp)
+;; Package-Requires: (ivy)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,26 +27,20 @@
 
 ;;; Code:
 
-(use-package company
+(use-package ivy
+  :ensure counsel
   :defer t
-  :hook
-  ((prog-mode text-mode) . company-mode)
+  :init
+  (progn
+    (ivy-mode 1)
+    (counsel-mode 1))
   :config
   (progn
-    (setq company-tooltip-align-annotations t
-          ;; Easy navigation to candidates with M-<n>
-          company-show-numbers t
-          company-idle-delay 0.2
-          company-tooltip-limit 10
-          company-tooltip-flip-when-above t
-          company-minimum-prefix-length 1))
-  :bind (:map company-active-map
-              ("M-n" . nil)
-              ("M-p" . nil)
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous))
-  :diminish company-mode)
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "(%d/%d)"))
+  :bind
+  ([remap isearch-forward] . swiper))
 
-(provide 'my-company)
+(provide 'my-ivy)
 
-;;; my-company.el ends here
+;;; my-ivy.el ends here
