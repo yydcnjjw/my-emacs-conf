@@ -1,7 +1,8 @@
-;;; my-core.el --- my-core -*- lexical-binding: t -*-
+;;; my-const.el --- my-const -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: ()
 
 
 ;; This file is not part of GNU Emacs
@@ -26,13 +27,8 @@
 
 ;;; Code:
 
-(require 'my-const)
-(require 'my-package)
-(require 'my-benchmark)
-(require 'my-ui)
-(require 'my-editor)
+(defconst my/emacs-28+ (> emacs-major-version 27))
 
+(provide 'my-const)
 
-(provide 'my-core)
-
-;;; my-core.el ends here
+;;; my-const.el ends here

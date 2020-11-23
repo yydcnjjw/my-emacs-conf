@@ -32,9 +32,10 @@
   :init
   (progn
     ;; FIXME: https://github.com/Fuco1/smartparens/issues/1055
-    (require 'comp)
-    (add-to-list 'comp-bootstrap-black-list "smartparens")
-    (add-to-list 'comp-deferred-compilation-black-list "smartparens")
+    (when my/emacs-28+
+      (require 'comp)
+      (add-to-list 'comp-bootstrap-black-list "smartparens")
+      (add-to-list 'comp-deferred-compilation-black-list "smartparens"))
 
     (require 'smartparens-config)
     (smartparens-global-mode t)
