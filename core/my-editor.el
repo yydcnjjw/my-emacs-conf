@@ -30,8 +30,8 @@
 ;; enable y/n answers
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil
+              tab-width 4)
 
 (setq require-final-newline t)
 
@@ -54,9 +54,23 @@
 (add-hook 'prog-mode-hook #'auto-save-visited-mode)
 (add-hook 'text-mode-hook #'auto-save-visited-mode)
 
+;; local variable
+(setq enable-local-variables :all
+      enable-local-eval t)
+
+;; `which-key'
 (use-package which-key
   :config
   (which-key-mode))
+
+
+;; `expand-region'
+(use-package expand-region
+  :bind
+  (("C-M-w" . er/expand-region)))
+
+;; comment
+
 
 (provide 'my-editor)
 

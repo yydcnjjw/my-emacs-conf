@@ -1,8 +1,8 @@
-;;; my-lsp.el --- lsp -*- lexical-binding: t -*-
+;;; my-magit.el --- magit -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-mode lsp-ui dap-mode)
+;; Package-Requires: (magit)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,32 +27,8 @@
 
 ;;; Code:
 
-(use-package lsp-mode
-  :defer t
-  :config
-  (progn
-    (setq lsp-keymap-prefix "C-c l"))
-  :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+(use-package magit)
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(provide 'my-magit)
 
-(use-package lsp-ui
-  :defer t
-  :commands lsp-ui-mode)
-
-(use-package lsp-ivy
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
-
-;; for debugger
-(use-package dap-mode
-  :defer t)
-
-(provide 'my-lsp)
-
-;;; my-lsp.el ends here
+;;; my-magit.el ends here

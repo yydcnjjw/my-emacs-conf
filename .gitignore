@@ -1,7 +1,9 @@
 elpa
 url
 snippets
+transient
 
 .*
 recentf
-
+projectile-bookmarks.eld
+projectile.cache

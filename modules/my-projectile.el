@@ -1,8 +1,8 @@
-;;; my-lsp.el --- lsp -*- lexical-binding: t -*-
+;;; my-projectile.el --- projectile -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-mode lsp-ui dap-mode)
+;; Package-Requires: (projectile)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,32 +27,15 @@
 
 ;;; Code:
 
-(use-package lsp-mode
-  :defer t
+(use-package projectile
   :config
   (progn
-    (setq lsp-keymap-prefix "C-c l"))
-  :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+    (setq projectile-indexing-method 'hybrid
+          projectile-enable-caching t)
+    (projectile-global-mode))
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+(provide 'my-projectile)
 
-(use-package lsp-ui
-  :defer t
-  :commands lsp-ui-mode)
-
-(use-package lsp-ivy
-  :defer t
-  :commands lsp-ivy-workspace-symbol)
-
-;; for debugger
-(use-package dap-mode
-  :defer t)
-
-(provide 'my-lsp)
-
-;;; my-lsp.el ends here
+;;; my-projectile.el ends here
