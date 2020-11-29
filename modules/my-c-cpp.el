@@ -34,6 +34,9 @@
      (require 'ccls)
      (lsp))))
 
+(use-package cmake-mode
+  :defer t)
+
 (provide 'my-c-cpp)
 
 ;;; my-c-cpp.el ends here

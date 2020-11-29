@@ -69,7 +69,7 @@
   :bind
   (("C-M-w" . er/expand-region)))
 
-;; comment
+;; comment tag
 
 
 (provide 'my-editor)

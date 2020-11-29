@@ -29,13 +29,6 @@
 
 ;;; Code:
 
-;; (defvar my-user
-;;   (getenv
-;;    (if (equal system-type 'windows-nt) "USERNAME" "USER")))
-
-;; (when (version< emacs-version "25.1")
-;;   (error "[Prelude] Prelude requires GNU Emacs 25.1 or newer, but you're running %s" emacs-version))
-
 ;; Always load newest byte code
 (setq load-prefer-newer t)
 

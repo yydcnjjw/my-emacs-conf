@@ -1,7 +1,8 @@
-;;; my-modules.el --- modules -*- lexical-binding: t -*-
+;;; my-json.el --- json-mode -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (json-mode)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,17 +27,9 @@
 
 ;;; Code:
 
-(require 'my-dashboard)
-(require 'my-smartparens)
-(require 'my-projectile)
-(require 'my-magit)
-(require 'my-company)
-(require 'my-lsp)
-(require 'my-ivy)
-(require 'my-yasnippet)
-(require 'my-c-cpp)
-(require 'my-json)
+(use-package json-mode
+  :defer t)
 
-(provide 'my-modules)
+(provide 'my-json)
 
-;;; my-modules.el ends here
+;;; my-json.el ends here
