@@ -28,6 +28,10 @@
 ;;; Code:
 
 (use-package dashboard
+  :init
+  (progn
+    (setq dashboard-items '())
+    )
   :config
   (dashboard-setup-startup-hook))
 

@@ -1,7 +1,8 @@
-;;; my-core.el --- my-core -*- lexical-binding: t -*-
+;;; my-rust.el --- my-rust -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (rust-mode)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,14 +27,11 @@
 
 ;;; Code:
 
-(require 'my-const)
-(require 'my-linux)
-(require 'my-package)
-(require 'my-benchmark)
-(require 'my-ui)
-(require 'my-editor)
+(use-package rust-mode
+  :hook
+  (rust-mode . lsp)
+  )
 
+(provide 'my-rust)
 
-(provide 'my-core)
-
-;;; my-core.el ends here
+;;; my-rust.el ends here

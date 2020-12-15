@@ -69,8 +69,10 @@
   :bind
   (("C-M-w" . er/expand-region)))
 
-;; comment tag
+;; TODO: comment tag
 
+;; ibuffer
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 
 (provide 'my-editor)
 

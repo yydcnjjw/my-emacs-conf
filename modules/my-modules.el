@@ -27,6 +27,7 @@
 ;;; Code:
 
 (require 'my-dashboard)
+(require 'my-doom-modeline)
 (require 'my-smartparens)
 (require 'my-projectile)
 (require 'my-magit)
@@ -34,8 +35,12 @@
 (require 'my-lsp)
 (require 'my-ivy)
 (require 'my-yasnippet)
+(require 'my-org)
 (require 'my-c-cpp)
+(require 'my-ts)
+(require 'my-rust)
 (require 'my-json)
+(require 'my-flutter)
 
 (provide 'my-modules)
 

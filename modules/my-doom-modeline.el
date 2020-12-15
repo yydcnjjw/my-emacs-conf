@@ -1,7 +1,8 @@
-;;; my-core.el --- my-core -*- lexical-binding: t -*-
+;;; my-doom-modeline.el --- doom-modeline -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (doom-modeline)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,14 +27,9 @@
 
 ;;; Code:
 
-(require 'my-const)
-(require 'my-linux)
-(require 'my-package)
-(require 'my-benchmark)
-(require 'my-ui)
-(require 'my-editor)
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
 
+(provide 'my-doom-modeline)
 
-(provide 'my-core)
-
-;;; my-core.el ends here
+;;; my-doom-modeline.el ends here

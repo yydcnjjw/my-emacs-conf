@@ -1,7 +1,8 @@
-;;; my-core.el --- my-core -*- lexical-binding: t -*-
+;;; my-linux.el --- my-linux -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (exec-path-from-shell)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,14 +27,14 @@
 
 ;;; Code:
 
-(require 'my-const)
-(require 'my-linux)
-(require 'my-package)
-(require 'my-benchmark)
-(require 'my-ui)
-(require 'my-editor)
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :defer t
+  :init
+  (add-hook 'after-init-hook
+            #'(lambda ()
+                (exec-path-from-shell-initialize))))
 
+(provide 'my-linux)
 
-(provide 'my-core)
-
-;;; my-core.el ends here
+;;; my-linux.el ends here

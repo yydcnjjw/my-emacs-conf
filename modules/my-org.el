@@ -1,7 +1,8 @@
-;;; my-core.el --- my-core -*- lexical-binding: t -*-
+;;; my-org.el --- org -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: ()
 
 
 ;; This file is not part of GNU Emacs
@@ -26,14 +27,27 @@
 
 ;;; Code:
 
-(require 'my-const)
-(require 'my-linux)
-(require 'my-package)
-(require 'my-benchmark)
-(require 'my-ui)
-(require 'my-editor)
+(use-package org
+  :defer t
+  :ensure-system-package
+  ((xelatex)
+   (latexmk))
+  :init
+  (progn
+    (setq
+     ;; org ui
+     org-startup-indented t
+     ;; org todo
+     org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
+                         (sequence "FIXME(f)" "|" "ABORT(a@/!)"))
+     ;; latex pdf export
+     org-latex-compiler "xelatex"
+     org-latex-pdf-process
+     '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f")
+     ;; 
+     ))
+  )
 
+(provide 'my-org)
 
-(provide 'my-core)
-
-;;; my-core.el ends here
+;;; my-org.el ends here

@@ -27,10 +27,11 @@
 
 ;;; Code:
 
+;; en font
 (set-frame-font "hack-12")
 
 (tool-bar-mode -1)
-
+ 
 (menu-bar-mode -1)
 
 (scroll-bar-mode -1)
@@ -56,7 +57,11 @@
 (size-indication-mode t)
 
 ;; show line number
+(setq display-line-numbers-width-start t)
 (global-display-line-numbers-mode)
+
+;; hl line mode
+(global-hl-line-mode +1)
 
 (use-package spacemacs-theme
   :defer t

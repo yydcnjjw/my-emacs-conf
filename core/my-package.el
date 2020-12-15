@@ -50,6 +50,8 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+(use-package use-package-ensure-system-package)
+
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t

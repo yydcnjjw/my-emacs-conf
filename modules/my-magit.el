@@ -28,7 +28,9 @@
 ;;; Code:
 
 (use-package magit
-  :defer t)
+  :defer t
+  :ensure-system-package
+  (git))
 
 (provide 'my-magit)
 

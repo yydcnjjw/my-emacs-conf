@@ -54,16 +54,12 @@
               ("M-k"   . sp-backward-kill-sexp)
               ("C-M-d" . delete-sexp)
 
-              ("M-[" . sp-backward-unwrap-sexp)
-              ("M-]" . sp-unwrap-sexp)
+              ("C-M-[" . sp-backward-unwrap-sexp)
+              ("C-M-]" . sp-unwrap-sexp)
 
-              ("C-c ("  . wrap-with-parens)
-              ("C-c ["  . wrap-with-brackets)
-              ("C-c {"  . wrap-with-braces)
-              ("C-c '"  . wrap-with-single-quotes)
-              ("C-c \"" . wrap-with-double-quotes)
-              ("C-c _"  . wrap-with-underscores)
-              ("C-c `"  . wrap-with-back-quotes)))
+              ("C-c ("  . sp-wrap-round)
+              ("C-c ["  . sp-wrap-square)
+              ("C-c {"  . sp-wrap-curly)))
 
 (provide 'my-smartparens)
 

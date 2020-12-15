@@ -1,7 +1,8 @@
-;;; my-core.el --- my-core -*- lexical-binding: t -*-
+;;; my-flutter.el --- my-flutter -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (lsp-dart)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,14 +27,12 @@
 
 ;;; Code:
 
-(require 'my-const)
-(require 'my-linux)
-(require 'my-package)
-(require 'my-benchmark)
-(require 'my-ui)
-(require 'my-editor)
+;; (use-package lsp-dart
+;;   :defer t
+;;   :hook (dart-mode . lsp))
 
+;; (use-package hover)
 
-(provide 'my-core)
+(provide 'my-flutter)
 
-;;; my-core.el ends here
+;;; my-flutter.el ends here

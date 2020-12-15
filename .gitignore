@@ -2,7 +2,10 @@ elpa
 url
 snippets
 transient
+eshell
 
+%backup%~
+session.*
 .*
 recentf
 projectile-bookmarks.eld

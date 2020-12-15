@@ -2,7 +2,7 @@
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (projectile)
+;; Package-Requires: (projectile ibuffer-projectile ag)
 
 
 ;; This file is not part of GNU Emacs
@@ -28,6 +28,7 @@
 ;;; Code:
 
 (use-package projectile
+  :defer t
   :config
   (progn
     (setq projectile-indexing-method 'hybrid
@@ -35,6 +36,19 @@
     (projectile-global-mode))
   :bind-keymap
   ("C-c p" . projectile-command-map))
+
+(use-package ibuffer-projectile
+  :defer t
+  :hook
+  (ibuffer . (lambda ()
+               (ibuffer-projectile-set-filter-groups)
+               (unless (eq ibuffer-sorting-mode 'alphabetic)
+                 (ibuffer-do-sort-by-alphabetic)))))
+
+(use-package ag
+  :defer t
+  :ensure-system-package
+  (rg))
 
 (provide 'my-projectile)
 
