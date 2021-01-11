@@ -1,7 +1,8 @@
-;;; my-modules.el --- modules -*- lexical-binding: t -*-
+;;; my-xclip.el --- xclip -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (xclip)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,24 +27,12 @@
 
 ;;; Code:
 
-(require 'my-dashboard)
-(require 'my-doom-modeline)
-(require 'my-smartparens)
-(require 'my-projectile)
-(require 'my-magit)
-(require 'my-company)
-(require 'my-lsp)
-(require 'my-ivy)
-(require 'my-avy)
-(require 'my-yasnippet)
-(require 'my-org)
-(require 'my-c-cpp)
-(require 'my-ts)
-(require 'my-rust)
-(require 'my-json)
-(require 'my-flutter)
-(require 'my-xclip)
+(use-package xclip
+  :ensure-system-package xclip
+  :unless window-system
+  :init
+  (xclip-mode 1))
 
-(provide 'my-modules)
+(provide 'my-xclip)
 
-;;; my-modules.el ends here
+;;; my-xclip.el ends here
