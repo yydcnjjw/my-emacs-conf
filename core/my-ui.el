@@ -27,8 +27,17 @@
 
 ;;; Code:
 
-;; en font
-(set-frame-font "hack-12")
+;; Setting English Font
+(set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Hack" 16))
+
+;; Chinese Font
+(when window-system
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font)
+                      charset
+                      (font-spec
+                       :family "Noto Sans CJK SC"
+                       ))))
 
 (tool-bar-mode -1)
  
