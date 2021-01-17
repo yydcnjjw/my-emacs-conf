@@ -63,7 +63,6 @@
   :config
   (which-key-mode))
 
-
 ;; `expand-region'
 (use-package expand-region
   :bind

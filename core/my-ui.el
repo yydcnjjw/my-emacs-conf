@@ -66,6 +66,7 @@
 (size-indication-mode t)
 
 ;; show line number
+(require 'display-line-numbers)
 (setq display-line-numbers-width-start t)
 (global-display-line-numbers-mode)
 

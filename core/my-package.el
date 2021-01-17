@@ -2,7 +2,7 @@
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (use-package)
+;; Package-Requires: (use-package use-package-ensure-system-package auto-package-update gnu-elpa-keyring-update)
 
 
 ;; This file is not part of GNU Emacs

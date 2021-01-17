@@ -38,6 +38,7 @@
 (require 'my-yasnippet)
 (require 'my-org)
 (require 'my-c-cpp)
+(require 'my-lisp)
 (require 'my-ts)
 (require 'my-rust)
 (require 'my-json)

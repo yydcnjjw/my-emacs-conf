@@ -1,8 +1,8 @@
-;;; my-rust.el --- my-rust -*- lexical-binding: t -*-
+;;; my-lisp.el --- my-lisp -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (rust-mode)
+;; Package-Requires: (flycheck)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,10 +27,10 @@
 
 ;;; Code:
 
-(use-package rust-mode
+(use-package flycheck
   :hook
-  (rust-mode . lsp))
+  ((emacs-lisp-mode . flycheck-mode)))
 
-(provide 'my-rust)
+(provide 'my-lisp)
 
-;;; my-rust.el ends here
+;;; my-lisp.el ends here

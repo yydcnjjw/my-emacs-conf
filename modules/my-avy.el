@@ -29,7 +29,9 @@
 
 (use-package avy
   :bind
-  ("C-'" . avy-goto-char))
+  ("C-c '" . avy-goto-char)
+  :config
+  (setq avy-background t))
 
 (provide 'my-avy)
 
