@@ -1,8 +1,10 @@
-;;; my-avy.el --- avy -*- lexical-binding: t -*-
+;;; my-org-drill.el --- org-drill -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (avy)
+;; Package-Requires: (org-drill)
+;; Homepage: homepage
+;; Keywords: keywords
 
 
 ;; This file is not part of GNU Emacs
@@ -27,12 +29,10 @@
 
 ;;; Code:
 
-(use-package avy
-  :bind
-  ("C-c n" . avy-goto-char)
-  :config
-  (setq avy-background t))
+(use-package org-drill
+  :defer t
+  :commands org-drill)
 
-(provide 'my-avy)
+(provide 'my-org-drill)
 
-;;; my-avy.el ends here
+;;; my-org-drill.el ends here

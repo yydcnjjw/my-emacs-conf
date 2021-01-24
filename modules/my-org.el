@@ -34,20 +34,31 @@
    (latexmk))
   :init
   (progn
-    (setq
-     ;; org ui
-     org-startup-indented t
-     ;; org todo
-     org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
-                         (sequence "FIXME(f)" "|" "ABORT(a@/!)"))
-     ;; latex pdf export
-     org-latex-compiler "xelatex"
-     org-latex-pdf-process
-     '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f")
-     ;; 
-     ))
+    (with-eval-after-load 'org
+      (setq
+       ;; org ui
+       org-startup-indented t
+       ;; org todo
+       org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
+                           (sequence "FIXME(f)" "|" "ABORT(a@/!)"))
+       ;; 
+       ))
+    (with-eval-after-load 'ox-latex
+      (setq
+       ;; latex pdf export
+       org-latex-compiler "xelatex"
+       org-latex-pdf-process
+       '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f")
+       )
+      )
+    )
   )
 
+
+(use-package org-bullets
+  :defer t
+  :hook (org-mode . org-bullets-mode))
+                                                             
 (provide 'my-org)
 
 ;;; my-org.el ends here

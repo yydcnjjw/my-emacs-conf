@@ -44,6 +44,7 @@
 (require 'my-json)
 (require 'my-flutter)
 (require 'my-xclip)
+(require 'my-org-drill)
 
 (provide 'my-modules)
 
