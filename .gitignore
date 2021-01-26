@@ -3,6 +3,7 @@ url
 snippets
 transient
 eshell
+persist
 
 %backup%~
 session.*

@@ -48,6 +48,10 @@
 (defvar my/var-dir (expand-file-name "var" my/root-dir)
   "Var dir.")
 
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 ;; add directories to Emacs's `load-path'
 (add-to-list 'load-path my/core-dir)
 (add-to-list 'load-path my/modules-dir)
@@ -73,16 +77,3 @@
 (require 'my-modules)
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(org-protocol org-bullets org-drill xclip rust-mode use-package-ensure-system-package exec-path-from-shell typescript-mode ag ibuffer-projectile doom-modeline json-mode cmake-mode ccls yasnippet-snippets yasnippet counsel dap-mode lsp-ivy lsp-ui flycheck lsp-mode company magit projectile smartparens dashboard expand-region which-key spacemacs-theme benchmark-init gnu-elpa-keyring-update auto-package-update use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
