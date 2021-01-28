@@ -1,7 +1,8 @@
-;;; my-modules.el --- modules -*- lexical-binding: t -*-
+;;; my-hl-todo.el --- hl-todo -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
+;; Package-Requires: (hl-todo)
 
 
 ;; This file is not part of GNU Emacs
@@ -26,28 +27,17 @@
 
 ;;; Code:
 
-(require 'my-dashboard)
-(require 'my-doom-modeline)
-(require 'my-smartparens)
-(require 'my-projectile)
-(require 'my-magit)
-(require 'my-company)
-(require 'my-lsp)
-(require 'my-ivy)
-(require 'my-avy)
-(require 'my-yasnippet)
-(require 'my-org)
-(require 'my-c-cpp)
-(require 'my-lisp)
-(require 'my-ts)
-(require 'my-rust)
-(require 'my-json)
-(require 'my-flutter)
-(require 'my-xclip)
-(require 'my-org-drill)
-(require 'my-org-download)
-(require 'my-hl-todo)
+(use-package hl-todo
+  :defer t
+  :hook
+  ((prog-mode . hl-todo-mode))
+  :config
+  (setq hl-todo-keyword-faces
+        '(("TODO"  . "#28ABE3")
+          ("FIXME" . "#DB3340")
+          ("BUG"   . "#DB3340")
+          )))
 
-(provide 'my-modules)
+(provide 'my-hl-todo)
 
-;;; my-modules.el ends here
+;;; my-hl-todo.el ends here

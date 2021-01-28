@@ -45,8 +45,8 @@
 (defvar my/vendor-dir (expand-file-name "vendor" my/root-dir)
   "Vendor dir.")
 
-(defvar my/var-dir (expand-file-name "var" my/root-dir)
-  "Var dir.")
+(defvar my/assets-dir (expand-file-name "assets" my/root-dir)
+  "Assets dir.")
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)

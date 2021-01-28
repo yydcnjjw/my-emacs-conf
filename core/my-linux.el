@@ -35,6 +35,9 @@
             #'(lambda ()
                 (exec-path-from-shell-initialize))))
 
+;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
+(setq process-connection-type nil)
+
 (provide 'my-linux)
 
 ;;; my-linux.el ends here
