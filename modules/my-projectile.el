@@ -33,9 +33,11 @@
   (progn
     (setq projectile-indexing-method 'hybrid
           projectile-enable-caching t)
-    (projectile-global-mode))
+    (projectile-mode))
   :bind-keymap
-  ("C-c p" . projectile-command-map))
+  ("C-c p" . projectile-command-map)
+  :bind
+  (([remap projectile-ag] . projectile-ripgrep)))
 
 (use-package ibuffer-projectile
   :defer t
@@ -45,7 +47,7 @@
                (unless (eq ibuffer-sorting-mode 'alphabetic)
                  (ibuffer-do-sort-by-alphabetic)))))
 
-(use-package ag
+(use-package ripgrep
   :defer t
   :ensure-system-package
   (rg))

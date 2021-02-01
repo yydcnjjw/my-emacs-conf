@@ -39,7 +39,7 @@
     (setq ivy-use-virtual-buffers t
           ivy-count-format "(%d/%d)"))
   :bind
-  ([remap isearch-forward] . swiper))
+  (([remap isearch-forward] . swiper)))
 
 (provide 'my-ivy)
 
