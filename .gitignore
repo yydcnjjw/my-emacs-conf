@@ -13,3 +13,5 @@ projectile-bookmarks.eld
 projectile.cache
 tramp
 custom.el
+org-roam.db
+bookmarks

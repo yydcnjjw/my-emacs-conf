@@ -52,7 +52,6 @@
               ("C-M-k" . sp-kill-sexp)
               ("C-k"   . sp-kill-hybrid-sexp)
               ("M-k"   . sp-backward-kill-sexp)
-              ("C-M-d" . delete-sexp)
 
               ("C-M-[" . sp-backward-unwrap-sexp)
               ("C-M-]" . sp-unwrap-sexp)

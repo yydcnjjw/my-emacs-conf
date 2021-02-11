@@ -27,12 +27,12 @@
 
 ;;; Code:
 
+(defvar my-yas-snippet-default-dir (expand-file-name "snippets" my/assets-dir))
+
 (use-package yasnippet
   :defer t
-  :init
-  (progn
-    (defvar my-yas-snippet-default-dir (expand-file-name "snippets" my/assets-dir))
-    (setq yas-snippet-dirs (list my-yas-snippet-default-dir)))
+  :custom
+  ((yas-snippet-dirs (list my-yas-snippet-default-dir)))
   :hook
   ((prog-mode . yas-minor-mode)
    (text-mode . yas-minor-mode))
