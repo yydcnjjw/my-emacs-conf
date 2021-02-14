@@ -4,6 +4,9 @@ snippets
 transient
 eshell
 persist
+dicts
+eaf
+quelpa
 
 %backup%~
 session.*

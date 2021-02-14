@@ -44,11 +44,10 @@
 (require 'my-json)
 (require 'my-flutter)
 (require 'my-xclip)
-(require 'my-org-drill)
-(require 'my-org-download)
-(require 'my-org-roam)
+(require 'my-im)
 (require 'my-hl-todo)
-;; (require 'my-eaf)
+(require 'my-eaf)
+
 
 (provide 'my-modules)
 

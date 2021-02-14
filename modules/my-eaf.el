@@ -33,10 +33,20 @@
 
 (use-package eaf
   :init
-  (use-package epc :defer t)
-  (use-package ctable :defer t)
-  (use-package deferred :defer t)
-  (use-package s :defer t :ensure t)
+  (progn
+    (use-package epc :defer t)
+    (use-package ctable :defer t)
+    (use-package deferred :defer t)
+    (use-package s :defer t :ensure t)
+    (with-eval-after-load 'org
+      (require 'eaf-org)
+      ;; use `emacs-application-framework' to open PDF file: link
+      (defun eaf-org-open-file (file &optional link)
+        "An wrapper function on `eaf-open'."
+        (eaf-open file))
+      (add-to-list 'org-file-apps '("\\.pdf\\'" . eaf-org-open-file))) ;; unbind, see more in the Wiki
+    )
+  :defer t
   :custom
   (eaf-browser-continue-where-left-off t)
   :config
@@ -44,7 +54,8 @@
   (eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
   (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding)
   (eaf-bind-key take_photo "p" eaf-camera-keybinding)
-  (eaf-bind-key nil "M-q" eaf-browser-keybinding)) ;; unbind, see more in the Wiki
+  (eaf-bind-key nil "M-q" eaf-browser-keybinding)
+  )
 
 (provide 'my-eaf)
 
