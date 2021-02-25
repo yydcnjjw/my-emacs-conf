@@ -29,6 +29,8 @@
 
 ;; Setting English Font
 (set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Hack" 16))
+;; (set-frame-font "Hack" nil t)
+;; (add-to-list 'default-frame-alist '(font . "Hack-14"))
 
 ;; Chinese Font
 (when window-system

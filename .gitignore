@@ -7,6 +7,7 @@ persist
 dicts
 eaf
 quelpa
+request
 
 %backup%~
 session.*

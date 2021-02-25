@@ -27,9 +27,13 @@
 
 ;;; Code:
 
-(use-package benchmark-init
-  :config
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+(require 'my-const)
+
+(when my/linux-p
+  (use-package benchmark-init
+    :config
+    (add-hook 'after-init-hook 'benchmark-init/deactivate)))
+
 
 (provide 'my-benchmark)
 

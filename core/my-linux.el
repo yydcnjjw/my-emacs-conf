@@ -27,16 +27,19 @@
 
 ;;; Code:
 
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns x))
-  :defer t
-  :init
-  (add-hook 'after-init-hook
-            #'(lambda ()
-                (exec-path-from-shell-initialize))))
+(require 'my-const)
 
-;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
-(setq process-connection-type nil)
+(when my/linux-p
+  (use-package exec-path-from-shell
+    :if (memq window-system '(mac ns x))
+    :defer t
+    :init
+    (add-hook 'after-init-hook
+              #'(lambda ()
+                  (exec-path-from-shell-initialize))))
+
+  ;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
+  (setq process-connection-type nil))
 
 (provide 'my-linux)
 

@@ -26,7 +26,6 @@
 
 ;;; Code:
 
-(require 'my-const)
 (require 'my-package)
 (require 'my-linux)
 (require 'my-benchmark)

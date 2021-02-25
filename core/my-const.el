@@ -29,6 +29,11 @@
 
 (defconst my/emacs-28+ (> emacs-major-version 27))
 
+(defconst my/linux-p (eq system-type 'gnu/linux))
+
+(defconst my/windows-p (eq system-type 'windows-nt))
+
+
 (provide 'my-const)
 
 ;;; my-const.el ends here

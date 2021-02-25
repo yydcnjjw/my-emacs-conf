@@ -42,7 +42,9 @@
        org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
                            (sequence "FIXME(f)" "|" "ABORT(a@/!)"))
        ;; 
-       ))
+       )
+      (set-face-attribute 'org-table nil
+                          :family "Noto Sans Mono CJK SC"))
     (with-eval-after-load 'ox-latex
       (setq
        ;; latex pdf export

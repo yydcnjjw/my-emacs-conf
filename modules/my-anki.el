@@ -1,8 +1,8 @@
-;;; my-yasnippet.el --- yasnippet -*- lexical-binding: t -*-
+;;; my-anki.el --- my-anki -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (yasnippet)
+;; Package-Requires: (anki-editor)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,28 +27,9 @@
 
 ;;; Code:
 
-(defvar my/yas-snippet-default-dir (expand-file-name "snippets" my/assets-dir))
+(use-package anki-editor
+  :defer t)
 
-(defun my/snippets-initialize ()
-  "Load the snippets directory."
-  (add-to-list 'yas-snippet-dirs 'my/yas-snippet-default-dir t)
-  (yas-load-directory my/yas-snippet-default-dir t))
+(provide 'my-anki)
 
-(use-package yasnippet
-  :defer t
-  :init
-  (progn
-    (eval-after-load 'yasnippet
-      '(my/snippets-initialize)))
-  :hook
-  ((prog-mode . yas-minor-mode)
-   (text-mode . yas-minor-mode))
-  :bind
-  ("C-c y" . #'company-yasnippet))
-
-(use-package yasnippet-snippets
-  :after (yasnippet))
-
-(provide 'my-yasnippet)
-
-;;; my-yasnippet.el ends here
+;;; my-anki.el ends here
