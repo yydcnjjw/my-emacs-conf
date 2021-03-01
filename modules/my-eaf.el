@@ -27,11 +27,11 @@
 
 ;;; Code:
 
-(quelpa '(eaf :fetcher github
-              :repo  "manateelazycat/emacs-application-framework"
-              :files ("*")))
-
 (use-package eaf
+  :quelpa (eaf
+           :fetcher github
+           :repo  "manateelazycat/emacs-application-framework"
+           :files ("*"))
   :init
   (progn
     (use-package epc :defer t)

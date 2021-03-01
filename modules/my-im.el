@@ -57,7 +57,9 @@
   :custom
   ((org-roam-directory my/im-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-db-dir))
-   (org-roam-db-update-method 'immediate))
+   (org-roam-db-update-method 'idle-timer)
+   (org-roam-db-update-idle-seconds 10)
+   )
   :config
   (progn
     (require 'org-roam-protocol)
@@ -66,10 +68,14 @@
               (("C-c C-n l" . org-roam)
                ("C-c C-n f" . org-roam-find-file)
                ("C-c C-n g" . org-roam-graph)
-               ("C-c C-n c" . org-roam-capture))
+               ("C-c C-n c" . org-roam-capture)
+               ("C-c C-n r" . org-roam-db-build-cache)
+               )
               :map org-mode-map
               (("C-c C-n i" . org-roam-insert))
-              (("C-c C-n I" . org-roam-insert-immediate)))
+              (("C-c C-n I" . org-roam-insert-immediate)
+               ("C-c C-n t" . org-roam-tag-add)
+               ))
   )
 
 (with-eval-after-load 'org
@@ -98,7 +104,7 @@
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
 
+
 (provide 'my-im)
 
 ;;; my-im.el ends here
-

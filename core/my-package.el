@@ -52,6 +52,13 @@
 
 (use-package use-package-ensure-system-package)
 
+(use-package quelpa-use-package
+  :config
+  (setq quelpa-update-melpa-p nil
+        quelpa-checkout-melpa-p nil
+        quelpa-upgrade-interval 7))
+
+
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t
@@ -59,15 +66,6 @@
   (auto-package-update-maybe))
 
 (use-package gnu-elpa-keyring-update)
-
-(use-package quelpa
-  :init
-  (progn
-    (setq quelpa-update-melpa-p nil
-          quelpa-checkout-melpa-p nil
-          quelpa-upgrade-interval 7))
-  :hook
-  ((after-init . quelpa-upgrade-all-maybe)))
 
 (provide 'my-package)
 
