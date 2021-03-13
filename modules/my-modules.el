@@ -40,15 +40,16 @@
 (require 'my-org)
 (require 'my-c-cpp)
 (require 'my-lisp)
+(require 'my-go)
 (require 'my-ts)
 (require 'my-rust)
+(require 'my-python)
 (require 'my-json)
 (require 'my-flutter)
 (require 'my-xclip)
 (require 'my-im)
 (require 'my-hl-todo)
 (require 'my-eaf)
-
 
 (provide 'my-modules)
 

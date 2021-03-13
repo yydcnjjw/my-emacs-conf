@@ -60,11 +60,13 @@
 
 ;; `which-key'
 (use-package which-key
-  :config
-  (which-key-mode))
+  :defer t
+  :hook
+  ((after-init . which-key-mode)))
 
 ;; `expand-region'
 (use-package expand-region
+  :defer t
   :bind
   (("C-M-w" . er/expand-region)))
 

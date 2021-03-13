@@ -45,10 +45,10 @@
           (require-package package)))))
 
 (require-package 'use-package)
-(require 'use-package)
 
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
+(require 'use-package)
+(setq ;; use-package-verbose t
+      use-package-always-ensure t)
 
 (use-package use-package-ensure-system-package)
 
@@ -56,8 +56,8 @@
   :config
   (setq quelpa-update-melpa-p nil
         quelpa-checkout-melpa-p nil
-        quelpa-upgrade-interval 7))
-
+        quelpa-upgrade-interval 7
+        ))
 
 (use-package auto-package-update
   :config

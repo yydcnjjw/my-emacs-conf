@@ -28,9 +28,9 @@
 ;;; Code:
 
 (use-package awesome-pair
-  :quelpa (awesome-pair
-           :fetcher github
-           :repo "manateelazycat/awesome-pair")
+  ;; :quelpa (awesome-pair
+  ;;          :fetcher github
+  ;;          :repo "manateelazycat/awesome-pair")
   :config
   (progn
     (dolist (hook (list
@@ -59,12 +59,12 @@
                    'qmake-mode-hook
                    'lua-mode-hook
                    'swift-mode-hook
-                   'minibuffer-inactive-mode-hook
+                   'json-mode-hook
                    ))
       (add-hook hook '(lambda ()
                         (awesome-pair-mode 1)
-                        (show-paren-mode 1)
-                        )))
+                        (show-paren-mode 1))
+                ))
     (define-key awesome-pair-mode-map (kbd "(") 'awesome-pair-open-round)
     (define-key awesome-pair-mode-map (kbd "[") 'awesome-pair-open-bracket)
     (define-key awesome-pair-mode-map (kbd "{") 'awesome-pair-open-curly)
@@ -83,14 +83,15 @@
     (define-key awesome-pair-mode-map (kbd "C-k") 'awesome-pair-kill)
 
     (define-key awesome-pair-mode-map (kbd "M-\"") 'awesome-pair-wrap-double-quote)
-    (define-key awesome-pair-mode-map (kbd "M-[") 'awesome-pair-wrap-bracket)
+    ;; (define-key awesome-pair-mode-map (kbd "M-[") 'awesome-pair-wrap-bracket)
     (define-key awesome-pair-mode-map (kbd "M-{") 'awesome-pair-wrap-curly)
     (define-key awesome-pair-mode-map (kbd "M-(") 'awesome-pair-wrap-round)
     (define-key awesome-pair-mode-map (kbd "M-)") 'awesome-pair-unwrap)
 
     (define-key awesome-pair-mode-map (kbd "M-p") 'awesome-pair-jump-right)
     (define-key awesome-pair-mode-map (kbd "M-n") 'awesome-pair-jump-left)
-    (define-key awesome-pair-mode-map (kbd "M-:") 'awesome-pair-jump-out-pair-and-newline)))
+    (define-key awesome-pair-mode-map (kbd "M-:") 'awesome-pair-jump-out-pair-and-newline)
+    ))
 
 
 (provide 'my-awesome-pair)

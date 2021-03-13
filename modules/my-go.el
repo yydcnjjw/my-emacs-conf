@@ -1,8 +1,8 @@
-;;; my-lisp.el --- my-lisp -*- lexical-binding: t -*-
+;;; my-go.el --- my-go -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (flycheck)
+;; Package-Requires: (dependencies)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,18 +27,11 @@
 
 ;;; Code:
 
-(use-package flycheck
-  :defer t
+(use-package go-mode
   :hook
-  ((emacs-lisp-mode . flycheck-mode)))
+  (go-mode . lsp)
+  )
 
-(use-package slime
-  :commands slime
-  :config
-  (use-package slime-company)
-  (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-company)))
+(provide 'my-go)
 
-(provide 'my-lisp)
-
-;;; my-lisp.el ends here
+;;; my-go.el ends here

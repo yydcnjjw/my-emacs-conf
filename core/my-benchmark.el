@@ -29,10 +29,10 @@
 
 (require 'my-const)
 
-(when my/linux-p
-  (use-package benchmark-init
-    :config
-    (add-hook 'after-init-hook 'benchmark-init/deactivate)))
+(use-package benchmark-init
+  :if my/linux-p
+  :config
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 
 (provide 'my-benchmark)

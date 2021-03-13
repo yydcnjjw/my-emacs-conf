@@ -28,7 +28,7 @@
 ;;; Code:
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1))
+  :hook ((after-init . doom-modeline-mode)))
 
 (provide 'my-doom-modeline)
 

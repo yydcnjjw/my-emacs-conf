@@ -1,3 +1,0 @@
-;;; .emms-cache -*- mode: emacs-lisp; coding: utf-8; -*-
-(puthash "https://soukaapp.com/media/audio/entry/pod_e8f7aa46.mp3" '(*track* (type . url) (name . "https://soukaapp.com/media/audio/entry/pod_e8f7aa46.mp3") (last-played 24635 18527 240178 169000) (play-count . 8)) emms-cache-db)
-(puthash "/home/yydcnjjw/workspace/my-im/https:/soukaapp.com/media/audio/entry/pod_e8f7aa46.mp3" '(*track* (type . file) (name . "/home/yydcnjjw/workspace/my-im/https:/soukaapp.com/media/audio/entry/pod_e8f7aa46.mp3") (last-played 24635 19046 612880 223000) (play-count . 4)) emms-cache-db)

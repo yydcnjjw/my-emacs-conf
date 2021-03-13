@@ -27,26 +27,28 @@
 
 ;;; Code:
 
+(defun my/eaf-org ()
+  (require 'eaf-org)
+  ;; use `emacs-application-framework' to open PDF file: link
+  (defun eaf-org-open-file (file &optional link)
+    "An wrapper function on `eaf-open'."
+    (eaf-open file))
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . eaf-org-open-file)))
+    
+
 (use-package eaf
-  :quelpa (eaf
-           :fetcher github
-           :repo  "manateelazycat/emacs-application-framework"
-           :files ("*"))
-  :init
-  (progn
-    (use-package epc :defer t)
-    (use-package ctable :defer t)
-    (use-package deferred :defer t)
-    (use-package s :defer t :ensure t)
-    (with-eval-after-load 'org
-      (require 'eaf-org)
-      ;; use `emacs-application-framework' to open PDF file: link
-      (defun eaf-org-open-file (file &optional link)
-        "An wrapper function on `eaf-open'."
-        (eaf-open file))
-      (add-to-list 'org-file-apps '("\\.pdf\\'" . eaf-org-open-file))) ;; unbind, see more in the Wiki
-    )
+  ;; :quelpa (eaf
+  ;;          :fetcher github
+  ;;          :repo  "manateelazycat/emacs-application-framework"
+  ;;          :files ("*"))
   :defer t
+  :init
+  (use-package epc :defer t)
+  (use-package ctable :defer t)
+  (use-package deferred :defer t)
+  (use-package s :defer t)
+  :hook
+  ((org-mode . my/eaf-org))
   :custom
   (eaf-browser-continue-where-left-off t)
   :config

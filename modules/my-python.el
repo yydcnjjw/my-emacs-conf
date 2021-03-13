@@ -1,8 +1,8 @@
-;;; my-lisp.el --- my-lisp -*- lexical-binding: t -*-
+;;; my-python.el --- my-python -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (flycheck)
+;; Package-Requires: (ob-ipython)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,18 +27,20 @@
 
 ;;; Code:
 
-(use-package flycheck
+(use-package ob-ipython
+  :ensure-system-package
+  ((ipython)
+   (jupyter))
   :defer t
-  :hook
-  ((emacs-lisp-mode . flycheck-mode)))
+  :init
+  (with-eval-after-load 'org
+    (message "config ob-ipython")
+    (push '(ipython . t) org-babel-load-languages)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     org-babel-load-languages)
+    ))
 
-(use-package slime
-  :commands slime
-  :config
-  (use-package slime-company)
-  (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-company)))
+(provide 'my-python)
 
-(provide 'my-lisp)
-
-;;; my-lisp.el ends here
+;;; my-python.el ends here

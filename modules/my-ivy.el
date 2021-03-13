@@ -29,7 +29,6 @@
 
 (use-package ivy
   :ensure counsel
-  :defer t
   :init
   (progn
     (ivy-mode 1)

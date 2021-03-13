@@ -43,7 +43,7 @@
 (defconst my/im-dir "~/workspace/my-im")
 (defconst my/im-db-dir (expand-file-name ".db" my/im-dir))
 
-(defun run-server ()
+(defun my/run-server ()
   "Run server."
   (require 'server)
   (unless (server-running-p)
@@ -51,9 +51,9 @@
   )
 
 (use-package org-roam
+  :defer t
   :hook
-  (after-init . org-roam-mode)
-  (org-roam-mode . run-server)
+  (org-roam-mode . my/run-server)
   :custom
   ((org-roam-directory my/im-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-db-dir))
@@ -63,24 +63,39 @@
   :config
   (progn
     (require 'org-roam-protocol)
+    (use-package org-roam-server
+      :ensure t
+      :config
+      (setq org-roam-server-host "127.0.0.1"
+            org-roam-server-port 8080
+            org-roam-server-authenticate nil
+            org-roam-server-export-inline-images t
+            org-roam-server-serve-files nil
+            org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+            org-roam-server-network-poll t
+            org-roam-server-network-arrows nil
+            org-roam-server-network-label-truncate t
+            org-roam-server-network-label-truncate-length 60
+            org-roam-server-network-label-wrap-length 20))
     )
-  :bind (:map org-roam-mode-map
+  :bind (("C-c C-n f" . org-roam-find-file)
+         :map org-roam-mode-map
               (("C-c C-n l" . org-roam)
                ("C-c C-n f" . org-roam-find-file)
                ("C-c C-n g" . org-roam-graph)
                ("C-c C-n c" . org-roam-capture)
-               ("C-c C-n r" . org-roam-db-build-cache)
-               )
-              :map org-mode-map
-              (("C-c C-n i" . org-roam-insert))
-              (("C-c C-n I" . org-roam-insert-immediate)
-               ("C-c C-n t" . org-roam-tag-add)
-               ))
-  )
+               ("C-c C-n r" . org-roam-db-build-cache))
+         :map org-mode-map
+              (("C-c C-n i" . org-roam-insert)
+               ("C-c C-n I" . org-roam-insert-immediate)
+               ("C-c C-n t" . org-roam-tag-add))))
+
+(bind-keys*
+ ("C-c c" . org-capture)
+ ("C-c a" . org-agenda)
+ )
 
 (with-eval-after-load 'org
-  (define-key global-map "\C-cc" #'org-capture)
-  (define-key global-map "\C-ca" #'org-agenda)
   (defconst my/agenda-file (expand-file-name "agenda.org" my/im-dir))
   (setq org-default-notes-file my/agenda-file
         ;; org-capture-templates nil
@@ -89,20 +104,6 @@
            "** TODO %?\n"))
         org-agenda-files (list my/agenda-file)))
 
-(use-package org-roam-server
-  :ensure t
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
-        org-roam-server-authenticate nil
-        org-roam-server-export-inline-images t
-        org-roam-server-serve-files nil
-        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 60
-        org-roam-server-network-label-wrap-length 20))
 
 
 (provide 'my-im)
