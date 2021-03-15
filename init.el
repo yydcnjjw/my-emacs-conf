@@ -60,7 +60,8 @@
   "Recursive add directory DIR to `load-path'."
   (mapcar
    (lambda (path) (add-to-list 'load-path path))
-   (delete-dups (mapcar 'file-name-directory (directory-files-recursively dir "\.el$")))))
+   (delete-dups (mapcar 'file-name-directory
+                        (directory-files-recursively dir "\.el$")))))
 (add-subdirs-to-load-path my/vendor-dir)
 
 ;; reduce the frequency of garbage collection by making it happen on

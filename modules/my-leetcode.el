@@ -1,8 +1,8 @@
-;;; my-lisp.el --- my-lisp -*- lexical-binding: t -*-
+;;; my-leetcode.el --- leetcode -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (flycheck)
+;; Package-Requires: (leetcode)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,27 +27,13 @@
 
 ;;; Code:
 
-(use-package flycheck
+(use-package leetcode
   :defer t
-  :hook
-  ((emacs-lisp-mode . flycheck-mode)))
-
-(use-package slime
-  :commands slime
+  :commands
+  leetcode
   :config
-  (use-package slime-company
-    :custom
-    (slime-company-completon 'fuzzy)
-    (slime-company-display-arglist t)
-    :hook
-    ((slime-repl-mode . company-mode)))
-  (setq inferior-lisp-program "sbcl"
-        slime-contribs '(slime-fancy
-                         slime-company
-                         slime-asdf
-                         ))
-  (slime-setup))
+  (setq leetcode-prefer-language "cpp"))
 
-(provide 'my-lisp)
+(provide 'my-leetcode)
 
-;;; my-lisp.el ends here
+;;; my-leetcode.el ends here
