@@ -27,9 +27,10 @@
 ;;; Code:
 
 (require 'my-dashboard)
-(require 'my-doom-modeline)
+;; (require 'my-doom-modeline)
 ;; (require 'my-smartparens)
 (require 'my-awesome-pair)
+;; (require 'my-awesome-tray)
 (require 'my-projectile)
 (require 'my-magit)
 (require 'my-company)
@@ -45,12 +46,14 @@
 (require 'my-rust)
 (require 'my-python)
 (require 'my-json)
+(require 'my-latex)
 (require 'my-flutter)
 (require 'my-xclip)
 (require 'my-im)
 (require 'my-hl-todo)
 (require 'my-eaf)
 ;; (require 'my-leetcode)
+(require 'my-plantuml)
 
 (provide 'my-modules)
 

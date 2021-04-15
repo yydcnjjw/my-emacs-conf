@@ -31,15 +31,9 @@
   :ensure-system-package
   ((ipython)
    (jupyter))
-  :defer t
-  :init
-  (with-eval-after-load 'org
-    (message "config ob-ipython")
-    (push '(ipython . t) org-babel-load-languages)
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     org-babel-load-languages)
-    ))
+  :after org
+  :config
+  (my/push-load-org-babel-language 'ipython))
 
 (provide 'my-python)
 

@@ -28,9 +28,9 @@
 ;;; Code:
 
 (use-package awesome-pair
-  ;; :quelpa (awesome-pair
-  ;;          :fetcher github
-  ;;          :repo "manateelazycat/awesome-pair")
+  :quelpa (awesome-pair
+           :fetcher github
+           :repo "manateelazycat/awesome-pair")
   :config
   (progn
     (dolist (hook (list

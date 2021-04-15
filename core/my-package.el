@@ -31,6 +31,7 @@
 
 (setq package-archives
       '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+        ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
         ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
         ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 
@@ -52,12 +53,14 @@
 
 (use-package use-package-ensure-system-package)
 
-(use-package quelpa-use-package
+(use-package quelpa
   :config
   (setq quelpa-update-melpa-p nil
         quelpa-checkout-melpa-p nil
         quelpa-upgrade-interval 7
         ))
+
+(use-package quelpa-use-package)
 
 (use-package auto-package-update
   :config

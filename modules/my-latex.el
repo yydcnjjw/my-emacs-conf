@@ -1,8 +1,8 @@
-;;; my-flutter.el --- my-flutter -*- lexical-binding: t -*-
+;;; my-latex.el --- latex -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-dart)
+;; Package-Requires: (auctex cdlatex)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,12 +27,15 @@
 
 ;;; Code:
 
-(use-package lsp-dart
-  :hook (dart-mode . lsp))
-
-(use-package hover
+(use-package auctex
   :defer t)
 
-(provide 'my-flutter)
+(use-package cdlatex
+  :defer t
+  :hook
+  ((org-mode . org-cdlatex-mode)
+   (TeX-mode . org-cdlatex-mode)))
 
-;;; my-flutter.el ends here
+(provide 'my-latex)
+
+;;; my-latex.el ends here

@@ -1,8 +1,8 @@
-;;; my-flutter.el --- my-flutter -*- lexical-binding: t -*-
+;;; my-plantuml.el --- plantuml -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-dart)
+;; Package-Requires: (plantuml-mode)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,12 +27,15 @@
 
 ;;; Code:
 
-(use-package lsp-dart
-  :hook (dart-mode . lsp))
+(use-package plantuml-mode
+  :custom
+  ((plantuml-default-exec-mode 'executable))
+  :config
+  (with-eval-after-load 'org
+    (setq org-plantuml-exec-mode 'plantuml)
+    (my/push-load-org-babel-language 'plantuml))
+  )
 
-(use-package hover
-  :defer t)
+(provide 'my-plantuml)
 
-(provide 'my-flutter)
-
-;;; my-flutter.el ends here
+;;; my-plantuml.el ends here

@@ -37,10 +37,10 @@
     
 
 (use-package eaf
-  ;; :quelpa (eaf
-  ;;          :fetcher github
-  ;;          :repo  "manateelazycat/emacs-application-framework"
-  ;;          :files ("*"))
+  :quelpa (eaf
+           :fetcher github
+           :repo  "manateelazycat/emacs-application-framework"
+           :files ("*"))
   :defer t
   :init
   (use-package epc :defer t)

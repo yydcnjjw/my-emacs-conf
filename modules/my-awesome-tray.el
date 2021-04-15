@@ -1,8 +1,8 @@
-;;; my-flutter.el --- my-flutter -*- lexical-binding: t -*-
+;;; my-awesome-tray.el --- awesome-tray -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (lsp-dart)
+;; Package-Requires: (awesome-tray)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,12 +27,13 @@
 
 ;;; Code:
 
-(use-package lsp-dart
-  :hook (dart-mode . lsp))
+(use-package awesome-tray
+  :quelpa (awesome-tray
+           :fetcher github
+           :repo "manateelazycat/awesome-tray")
+  :config
+  (awesome-tray-mode 1))
 
-(use-package hover
-  :defer t)
+(provide 'my-awesome-tray)
 
-(provide 'my-flutter)
-
-;;; my-flutter.el ends here
+;;; my-awesome-tray.el ends here
