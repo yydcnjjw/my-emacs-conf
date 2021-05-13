@@ -26,13 +26,21 @@
 
 ;;; Code:
 
-(use-package ccls
-  :defer t
-  :hook
-  ((c-mode c++-mode objc-mode cuda-mode) .
-   (lambda ()
-     (require 'ccls)
-     (lsp))))
+;; (use-package ccls
+;;   :defer t
+;;   :hook
+;;   ((c-mode c++-mode objc-mode cuda-mode) .
+;;    (lambda ()
+;;      (require 'ccls)
+;;      (lsp))))
+
+(dolist (hook '(c-mode-hook
+                c++-mode-hook
+                objc-mode-hook
+                cuda-mode-hook))
+  (add-hook
+   hook #'(lambda ()
+            (lsp))))
 
 (use-package cmake-mode
   :defer t)

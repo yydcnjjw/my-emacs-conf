@@ -30,13 +30,11 @@
 (use-package ivy
   :ensure counsel
   :init
-  (progn
-    (ivy-mode 1)
-    (counsel-mode 1))
+  (ivy-mode)
+  (counsel-mode)
   :config
-  (progn
-    (setq ivy-use-virtual-buffers t
-          ivy-count-format "(%d/%d)"))
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "(%d/%d)")
   :bind
   (([remap isearch-forward] . swiper)))
 

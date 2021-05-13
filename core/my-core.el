@@ -28,10 +28,9 @@
 
 (require 'my-package)
 (require 'my-linux)
-(require 'my-benchmark)
+;; (require 'my-benchmark)
 (require 'my-ui)
 (require 'my-editor)
-
 
 (provide 'my-core)
 

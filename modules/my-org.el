@@ -33,6 +33,44 @@
   ((xelatex)
    (latexmk))
   :config
+  (defun my/org-latex-export/preview ()
+    ""
+    (setq org-preview-latex-process-alist
+          '((dvisvgm :programs
+                     ("xelatex" "dvisvgm")
+                     :description "xdv > svg"
+                     :message "you need to install the programs: xelatex and dvisvgm."
+                     :use-xcolor t
+                     :image-input-type "xdv"
+                     :image-output-type "svg"
+                     :image-size-adjust
+                     (1.7 . 1.5)
+                     :latex-compiler
+                     ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                     :image-converter
+                     ("dvisvgm %f -n -b min -c %S -o %O"))
+            (imagemagick :programs
+                         ("xelatex" "convert")
+                         :description "pdf > png"
+                         :message "you need to install the programs: xelatex and imagemagick."
+                         :use-xcolor t
+                         :image-input-type "pdf"
+                         :image-output-type "png"
+                         :image-size-adjust
+                         (1.0 . 1.0)
+                         :latex-compiler
+                         ("xelatex -interaction nonstopmode -output-directory %o %f")
+                         :image-converter
+                         ("convert -density %D -trim -antialias %f -quality 100 %O"))))
+    (setq org-format-latex-options
+          '(:foreground "White" :background default :scale 1.4
+		                :html-foreground "Black" :html-background "Transparent"
+		                :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+          org-preview-latex-default-process 'dvisvgm
+          org-latex-compiler "xelatex"
+          org-latex-pdf-process
+          '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f"))
+    )
   (defun my/push-load-org-babel-language (language)
     (push (cons language t) org-babel-load-languages)
     (org-babel-do-load-languages
@@ -51,46 +89,6 @@
                       :family "Noto Sans Mono CJK SC")
   (my/org-latex-export/preview)
   )
-
-(defun my/org-latex-export/preview ()
-  ""
-   (setq org-preview-latex-process-alist
-         '((dvisvgm :programs
-                    ("xelatex" "dvisvgm")
-                    :description "xdv > svg"
-                    :message "you need to install the programs: xelatex and dvisvgm."
-                    :use-xcolor t
-                    :image-input-type "xdv"
-                    :image-output-type "svg"
-                    :image-size-adjust
-                    (1.7 . 1.5)
-                    :latex-compiler
-                    ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
-                    :image-converter
-                    ("dvisvgm %f -n -b min -c %S -o %O"))
-           (imagemagick :programs
-                        ("xelatex" "convert")
-                        :description "pdf > png"
-                        :message "you need to install the programs: xelatex and imagemagick."
-                        :use-xcolor t
-                        :image-input-type "pdf"
-                        :image-output-type "png"
-                        :image-size-adjust
-                        (1.0 . 1.0)
-                        :latex-compiler
-                        ("xelatex -interaction nonstopmode -output-directory %o %f")
-                        :image-converter
-                        ("convert -density %D -trim -antialias %f -quality 100 %O"))))
-  (setq org-format-latex-options
-        '(:foreground "White" :background default :scale 1.4
-		              :html-foreground "Black" :html-background "Transparent"
-		              :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
-        org-preview-latex-default-process 'dvisvgm
-        org-latex-compiler "xelatex"
-        org-latex-pdf-process
-        '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f"))
-  )
-
 
 (use-package org-bullets
   :defer t

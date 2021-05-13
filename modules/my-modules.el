@@ -54,6 +54,7 @@
 (require 'my-eaf)
 ;; (require 'my-leetcode)
 (require 'my-plantuml)
+(require 'my-tabnine)
 
 (provide 'my-modules)
 
