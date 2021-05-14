@@ -61,7 +61,7 @@
                    'swift-mode-hook
                    'json-mode-hook
                    ))
-      (add-hook hook '(lambda ()
+      (add-hook hook #'(lambda ()
                         (awesome-pair-mode 1)
                         (show-paren-mode 1))
                 ))
