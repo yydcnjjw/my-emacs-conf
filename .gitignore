@@ -10,10 +10,10 @@ quelpa
 request
 emms
 eln-cache
+auto-save-list/
 
 %backup%~
 session.*
-.*
 recentf
 projectile-bookmarks.eld
 projectile.cache
@@ -21,3 +21,7 @@ tramp
 custom.el
 org-roam.db
 bookmarks
+.dap-breakpoints
+.last-package-update-day
+.lsp-session-v1
+.org-id-locations
