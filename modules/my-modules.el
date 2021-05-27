@@ -55,6 +55,7 @@
 ;; (require 'my-leetcode)
 (require 'my-plantuml)
 (require 'my-tabnine)
+(require 'my-translate)
 
 (provide 'my-modules)
 

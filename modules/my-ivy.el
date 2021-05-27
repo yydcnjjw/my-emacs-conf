@@ -29,15 +29,14 @@
 
 (use-package ivy
   :ensure counsel
-  :init
-  (ivy-mode)
-  (counsel-mode)
   :config
   (setq ivy-use-virtual-buffers t
         ivy-count-format "(%d/%d)")
   :bind
   (([remap isearch-forward] . swiper)))
 
+(ivy-mode)
+(counsel-mode)
 (provide 'my-ivy)
 
 ;;; my-ivy.el ends here
