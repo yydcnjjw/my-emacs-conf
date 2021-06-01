@@ -162,6 +162,7 @@
 (use-package org-wild-notifier
   :defer t
   :custom
+  (org-wild-notifier-alert-time '(10 1))
   (org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
   (alert-default-style 'libnotify))
 
