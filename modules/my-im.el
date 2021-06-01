@@ -156,7 +156,7 @@
                                  :kill-buffer t)
                                 ("j" "Jobs"
                                  entry (id "d7dafc05-e2e8-44cc-93cd-5af62c1da67b")
-                                 "* %?\n%U\n\n  %i"
+                                 "* TODO %?\n%U\n\n  %i"
                                  :kill-buffer t))))
 
 (use-package org-wild-notifier
