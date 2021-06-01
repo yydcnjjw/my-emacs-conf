@@ -127,8 +127,7 @@
    ("C-c d p" . org-gtd-process-inbox)
    ("C-c d n" . org-gtd-show-all-next)
    ("C-c d s" . org-gtd-show-stuck-projects)
-   ("C-c d f" . org-gtd-clarify-finalize))
-  )
+   ("C-c d f" . org-gtd-clarify-finalize)))
 
 (use-package org-agenda
   :ensure nil
@@ -154,9 +153,17 @@
                                 ("l" "Todo with link"
                                  entry (file ,(org-gtd--path org-gtd-inbox-file-basename))
                                  "* %?\n%U\n\n  %i\n  %a"
+                                 :kill-buffer t)
+                                ("j" "Jobs"
+                                 entry (id "d7dafc05-e2e8-44cc-93cd-5af62c1da67b")
+                                 "* %?\n%U\n\n  %i"
                                  :kill-buffer t))))
 
-
+(use-package org-wild-notifier
+  :defer t
+  :custom
+  (org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
+  (alert-default-style 'libnotify))
 
 (provide 'my-im)
 
