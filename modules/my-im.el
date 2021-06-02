@@ -135,9 +135,13 @@
   :config
   ;; use as-is if you don't have an existing org-agenda setup
   ;; otherwise push the directory to the existing list
-  (setq org-agenda-files `(,org-gtd-directory))
+  (setq org-agenda-files `(,org-gtd-directory)
+        org-tags-exclude-from-inheritance '("repeat"))
   ;; a useful view to see what can be accomplished today
-  (setq org-agenda-custom-commands '(("g" "Scheduled today and all NEXT items" ((agenda "" ((org-agenda-span 1))) (todo "NEXT"))))))
+  (setq org-agenda-custom-commands
+        '(("g" "Scheduled today and all NEXT/TODO items"
+           ((agenda "" ((org-agenda-span 'day)))
+            (alltodo "" ((org-agenda-tag-filter-preset '("-repeat")))))))))
 
 (use-package org-capture
   :ensure nil
