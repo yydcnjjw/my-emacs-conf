@@ -56,6 +56,7 @@
 (require 'my-plantuml)
 (require 'my-tabnine)
 (require 'my-translate)
+(require 'my-atomic-chrome)
 
 (provide 'my-modules)
 

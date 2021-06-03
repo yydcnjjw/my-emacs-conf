@@ -43,41 +43,14 @@
 (defconst my/im-dir "~/workspace/my-im")
 (defconst my/im-db-dir (expand-file-name ".db" my/im-dir))
 
-(defun my/run-server ()
-  "Run server."
-  (require 'server)
-  (unless (server-running-p)
-    (server-start))
-  )
-
 (use-package org-roam
   :defer t
-  :hook
-  (org-roam-mode . my/run-server)
   :custom
   ((org-roam-directory my/im-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-db-dir))
    (org-roam-db-update-method 'idle-timer)
    (org-roam-db-update-idle-seconds 10)
    )
-  :config
-  (progn
-    (require 'org-roam-protocol)
-    (use-package org-roam-server
-      :ensure t
-      :config
-      (setq org-roam-server-host "127.0.0.1"
-            org-roam-server-port 8080
-            org-roam-server-authenticate nil
-            org-roam-server-export-inline-images t
-            org-roam-server-serve-files nil
-            org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-            org-roam-server-network-poll t
-            org-roam-server-network-arrows nil
-            org-roam-server-network-label-truncate t
-            org-roam-server-network-label-truncate-length 60
-            org-roam-server-network-label-wrap-length 20))
-    )
   :bind (("C-c C-n f" . org-roam-find-file)
          :map org-roam-mode-map
               (("C-c C-n l" . org-roam)
@@ -90,14 +63,22 @@
                ("C-c C-n I" . org-roam-insert-immediate)
                ("C-c C-n t" . org-roam-tag-add))))
 
-;; (with-eval-after-load 'org
-;;   (defconst my/agenda-file (expand-file-name "agenda.org" my/im-dir))
-;;   (setq org-default-notes-file my/agenda-file
-;;         ;; org-capture-templates nil
-;;         org-capture-templates
-;;         '(("t" "Todo" entry (file+headline my/agenda-file "Todos")
-;;            "** TODO %?\n"))
-;;         org-agenda-files (list my/agenda-file)))
+(use-package org-roam-server
+  :if (daemonp)
+  :config
+  (require 'org-roam-protocol)
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-authenticate nil
+        org-roam-server-export-inline-images t
+        org-roam-server-serve-files nil
+        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+        org-roam-server-network-poll t
+        org-roam-server-network-arrows nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20)
+  (org-roam-server-mode))
 
 (bind-keys*
  ("C-c c" . org-capture)
@@ -165,11 +146,13 @@
                                  :kill-buffer t))))
 
 (use-package org-wild-notifier
-  :defer t
+  :if (daemonp)
   :custom
   (org-wild-notifier-alert-time '(10 1))
   (org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
-  (alert-default-style 'libnotify))
+  (alert-default-style 'libnotify)
+  :config
+  (org-wild-notifier-mode))
 
 (provide 'my-im)
 
