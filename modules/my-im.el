@@ -141,7 +141,8 @@
   (setq org-agenda-custom-commands
         '(("g" "Scheduled today and all NEXT/TODO items"
            ((agenda "" ((org-agenda-span 'day)))
-            (alltodo "" ((org-agenda-tag-filter-preset '("-repeat")))))))))
+            (alltodo "" ((org-agenda-tag-filter-preset '("-repeat"))
+                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled)))))))))
 
 (use-package org-capture
   :ensure nil
