@@ -129,6 +129,36 @@
   :ensure nil
   :after org-gtd
   :config
+  (defun my/project-location-list ()
+    ""
+    (org-ql-select (org-agenda-files)
+      '(and (category "Projects")
+            (level 2))
+      :action #'(lambda ()
+                  (cons
+                   (org-element-property
+                    :raw-value (org-element-headline-parser (line-end-position)))
+                   (list
+                    :path (buffer-file-name)
+                    :point (point))))))
+
+  (defun my/complete-project-location (project-location-list)
+    ""
+    (ivy-read "Project: " (mapcar #'(lambda (location)
+                                      (car location))
+                                  project-location-list)))
+
+  (defun my/project-capture-location-function ()
+    (let* ((project-location-list (my/project-location-list))
+           (project-location (assoc (my/complete-project-location
+                                     project-location-list)
+                                    project-location-list))
+           (project-location-prop (cdr project-location))
+           (point (plist-get project-location-prop ':point))
+           (path (plist-get project-location-prop ':path)))
+      (set-buffer (org-capture-target-buffer path))
+      (goto-char point)))
+  
   ;; use as-is if you don't have an existing set of org-capture templates
   ;; otherwise add to existing setup
   ;; you can of course change the letters, too
@@ -140,8 +170,8 @@
                                  entry (file ,(org-gtd--path org-gtd-inbox-file-basename))
                                  "* %?\n%U\n\n  %i\n  %a"
                                  :kill-buffer t)
-                                ("j" "Jobs"
-                                 entry (id "d7dafc05-e2e8-44cc-93cd-5af62c1da67b")
+                                ("p" "Projects"
+                                 entry (function my/project-capture-location-function)
                                  "* TODO %?\n%U\n\n  %i"
                                  :kill-buffer t))))
 
@@ -153,6 +183,9 @@
   (alert-default-style 'libnotify)
   :config
   (org-wild-notifier-mode))
+
+
+(use-package org-ql)
 
 (provide 'my-im)
 
