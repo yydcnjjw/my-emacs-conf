@@ -34,6 +34,16 @@
   :config
   (setq insert-translated-name-translate-engine "google"))
 
+(use-package go-translate
+  :custom
+  (go-translate-base-url "https://translate.google.cn")
+  (go-translate-local-language "zh-CN")
+  (go-translate-token-current (cons 430675 2721866130))
+  :defer t
+  :bind
+  (("C-c t" . go-translate)
+   ("C-c T" . go-translate-popup-current)))
+
 (provide 'my-translate)
 
 ;;; my-translate.el ends here
