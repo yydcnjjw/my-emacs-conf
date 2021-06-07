@@ -42,6 +42,7 @@
            :repo  "manateelazycat/emacs-application-framework"
            :files ("*"))
   :defer t
+  :if window-system
   :init
   (use-package epc :defer t)
   (use-package ctable :defer t)

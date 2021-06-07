@@ -31,6 +31,7 @@
   :quelpa (insert-translated-name
            :fetcher github
            :repo "manateelazycat/insert-translated-name")
+  :defer t
   :config
   (setq insert-translated-name-translate-engine "google"))
 

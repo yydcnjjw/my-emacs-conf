@@ -129,6 +129,7 @@
   :ensure nil
   :after org-gtd
   :config
+  (use-package org-ql)
   (defun my/project-location-list ()
     ""
     (org-ql-select (org-agenda-files)
@@ -183,9 +184,6 @@
   (alert-default-style 'libnotify)
   :config
   (org-wild-notifier-mode))
-
-
-(use-package org-ql)
 
 (provide 'my-im)
 
