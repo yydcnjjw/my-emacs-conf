@@ -28,9 +28,27 @@
 ;;; Code:
 
 ;; Setting English Font
-(set-face-attribute 'default nil :font (format "%s:pixelsize=%d" "Hack" 16))
-;; (set-frame-font "Hack" nil t)
-;; (add-to-list 'default-frame-alist '(font . "Hack-14"))
+
+(require 'my-const)
+
+(defconst my/en-font (cond
+                      (my/linux-p
+                       "Hack")
+                      (my/windows-p
+                       "Consolas")
+                      (t "Hack")))
+
+(defconst my/zh-font (cond
+                      (my/linux-p
+                       "Noto Sans CJK SC")
+                      (my/windows-p
+                       "Consolas")
+                      (t "Noto Sans CJK SC")))
+
+(set-face-attribute 'default nil
+                    :font (format "%s:pixelsize=%d"
+                                  my/en-font
+                                  16))
 
 ;; Chinese Font
 (when window-system
@@ -38,7 +56,7 @@
     (set-fontset-font (frame-parameter nil 'font)
                       charset
                       (font-spec
-                       :family "Noto Sans CJK SC"
+                       :family my/zh-font
                        ))))
 
 (tool-bar-mode -1)
