@@ -33,7 +33,6 @@
 
 (defconst my/windows-p (eq system-type 'windows-nt))
 
-
 (provide 'my-const)
 
 ;;; my-const.el ends here

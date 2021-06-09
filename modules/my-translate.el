@@ -32,6 +32,8 @@
            :fetcher github
            :repo "manateelazycat/insert-translated-name")
   :defer t
+  :bind
+  (("C-c C" . insert-translated-name-insert))
   :config
   (setq insert-translated-name-translate-engine "google"))
 

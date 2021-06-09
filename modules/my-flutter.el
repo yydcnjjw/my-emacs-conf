@@ -28,7 +28,8 @@
 ;;; Code:
 
 (use-package lsp-dart
-  :hook (dart-mode . lsp))
+  :hook
+  (dart-mode . lsp))
 
 (use-package hover
   :defer t)

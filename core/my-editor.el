@@ -75,6 +75,21 @@
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
+(use-package pangu-spacing
+  :custom
+  (pangu-spacing-real-insert-separtor t)
+  :config
+  (global-pangu-spacing-mode 1))
+
+(use-package drag-stuff
+  :config
+  (drag-stuff-define-keys)
+  (drag-stuff-global-mode 1))
+
+(use-package indent-guide
+  :config
+  (indent-guide-global-mode))
+
 (provide 'my-editor)
 
 ;;; my-editor.el ends here
