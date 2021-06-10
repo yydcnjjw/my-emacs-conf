@@ -57,6 +57,7 @@
 (require 'my-tabnine)
 (require 'my-translate)
 (require 'my-atomic-chrome)
+(require 'my-vterm)
 
 (provide 'my-modules)
 
