@@ -90,6 +90,11 @@
   :config
   (indent-guide-global-mode))
 
+(use-package multiple-cursors
+  :defer t
+  :bind
+  (("C-S-c C-S-c" . mc/edit-lines)))
+
 (provide 'my-editor)
 
 ;;; my-editor.el ends here

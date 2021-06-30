@@ -29,9 +29,8 @@
 
 (use-package lsp-mode
   :defer t
-  :config
-  (progn
-    (setq lsp-keymap-prefix "C-c l"))
+  :custom
+  (lsp-completion-provider :none)
   :hook
   ((lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
