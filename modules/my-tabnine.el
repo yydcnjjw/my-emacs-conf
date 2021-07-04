@@ -30,7 +30,6 @@
 (use-package company-tabnine
   :after company
   :config
-  (add-to-list 'company-backends #'company-tabnine t)
   (defun my/company/sort-by-tabnine (candidates)
     (if (or (functionp company-backend)
             (not (and (listp company-backend) (memq 'company-tabnine company-backend))))
@@ -53,8 +52,6 @@
                (seq-drop candidates-2 2)))))
 
   (add-to-list 'company-transformers 'my/company/sort-by-tabnine t)
-  ;; `:separate`  使得不同 backend 分开排序
-  (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
   )
 
 (provide 'my-tabnine)

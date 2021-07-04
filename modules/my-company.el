@@ -40,10 +40,11 @@
           company-tooltip-limit 10
           company-tooltip-flip-when-above t
           company-minimum-prefix-length 1
-          company-backends '(company-dabbrev
-                             company-keywords
+          company-backends '(company-cmake
                              company-files
-                             company-cmake)))
+                             (company-capf :with company-tabnine :separate)
+                             company-keywords
+                             company-dabbrev)))
   :bind (:map company-active-map
               ("M-n" . nil)
               ("M-p" . nil)
