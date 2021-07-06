@@ -58,6 +58,7 @@
 (require 'my-translate)
 (require 'my-atomic-chrome)
 (require 'my-vterm)
+(require 'my-elfeed)
 
 (provide 'my-modules)
 
