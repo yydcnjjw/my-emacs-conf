@@ -86,12 +86,14 @@
 (size-indication-mode t)
 
 ;; show line number
-(require 'display-line-numbers)
-(setq display-line-numbers-width-start t)
-(global-display-line-numbers-mode)
+(use-package display-line-numbers
+  :custom
+  (display-line-numbers-width-start t)
+  :hook
+  ((prog-mode . display-line-numbers-mode)))
 
 ;; hl line mode
-(global-hl-line-mode +1)
+(global-hl-line-mode)
 
 (use-package spacemacs-theme
   :defer t

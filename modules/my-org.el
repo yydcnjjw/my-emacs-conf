@@ -63,9 +63,12 @@
                          :image-converter
                          ("convert -density %D -trim -antialias %f -quality 100 %O"))))
     (setq org-format-latex-options
-          '(:foreground "White" :background default :scale 1.4
-		                :html-foreground "Black" :html-background "Transparent"
-		                :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+          ;; '(:foreground "White" :background default :scale 1.4
+		  ;;               :html-foreground "Black" :html-background "Transparent"
+		  ;;               :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+          '(:scale 1.4
+                   :html-scale 1.0
+                   :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
           org-preview-latex-default-process 'dvisvgm
           org-latex-compiler "xelatex"
           org-latex-pdf-process
