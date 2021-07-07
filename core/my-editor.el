@@ -84,7 +84,8 @@
 (use-package drag-stuff
   :config
   (drag-stuff-define-keys)
-  (drag-stuff-global-mode 1))
+  :hook
+  ((prog-mode) . drag-stuff-mode))
 
 (use-package indent-guide
   :config
