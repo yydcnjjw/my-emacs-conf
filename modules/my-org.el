@@ -74,6 +74,29 @@
           org-latex-pdf-process
           '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f"))
     )
+
+  (defun my/org-ruby-export (link description format)
+    "Export ruby link from org files."
+    (let ((desc (or description link)))
+      (pcase format
+       (`html (format "<ruby> %s <rp>(</rp><rt>%s</rt><rp>)</rp></ruby>" desc link))
+       (`latex (format "\\ruby{%s}{%s}" desc link))
+       (t link))))
+
+  (defun my/org-ruby-follow (path)
+    path)
+  
+  (defface org-ruby-face
+    `((t (:inherit underline)))
+    "org ruby face")
+
+  (org-link-set-parameters "ruby"
+			               :follow #'my/org-ruby-follow
+			               :export #'my/org-ruby-export
+			               :face 'org-ruby-face
+			               )
+
+  
   (defun my/push-load-org-babel-language (language)
     (push (cons language t) org-babel-load-languages)
     (org-babel-do-load-languages
