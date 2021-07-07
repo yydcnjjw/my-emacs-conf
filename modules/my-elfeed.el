@@ -28,12 +28,14 @@
 ;;; Code:
 
 (use-package elfeed-org
+  :after elfeed
   :custom
   (rmh-elfeed-org-files '("~/workspace/my-im/elfeed.org"))
   :config
   (elfeed-org))
 
 (use-package elfeed-goodies
+  :after elfeed
   :config
   (elfeed-goodies/setup))
 

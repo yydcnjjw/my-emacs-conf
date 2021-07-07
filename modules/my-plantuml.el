@@ -30,10 +30,10 @@
 (use-package plantuml-mode
   :custom
   ((plantuml-default-exec-mode 'executable))
+  :after org
   :config
-  (with-eval-after-load 'org
-    (setq org-plantuml-exec-mode 'plantuml)
-    (my/push-load-org-babel-language 'plantuml))
+  (setq org-plantuml-exec-mode 'plantuml)
+  (my/push-load-org-babel-language 'plantuml)
   )
 
 (provide 'my-plantuml)
