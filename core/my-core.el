@@ -34,6 +34,8 @@
 (require 'my-ui)
 (require 'my-editor)
 
+(require 'my-proxy)
+
 (provide 'my-core)
 
 ;;; my-core.el ends here
