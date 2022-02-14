@@ -67,6 +67,7 @@
     ;; grammarly
     mu4e
     ;; wl
+    pest
     )
   "")
 
