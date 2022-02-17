@@ -29,14 +29,28 @@
 
 (use-package popup)
 
+(use-package liberime
+  :defer t
+  :custom
+  (liberime-auto-build t))
+
 (use-package pyim
   :defer t
   :init
   (setq default-input-method "pyim")
   :config
-  (if (posframe-workable-p)
+  (if (and (boundp 'posframe-workable-p) (posframe-workable-p))
       (setq pyim-page-tooltip 'posframe)
-    (setq pyim-page-tooltip 'popup)))
+    (setq pyim-page-tooltip 'popup))
+  (require 'pyim-liberime)
+  (liberime-try-select-schema "luna_pinyin_simp")
+  (pyim-default-scheme 'rime-quanpin))
+
+(provide 'my-pyim)
+
+;;; my-pyim.el ends here
+
+
 
 (provide 'my-pyim)
 

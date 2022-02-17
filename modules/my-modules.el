@@ -59,7 +59,7 @@
     atomic-chrome
     vterm
     elfeed
-    ;; pyim
+    pyim
     markdown
     ;; rime
     yaml
