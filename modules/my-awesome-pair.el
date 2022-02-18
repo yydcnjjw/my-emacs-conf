@@ -50,6 +50,7 @@
                    'php-mode-hook
                    'python-mode-hook
                    'js-mode-hook
+                   'typescript-mode-hook
                    'go-mode-hook
                    'qml-mode-hook
                    'jade-mode-hook
