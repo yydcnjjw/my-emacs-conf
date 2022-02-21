@@ -27,8 +27,15 @@
 
 ;;; Code:
 
+(defun my/json ()
+  "JSON mode."
+  (setq-local js-indent-level 2)
+  (lsp))
+
 (use-package json-mode
-  :defer t)
+  :defer t
+  :hook
+  (json-mode . my/json))
 
 (provide 'my-json)
 

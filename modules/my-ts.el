@@ -26,9 +26,15 @@
 
 ;;; Code:
 
+(defun my/typescript ()
+  "Typescript."
+  (lsp))
+
 (use-package typescript-mode
+  :custom
+  (typescript-indent-level 2)
   :hook
-  (typescript-mode . lsp))
+  (typescript-mode . my/typescript))
 
 (provide 'my-ts)
 
