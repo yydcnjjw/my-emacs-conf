@@ -26,21 +26,17 @@
 
 ;;; Code:
 
+(defun my/c-cpp ()
+  "C/C++."
+  (require 'ccls)
+  (setq-local lsp-lens-enable nil)
+  (lsp)
+  )
+
 (use-package ccls
   :defer t
   :hook
-  ((c-mode c++-mode objc-mode cuda-mode) .
-   (lambda ()
-     (require 'ccls)
-     (lsp))))
-
-;; (dolist (hook '(c-mode-hook
-;;                 c++-mode-hook
-;;                 objc-mode-hook
-;;                 cuda-mode-hook))
-;;   (add-hook
-;;    hook #'(lambda ()
-;;             (lsp))))
+  ((c-mode c++-mode objc-mode cuda-mode) . my/c-cpp))
 
 (add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
 

@@ -107,11 +107,6 @@
 
 ;; (global-visual-line-mode)
 
-(setq font-lock-maximum-decoration
-      '((c++-mode . 2)
-        (c-mode . 2)
-        (t . t)))
-
 (provide 'my-editor)
 
 ;;; my-editor.el ends here
