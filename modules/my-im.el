@@ -200,32 +200,13 @@
                                  "* TODO %?\n%U\n\n  %i"
                                  :kill-buffer t))))
 
-(defun my/alert-wsl-notify (info)
-  ""
-  (let ((m-path (cond
-                 ((or my/windows-p my/wsl-p) "m.exe")
-                 (my/linux-p "m")
-                 (nil "m")))
-        (title (plist-get info :title))
-        (message (plist-get info :message)))
-    (call-process
-     m-path nil nil nil "toast" "--summary" message "--body" title "--timeout" "5000")
-    )
-  )
 
-(use-package alert
-  :config
-  (alert-define-style 'm
-                      :title "Notify using m"
-                      :notifier #'my/alert-wsl-notify)
-  (setq alert-default-style 'm))
 
 (use-package org-wild-notifier
   :if (daemonp)
   :custom
   (org-wild-notifier-alert-time '(10 1))
   (org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
-  (alert-default-style 'm)
   :config
   (org-wild-notifier-mode))
 

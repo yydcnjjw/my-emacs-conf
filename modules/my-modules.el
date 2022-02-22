@@ -47,6 +47,7 @@
     rust
     python
     web
+    pest
     json
     latex
     ;; flutter
@@ -68,7 +69,7 @@
     ;; grammarly
     mu4e
     ;; wl
-    pest
+    alert
     )
   "")
 
