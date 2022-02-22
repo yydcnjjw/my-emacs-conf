@@ -42,6 +42,9 @@
 (use-package elfeed
   :defer t)
 
+(use-package elfeed-dashboard
+  :defer t)
+
 (provide 'my-elfeed)
 
 ;;; my-elfeed.el ends here
