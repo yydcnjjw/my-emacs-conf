@@ -51,11 +51,18 @@
          m-command nil nil nil "toast" "--summary" message "--body" title "--timeout" "5000"))
     ))
 
+(use-package alert-toast
+  :after alert
+  :straight (alert-toast
+             :host github
+             :repo "gkowzan/alert-toast"))
+
 (defun my/alert-notify (info)
   "WSL notify INFO."
   (if my/alert-use-m-command
       (alert-m-notify)
     (cond
+     ((or my/wsl-p my/windows-p) (alert-toast-notify info))
      (my/linux-p (alert-libnotify-notify info))
      (nil (alert-message-notify info)))))
 
