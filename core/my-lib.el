@@ -29,8 +29,6 @@
 
 (require 'seq)
 
-
-
 (defun my/executablesp (executables)
   "Find EXECUTABLES."
   (seq-filter #'(lambda (executable)

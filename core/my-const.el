@@ -29,11 +29,11 @@
 
 (defconst my/emacs-28+ (> emacs-major-version 27))
 
+(defconst my/wsl-p (string-match-p "WSL" operating-system-release))
+
 (defconst my/linux-p (eq system-type 'gnu/linux))
 
 (defconst my/windows-p (eq system-type 'windows-nt))
-
-(defconst my/wsl-p (string-match-p "WSL" operating-system-release))
 
 (provide 'my-const)
 
