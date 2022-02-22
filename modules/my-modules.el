@@ -46,6 +46,7 @@
     ts
     rust
     python
+    web
     json
     latex
     ;; flutter
