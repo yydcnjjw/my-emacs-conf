@@ -32,6 +32,11 @@
   :type 'list
   :group 'my)
 
+(defcustom my/elfeed-auto-update-interval (* 10 60)
+  "Elfeed auto update interface."
+  :type 'integer
+  :group 'my)
+
 (use-package elfeed-org
   :after elfeed
   :config
@@ -100,7 +105,7 @@ XML encoding declaration."
                    (when (> newcnt my/elfeed-unread-count)
                      (alert (format "elfeed updated %d" (- newcnt my/elfeed-unread-count)))))
                  ))))))
-  (run-at-time nil (* 1 60) #'my/elfeed-update))
+  (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-update))
 
 (provide 'my-elfeed)
 
