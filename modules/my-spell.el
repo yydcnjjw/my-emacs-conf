@@ -29,10 +29,18 @@
 
 (use-package flyspell-correct
   :defer t
+  :ensure-system-package
+  (hunspell)
   :bind
-  (("C-c ;" . flyspell-correct-wrapper)))
-
-(add-hook 'text-mode-hook #'flyspell-mode)
+  (("C-c ;" . flyspell-correct-wrapper))
+  :hook
+   ((text-mode
+     c-mode
+     c++-mode
+     rust-mode
+     typescript-mode
+     js-mode)
+    . flyspell-mode))
 
 (provide 'my-spell)
 
