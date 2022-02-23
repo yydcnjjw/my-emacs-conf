@@ -33,3 +33,4 @@
 /.org-id-locations
 /.mc-lists.el
 /projects
+/flycheck_init.el
