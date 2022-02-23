@@ -33,7 +33,7 @@
     awesome-pair
     ;; awesome-tray
     projectile
-    magit
+    vc
     company
     lsp
     ivy

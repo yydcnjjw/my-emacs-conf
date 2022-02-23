@@ -27,7 +27,11 @@
 
 ;;; Code:
 
-(use-package project)
+(use-package project
+  :defer t)
+
+(use-package vc-msg
+  :defer t)
 
 (use-package magit
   :defer t

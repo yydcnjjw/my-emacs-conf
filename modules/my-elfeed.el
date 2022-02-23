@@ -86,7 +86,7 @@ XML encoding declaration."
 
   (defvar my/elfeed-update-timer nil)
   (defvar my/elfeed-unread-count nil)
-  
+
   (defun my/elfeed-update ()
     "elfeed update"
     (elfeed-log 'info "starting automatically update")
