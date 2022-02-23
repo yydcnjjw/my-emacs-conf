@@ -34,6 +34,8 @@
 (use-package web-mode
   :defer t
   :mode "\\.html?\\'"
+  :custom
+  (web-mode-markup-indent-offset 2)
   :hook
   (web-mode . my/web-mode))
 
