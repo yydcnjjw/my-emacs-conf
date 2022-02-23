@@ -1,8 +1,8 @@
-;;; my-magit.el --- magit -*- lexical-binding: t -*-
+;;; my-vc.el --- vc -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (magit)
+;; Package-Requires: (magit vc-msg)
 
 
 ;; This file is not part of GNU Emacs
@@ -38,6 +38,6 @@
   :ensure-system-package
   (git))
 
-(provide 'my-magit)
+(provide 'my-vc)
 
-;;; my-magit.el ends here
+;;; my-vc.el ends here
