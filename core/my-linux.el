@@ -30,11 +30,11 @@
 (require 'my-const)
 
 (use-package exec-path-from-shell
-    :if my/linux-p
-    :config
-    ;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
-    (setq process-connection-type nil)
-    (exec-path-from-shell-initialize))
+  :if my/linux-p
+  :config
+  ;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
+  (setq process-connection-type nil)
+  (exec-path-from-shell-initialize))
 
 (provide 'my-linux)
 

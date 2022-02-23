@@ -2,7 +2,7 @@
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (use-package use-package-ensure-system-package auto-package-update gnu-elpa-keyring-update)
+;; Package-Requires: (straight use-package use-package-ensure-system-package)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,49 +27,6 @@
 
 ;;; Code:
 
-;; (require 'package)
-
-;; (setq package-archives
-;;       '(("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-;;         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
-;;         ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
-;;         ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
-
-;; (package-initialize)
-;; (defun require-package (package)
-;;   "Install PACKAGE unless already installed."
-;;   (or (package-installed-p package)
-;;       (if (assoc package package-archive-contents)
-;;           (package-install package)
-;;         (progn
-;;           (package-refresh-contents)
-;;           (require-package package)))))
-
-;; (require-package 'use-package)
-
-;; (require 'use-package)
-;; (setq ;; use-package-verbose t
-;;       use-package-always-ensure t)
-
-;; (use-package use-package-ensure-system-package)
-
-;; (use-package quelpa
-;;   :config
-;;   (setq quelpa-update-melpa-p nil
-;;         quelpa-checkout-melpa-p nil
-;;         quelpa-upgrade-interval 7
-;;         ))
-
-;; (use-package quelpa-use-package)
-
-;; (use-package auto-package-update
-;;   :config
-;;   (setq auto-package-update-delete-old-versions t
-;;         auto-package-update-hide-results t)
-;;   (auto-package-update-maybe))
-
-;; (use-package gnu-elpa-keyring-update)
-
 (setq package-enable-at-startup nil)
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -87,6 +44,9 @@
 (setq straight-use-package-by-default t)
 
 (straight-use-package 'use-package)
+
+(eval-when-compile
+  (require 'use-package))
 
 (use-package use-package-ensure-system-package)
 
