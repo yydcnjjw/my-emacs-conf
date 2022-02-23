@@ -48,8 +48,9 @@
 
 (use-package elfeed
   :if (daemonp)
+  :bind
+  (("C-c e" . elfeed))
   :config
-
   ;; FIXME: workaround https://github.com/skeeto/elfeed/issues/258
   (defun elfeed-xml-parse-region (&optional beg end buffer parse-dtd _parse-ns)
     "Decode (if needed) and parse XML file. Uses coding system from
