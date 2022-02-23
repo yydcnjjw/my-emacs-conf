@@ -34,7 +34,8 @@
   :config
   ;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
   (setq process-connection-type nil)
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+  (setenv "LANG" "en_US.UTF-8"))
 
 (provide 'my-linux)
 
