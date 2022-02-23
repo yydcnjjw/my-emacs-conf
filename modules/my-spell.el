@@ -32,6 +32,8 @@
   :bind
   (("C-c ;" . flyspell-correct-wrapper)))
 
+(add-hook 'text-mode-hook #'flyspell-mode)
+
 (provide 'my-spell)
 
 ;;; my-spell.el ends here

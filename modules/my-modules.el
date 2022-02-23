@@ -49,6 +49,7 @@
     web
     pest
     json
+    spell
     latex
     ;; flutter
     xclip
