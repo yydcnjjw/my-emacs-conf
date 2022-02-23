@@ -104,7 +104,8 @@ XML encoding declaration."
                  (elfeed-log 'info "Automatic update has been completed")
                  (let ((newcnt (my/elfeed-query-count "+unread")))
                    (when (> newcnt my/elfeed-unread-count)
-                     (alert (format "elfeed updated %d" (- newcnt my/elfeed-unread-count)))))
+                     (alert (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))
+                            :title "elfeed")))
                  ))))))
   (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-update))
 
