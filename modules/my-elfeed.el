@@ -48,6 +48,7 @@
 
 (use-package elfeed
   :if (daemonp)
+  :demand
   :bind
   (("C-c e" . elfeed))
   :config
