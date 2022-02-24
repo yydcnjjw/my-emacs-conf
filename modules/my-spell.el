@@ -34,13 +34,13 @@
   :bind
   (("C-c ;" . flyspell-correct-wrapper))
   :hook
-   ((text-mode
-     c-mode
+  ((text-mode . flyspell-mode)
+   ((c-mode
      c++-mode
      rust-mode
      typescript-mode
      js-mode)
-    . flyspell-mode))
+    . flyspell-prog-mode)))
 
 (provide 'my-spell)
 
