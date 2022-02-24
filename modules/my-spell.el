@@ -32,7 +32,7 @@
   :ensure-system-package
   (hunspell)
   :bind
-  (("C-c ;" . flyspell-correct-wrapper))
+  (("C-c s" . flyspell-correct-wrapper))
   :hook
   ((text-mode . flyspell-mode)
    ((c-mode
