@@ -48,7 +48,7 @@
         (message (plist-get info :message)))
     (if m-command
         (call-process
-         m-command nil nil nil "toast" "--summary" message "--body" title "--timeout" "5000"))
+         m-command nil nil nil "toast" "--summary" title "--body" message "--timeout" "5000"))
     ))
 
 (use-package alert-toast
@@ -60,7 +60,7 @@
 (defun my/alert-notify (info)
   "WSL notify INFO."
   (if my/alert-use-m-command
-      (alert-m-notify)
+      (my/alert-m-notify info)
     (cond
      ((or my/wsl-p my/windows-p) (alert-toast-notify info))
      (my/linux-p (alert-libnotify-notify info))
