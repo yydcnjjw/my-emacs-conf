@@ -40,8 +40,8 @@
 
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
 ;; smart tab behavior - indent or complete
@@ -104,6 +104,11 @@
   (("C-c C-f" . origami-toggle-node))
   :config
   (global-origami-mode))
+
+(use-package aggressive-indent
+  :defer t
+  :hook
+  ((emacs-lisp-mode) . aggressive-indent-mode))
 
 ;; (global-visual-line-mode)
 
