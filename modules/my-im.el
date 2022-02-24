@@ -98,9 +98,14 @@
 
 (use-package org-roam-ui
   :straight
-  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  (
+   :host github
+   :repo "org-roam/org-roam-ui"
+   :branch "main"
+   :files ("*.el" "out"))
   :if (daemonp)
-  :config (org-roam-ui-mode))
+  :config
+  (org-roam-ui-mode))
 
 (bind-keys*
  ("C-c c" . org-capture)
