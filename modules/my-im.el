@@ -124,8 +124,8 @@
 (use-package org-super-agenda
   :defer t
   :after org
-  :config
-  (org-super-agenda-mode))
+  :hook
+  (org-agenda-mode . org-super-agenda-mode))
 
 (use-package org-agenda
   :straight nil
