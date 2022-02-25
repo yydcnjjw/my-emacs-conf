@@ -53,7 +53,7 @@
   (("C-c e" . elfeed))
   :config
   ;; FIXME: workaround https://github.com/skeeto/elfeed/issues/258
-  (defun elfeed-xml-parse-region (&optional beg end buffer parse-dtd _parse-ns)
+  (defun my/elfeed-xml-parse-region (&optional beg end buffer parse-dtd _parse-ns)
     "Decode (if needed) and parse XML file. Uses coding system from
 XML encoding declaration."
     (unless beg (setq beg (point-min)))
@@ -74,6 +74,8 @@ XML encoding declaration."
                   end (marker-position mark-end))))))
     (let ((xml-default-ns ()))
       (xml-parse-region beg end buffer parse-dtd nil)))
+  
+  (advice-add 'elfeed-xml-parse-region :override #'my/elfeed-xml-parse-region)
 
   (defun my/elfeed-query-count (query)
     "Return the number of feeds returned by the QUERY."
