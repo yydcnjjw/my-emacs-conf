@@ -38,8 +38,26 @@
 ;;         org-download-heading-lvl 1
 ;;         ))
 
-(defconst my/im-dir "~/workspace/my-im")
-(defconst my/im-db-dir (expand-file-name ".db" my/im-dir))
+(defcustom my/im-dir "~/workspace/my-im"
+  "IM directory."
+  :type 'directory
+  :group 'my)
+
+(defcustom my/im-db-dir (expand-file-name ".db" my/im-dir)
+  "IM db directory."
+  :type 'directory
+  :group 'my)
+
+(defcustom my/gtd-dir (list "~/workspace/GTD")
+  "GTD directory."
+  :type '(list directory)
+  :group 'my)
+
+(use-package org
+  :defer t
+  :bind
+  ("C-c c" . org-capture)
+  ("C-c a" . org-agenda))
 
 (use-package org-roam
   :straight (org-roam
@@ -103,105 +121,72 @@
   :config
   (org-roam-ui-mode))
 
-(bind-keys*
- ("C-c c" . org-capture)
- ("C-c a" . org-agenda)
- )
-
-(use-package org-gtd
-  :after org
-  :demand t
-  :custom
-  (org-gtd-directory "~/workspace/GTD/")
-  ;; package: https://github.com/Malabarba/org-agenda-property
-  ;; this is so you can see who an item was delegated to in the agenda
-  (org-agenda-property-list '("DELEGATED_TO"))
-  ;; I think this makes the agenda easier to read
-  (org-agenda-property-position 'next-line)
-  ;; package: https://www.nongnu.org/org-edna-el/
-  ;; org-edna is used to make sure that when a project task gets DONE,
-  ;; the next TODO is automatically changed to NEXT.
-  (org-edna-use-inheritance t)
-  :config
-  (org-edna-load)
-  :bind
-  (("C-c d c" . org-gtd-capture)
-   ("C-c d a" . org-agenda-list)
-   ("C-c d p" . org-gtd-process-inbox)
-   ("C-c d n" . org-gtd-show-all-next)
-   ("C-c d s" . org-gtd-show-stuck-projects)
-   ("C-c d f" . org-gtd-clarify-finalize)))
+(use-package org-super-agenda
+  :defer t
+  :after org)
 
 (use-package org-agenda
   :straight nil
   :defer t
-  :after org-gtd
+  :after org
   :config
   ;; use as-is if you don't have an existing org-agenda setup
   ;; otherwise push the directory to the existing list
-  (setq org-agenda-files `(,org-gtd-directory)
-        org-tags-exclude-from-inheritance '("repeat")
+  (setq org-agenda-files my/gtd-dir
+        ;; org-tags-exclude-from-inheritance '("repeat")
         org-agenda-tags-column -100)
   ;; a useful view to see what can be accomplished today
   (setq org-agenda-custom-commands
-        '(("g" "Scheduled today and all NEXT/TODO items"
-           ((agenda "" ((org-agenda-span 'day)))
-            (alltodo "" ((org-agenda-tag-filter-preset '("-repeat"))
-                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled)))))))))
+        '(("g" "group view"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-super-agenda-groups
+                         '((:name "Today"
+                                  :time-grid t
+                                  :date today
+                                  :scheduled today)))))
+            (alltodo "" ((org-super-agenda-groups
+                          '((:auto-parent))))))))))
 
 (use-package org-capture
   :straight nil
   :defer t
-  :after org-gtd
+  :after org
   :config
   (use-package org-ql)
-  (defun my/project-location-list ()
+  (defun my/gtd-group-list ()
     ""
     (org-ql-select (org-agenda-files)
-      '(and (category "Projects")
-            (level 2))
-      :action #'(lambda ()
-                  (cons
-                   (org-element-property
-                    :raw-value (org-element-headline-parser (line-end-position)))
-                   (list
-                    :path (buffer-file-name)
-                    :point (point))))))
+                   '(and (level 1))
+                   :action #'(lambda ()
+                               (cons
+                                (org-element-property
+                                 :raw-value (org-element-headline-parser (line-end-position)))
+                                (list
+                                 :path (buffer-file-name)
+                                 :point (point))))))
 
-  (defun my/complete-project-location (project-location-list)
+  (defun my/gtd-complete-group (group-list)
     ""
-    (ivy-read "Project: " (mapcar #'(lambda (location)
-                                      (car location))
-                                  project-location-list)))
+    (ivy-read "Groups: " (mapcar #'(lambda (location)
+                                     (car location))
+                                 group-list)))
 
-  (defun my/project-capture-location-function ()
-    (let* ((project-location-list (my/project-location-list))
-           (project-location (assoc (my/complete-project-location
-                                     project-location-list)
-                                    project-location-list))
-           (project-location-prop (cdr project-location))
-           (point (plist-get project-location-prop ':point))
-           (path (plist-get project-location-prop ':path)))
+  (defun my/gtd-capture-groups-function ()
+    (let* ((group-list (my/gtd-group-list))
+           (group (assoc (my/gtd-complete-group
+                          group-list)
+                         group-list))
+           (group-prop (cdr group))
+           (point (plist-get group-prop ':point))
+           (path (plist-get group-prop ':path)))
       (set-buffer (org-capture-target-buffer path))
       (goto-char point)))
   
-  ;; use as-is if you don't have an existing set of org-capture templates
-  ;; otherwise add to existing setup
-  ;; you can of course change the letters, too
-  (setq org-capture-templates `(("i" "Inbox"
-                                 entry (file ,(org-gtd--inbox-file))
-                                 "* %?\n%U\n\n  %i"
-                                 :kill-buffer t)
-                                ("l" "Todo with link"
-                                 entry (file ,(org-gtd--inbox-file))
-                                 "* %?\n%U\n\n  %i\n  %a"
-                                 :kill-buffer t)
-                                ("p" "Projects"
-                                 entry (function my/project-capture-location-function)
-                                 "* TODO %?\n%U\n\n  %i"
-                                 :kill-buffer t))))
-
-
+  (setq org-capture-templates
+        `(("g" "Groups"
+           entry (function my/gtd-capture-groups-function)
+           "* TODO %?\n%U\n\n  %i"
+           :kill-buffer t))))
 
 (use-package org-wild-notifier
   :if (daemonp)
