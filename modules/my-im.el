@@ -29,10 +29,6 @@
 
 (require 'my-const)
 
-;; (use-package org-drill
-;;   :defer t
-;;   :commands org-drill)
-
 ;; (use-package org-download
 ;;   :defer t
 ;;   :after org
