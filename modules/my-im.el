@@ -198,6 +198,21 @@
   :config
   (org-wild-notifier-mode))
 
+;; (use-package org-fc
+;;   :defer t
+;;   :straight
+;;   (org-fc
+;;    :type git :repo "https://git.sr.ht/~l3kn/org-fc"
+;;    :files (:defaults "awk" "demo.org"))
+;;   :custom
+;;   (org-fc-directories (list my/im-dir))
+;;   :bind
+;;   ("C-c f d" . org-fc-dashboard)
+;;   :config
+;;   (require 'org-fc-keymap-hint)
+;;   (require 'org-fc-type-vocab)
+;;   )
+
 (provide 'my-im)
 
 ;;; my-im.el ends here

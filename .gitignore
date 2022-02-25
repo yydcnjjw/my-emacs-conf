@@ -34,3 +34,4 @@
 /.mc-lists.el
 /projects
 /flycheck_init.el
+/org-fc-reviews.tsv
