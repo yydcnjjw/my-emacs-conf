@@ -28,8 +28,8 @@
 ;;; Code:
 
 (use-package xclip
+  :if (and my/linux-p (not window-system))
   :ensure-system-package xclip
-  :unless window-system
   :config
   (xclip-mode 1))
 
