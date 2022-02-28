@@ -63,6 +63,7 @@
  
 (menu-bar-mode -1)
 
+(require 'scroll-bar)
 (scroll-bar-mode -1)
 
 (blink-cursor-mode -1)
