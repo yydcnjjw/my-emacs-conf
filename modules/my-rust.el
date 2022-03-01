@@ -29,8 +29,9 @@
 
 (use-package rustic
   :defer t
-  :init
-  (setq lsp-rust-analyzer-proc-macro-enable t))
+  :custom
+  (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-rust-analyzer-experimental-proc-attr-macros t))
 
 (defun my/rust-list-all-installed-target()
   "Rust List all installed target."
