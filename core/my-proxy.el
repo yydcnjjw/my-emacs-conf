@@ -36,13 +36,15 @@
     (string-match "^nameserver[ ]+\\(.*\\)$" text)
     (match-string 1 text)))
 
-(let ((proxy-address
-       (if my/wsl-p (my/wsl-proxy-address)
-         "127.0.0.1")))
-  (setq url-proxy-services
-        `(("http" . ,(format "%s:8118" proxy-address))
-          ("https" . ,(format "%s:8118" proxy-address))
-          )))
+(when (or (not (boundp 'url-proxy-services)) (null url-proxy-services))
+  (let ((proxy-address
+         (if my/wsl-p (my/wsl-proxy-address)
+           "127.0.0.1")))
+    (setq url-proxy-services
+          `(("http" . ,(format "%s:8118" proxy-address))
+            ("https" . ,(format "%s:8118" proxy-address))
+            ))))
+
 
 (provide 'my-proxy)
 
