@@ -63,7 +63,7 @@
 (use-package company
   :defer t
   :hook
-  ((prog-mode text-mode) . company-mode)
+  ((prog-mode text-mode conf-mode) . company-mode)
   :config
   (progn
     (setq company-tooltip-align-annotations t
