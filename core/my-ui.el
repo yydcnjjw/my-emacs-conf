@@ -48,7 +48,7 @@
 (set-face-attribute 'default nil
                     :font (format "%s:pixelsize=%d"
                                   my/en-font
-                                  16))
+                                  15))
 
 ;; Chinese Font
 (when window-system
