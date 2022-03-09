@@ -55,7 +55,7 @@
                          :message "you need to install the programs: xelatex and imagemagick."
                          :use-xcolor t
                          :image-input-type "pdf"
-                         :image-output-type "png"
+                         :imagne-output-type "png"
                          :image-size-adjust
                          (1.0 . 1.0)
                          :latex-compiler
@@ -63,12 +63,12 @@
                          :image-converter
                          ("convert -density %D -trim -antialias %f -quality 100 %O"))))
     (setq org-format-latex-options
-          ;; '(:foreground "White" :background default :scale 1.4
-		  ;;               :html-foreground "Black" :html-background "Transparent"
-		  ;;               :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
-          '(:scale 1.4
-                   :html-scale 1.0
-                   :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+          '(
+            :scale 1.4
+            :html-scale 1.0
+            :foreground default
+            :background "Transparent"
+            :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
           org-preview-latex-default-process 'dvisvgm
           org-latex-compiler "xelatex"
           org-latex-pdf-process
@@ -79,9 +79,9 @@
     "Export ruby link from org files."
     (let ((desc (or description link)))
       (pcase format
-       (`html (format "<ruby> %s <rp>(</rp><rt>%s</rt><rp>)</rp></ruby>" desc link))
-       (`latex (format "\\ruby{%s}{%s}" desc link))
-       (_ link))))
+        (`html (format "<ruby> %s <rp>(</rp><rt>%s</rt><rp>)</rp></ruby>" desc link))
+        (`latex (format "\\ruby{%s}{%s}" desc link))
+        (_ link))))
 
   (defun my/org-ruby-follow (path)
     path)
@@ -102,7 +102,7 @@
      'org-babel-load-languages
      org-babel-load-languages)
     )
- 
+  
   (setq
    ;; org ui
    org-startup-indented t
