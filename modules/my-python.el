@@ -36,6 +36,8 @@
   :config
   (my/push-load-org-babel-language 'ipython))
 
+(add-hook 'python-mode-hook #'lsp)
+
 (provide 'my-python)
 
 ;;; my-python.el ends here
