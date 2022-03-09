@@ -30,6 +30,7 @@
 (use-package doom-modeline
   :hook ((after-init . doom-modeline-mode))
   :custom
+  (doom-modeline-icon (display-graphic-p))
   (doom-modeline-minor-modes t))
 
 (provide 'my-doom-modeline)
