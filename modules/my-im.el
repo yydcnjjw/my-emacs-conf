@@ -118,6 +118,11 @@
    :branch "main"
    :files ("*.el" "out"))
   :if (daemonp)
+  :custom
+  (org-roam-ui-sync-theme t)
+  (org-roam-ui-follow t)
+  (org-roam-ui-update-on-save t)
+  (org-roam-ui-open-on-start nil)
   :config
   (org-roam-ui-mode))
 
