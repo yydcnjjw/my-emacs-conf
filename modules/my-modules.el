@@ -71,6 +71,7 @@
     mu4e
     ;; wl
     alert
+    separedit
     )
   "")
 
