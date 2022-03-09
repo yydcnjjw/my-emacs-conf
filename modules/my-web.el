@@ -49,6 +49,19 @@
   :hook
   (css-mode . lsp))
 
+(use-package web-beautify
+  :defer t
+  :init
+  (eval-after-load 'sgml-mode
+    '(define-key html-mode-map (kbd "C-c b") 'web-beautify-html))
+
+  (eval-after-load 'web-mode
+    '(define-key web-mode-map (kbd "C-c b") 'web-beautify-html))
+
+  (eval-after-load 'css-mode
+    '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))
+  )
+
 (provide 'my-web)
 
 ;;; my-web.el ends here
