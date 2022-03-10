@@ -27,7 +27,8 @@
 
 ;;; Code:
 
-(use-package popup)
+(use-package popup
+  :defer t)
 
 (use-package liberime
   :defer t
