@@ -27,7 +27,7 @@
 ;;; Code:
 
 (require 'my-package)
-(require 'my-benchmark)
+;; (require 'my-benchmark)
 
 (require 'my-linux)
 (require' my-wsl)
