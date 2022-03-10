@@ -31,25 +31,25 @@
   (lsp))
 
 (use-package typescript-mode
+  :defer t
   :custom
   (typescript-indent-level 2)
   :hook
-  (typescript-mode . my/typescript))
-
-(defun my/yarn-global-dir()
-  "Yarn global dir."
-  (string-trim (shell-command-to-string "yarn global dir")))
-
-(setq lsp-clients-angular-language-server-command
-      (let ((node-modules-path (my/yarn-global-dir)))
-        (list
-         "ngserver"
-         "--ngProbeLocations"
-         node-modules-path
-         "--tsProbeLocations"
-         node-modules-path
-         "--stdio"))
-      lsp-eslint-enable nil)
+  (typescript-mode . my/typescript)
+  :config
+  (defun my/yarn-global-dir()
+    "Yarn global dir."
+    (string-trim (shell-command-to-string "yarn global dir")))
+  (setq lsp-clients-angular-language-server-command
+        (let ((node-modules-path (my/yarn-global-dir)))
+          (list
+           "ngserver"
+           "--ngProbeLocations"
+           node-modules-path
+           "--tsProbeLocations"
+           node-modules-path
+           "--stdio"))
+        lsp-eslint-enable nil))
 
 (provide 'my-ts)
 
