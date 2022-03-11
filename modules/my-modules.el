@@ -73,6 +73,7 @@
     ;; wl
     alert
     separedit
+    tree-sitter
     )
   "")
 

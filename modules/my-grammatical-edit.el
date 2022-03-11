@@ -27,11 +27,6 @@
 
 ;;; Code:
 
-(use-package tree-sitter
-  :defer t)
-(use-package tree-sitter-langs
-  :defer t)
-
 (use-package grammatical-edit
   :straight (grammatical-edit
              :host github
