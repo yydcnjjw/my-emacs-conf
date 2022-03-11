@@ -30,7 +30,8 @@
   '(dashboard
     doom-modeline
     ;; smartparens
-    awesome-pair
+    ;; awesome-pair
+    grammatical-edit
     ;; awesome-tray
     projectile
     vc
