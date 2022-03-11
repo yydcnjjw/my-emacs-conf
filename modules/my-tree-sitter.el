@@ -42,8 +42,17 @@
     css-mode
     html-mode
     mhtml-mode
-    go-mode)
-   . tree-sitter-mode))
+    go-mode
+    emacs-lisp-mode
+    lisp-interaction-mode
+    lisp-mode
+    )
+   . tree-sitter-mode)
+  :config
+  (add-to-list
+   'tree-sitter-major-mode-language-alist
+   '(emacs-lisp-mode . elisp))
+  )
 
 (use-package tree-sitter-langs
   :defer t)
