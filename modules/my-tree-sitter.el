@@ -49,9 +49,13 @@
     )
    . tree-sitter-mode)
   :config
-  (add-to-list
-   'tree-sitter-major-mode-language-alist
-   '(emacs-lisp-mode . elisp))
+  (dolist (item '((emacs-lisp-mode . elisp)
+                  (lisp-mode . elisp)
+                  (lisp-interaction-mode . elisp)))
+    (add-to-list
+     'tree-sitter-major-mode-language-alist
+     item)
+    )
   )
 
 (use-package tree-sitter-langs
