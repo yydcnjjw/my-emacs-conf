@@ -74,6 +74,7 @@
     alert
     separedit
     tree-sitter
+    ;; dict
     )
   "")
 
