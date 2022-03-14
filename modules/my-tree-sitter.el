@@ -35,6 +35,7 @@
     python-mode
     typescript-mode
     javascript-mode
+    json-mode
     js2-mode
     c-mode
     c++-mode

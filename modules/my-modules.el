@@ -30,8 +30,8 @@
   '(dashboard
     doom-modeline
     ;; smartparens
-    ;; awesome-pair
-    grammatical-edit
+    awesome-pair
+    ;; grammatical-edit
     ;; awesome-tray
     projectile
     vc
@@ -73,7 +73,7 @@
     ;; wl
     alert
     separedit
-    tree-sitter
+    ;; tree-sitter
     ;; dict
     )
   "")
