@@ -30,17 +30,17 @@
 
 (defun my/c-cpp ()
   "C/C++."
-  ;; (require 'ccls)
+  (require 'ccls)
   (setq-local lsp-lens-enable nil)
   (lsp)
   )
 
-;; (use-package ccls
-;;   :defer t
-;;   :hook
-;;   ((c-mode c++-mode objc-mode cuda-mode) . my/c-cpp))
+(use-package ccls
+  :defer t
+  :hook
+  ((c-mode c++-mode) . my/c-cpp))
 
-(add-hooks-pair '(c-mode c++-mode objc-mode) #'my/c-cpp)
+;; (add-hooks-pair '(c-mode c++-mode objc-mode) #'my/c-cpp)
 
 (add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
 
