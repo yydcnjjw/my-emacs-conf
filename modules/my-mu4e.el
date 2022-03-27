@@ -41,12 +41,12 @@
   :defer t
   :straight
   (:host github
-   :repo "djcb/mu"
-   :branch "master"
-   :files ("build/mu4e/*")
-   :pre-build `(("autogen.sh" "--prefix"
-                 ,(expand-file-name "build/install" (straight--repos-dir "mu")))
-                ("make")))
+         :repo "djcb/mu"
+         :branch "master"
+         :files ("build/mu4e/*")
+         :pre-build `(("autogen.sh" "--prefix"
+                       ,(expand-file-name "build/install" (straight--repos-dir "mu")))
+                      ("make")))
   :custom
   ((mail-user-agent 'mu4e-user-agent)
    (mu4e-mu-binary (expand-file-name "build/install/bin/mu" (straight--repos-dir "mu")))
