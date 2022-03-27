@@ -37,6 +37,11 @@
   :type 'integer
   :group 'my)
 
+(defcustom my/elfeed-unjam-threshold (* 3 my/elfeed-auto-update-interval)
+  "Elfeed elfeed unjam threshold if pending count > 3"
+  :type 'integer
+  :group 'my)
+
 (use-package elfeed-org
   :after elfeed
   :config
@@ -77,18 +82,31 @@ XML encoding declaration."
   
   (advice-add 'elfeed-xml-parse-region :override #'my/elfeed-xml-parse-region)
 
-  (defun my/elfeed-query-count (query)
-    "Return the number of feeds returned by the QUERY."
+  (defun my/elfeed-query-count-and-first-entry (query)
+    "Return the number of feeds and first entry returned by the QUERY."
     (let* ((count 0)
+           (first-entry nil)
            (filter (elfeed-search-parse-filter query))
            (func (byte-compile (elfeed-search-compile-filter filter))))
       (with-elfeed-db-visit (entry feed)
         (when (funcall func entry feed count)
+          (if (null first-entry)
+              (setq first-entry entry))
           (setf count (1+ count))))
-      count))
+      (cons count first-entry)))
+
+  (defun my/elfeed-query-count (query)
+    "Return the number of feeds returned by the QUERY."
+    (car (my/elfeed-query-count-and-first-entry query)))
 
   (defvar my/elfeed-update-timer nil)
   (defvar my/elfeed-unread-count nil)
+  (defvar my/elfeed-pending-count 0)
+  (defvar my/elfeed-auto-update-timer nil)
+
+  (defun my/elfeed-reset-auto-update-timer ()
+    (cancel-timer my/elfeed-update-timer)
+    (setq my/elfeed-update-timer nil))
 
   (defun my/elfeed-update ()
     "elfeed update"
@@ -101,16 +119,26 @@ XML encoding declaration."
              1 1
              (lambda ()
                (if (> (elfeed-queue-count-total) 0)
-                   (elfeed-log 'debug "%d jobs pending" (elfeed-queue-count-total))
-                 (cancel-timer my/elfeed-update-timer)
-                 (setq my/elfeed-update-timer nil)
+                   (if (< my/elfeed-pending-count my/elfeed-unjam-threshold)
+                       (progn
+                         (setq my/elfeed-pending-count (+ my/elfeed-pending-count 1))
+                         (elfeed-log 'debug "%d jobs pending" (elfeed-queue-count-total)))
+                     (setq my/elfeed-pending-count 0)
+                     (elfeed-unjam)
+                     (my/elfeed-reset-auto-update-timer))
+                 (setq my/elfeed-pending-count 0)
+                 (my/elfeed-reset-auto-update-timer)
                  (elfeed-log 'info "Automatic update has been completed")
-                 (let ((newcnt (my/elfeed-query-count "+unread")))
+                 (let* ((count-and-first-entry (my/elfeed-query-count-and-first-entry "+unread"))
+                        (newcnt (car count-and-first-entry))
+                        (entry (cdr count-and-first-entry)))
                    (when (> newcnt my/elfeed-unread-count)
-                     (alert (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))
-                            :title "elfeed")))
-                 ))))))
-  (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-update))
+                     (alert (elfeed-entry-title entry)
+                            :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count)))))
+                 ))))
+      ))
+  (setq my/elfeed-auto-update-timer
+        (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-update)))
 
 (provide 'my-elfeed)
 
