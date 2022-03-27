@@ -133,6 +133,7 @@ XML encoding declaration."
                         (newcnt (car count-and-first-entry))
                         (entry (cdr count-and-first-entry)))
                    (when (> newcnt my/elfeed-unread-count)
+                     (elfeed-log 'info (format "alert %s" (elfeed-entry-title entry)))
                      (alert (elfeed-entry-title entry)
                             :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count)))))
                  ))))

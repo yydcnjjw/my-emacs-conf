@@ -32,8 +32,7 @@
   (when mu4e-index-update-status
     (let ((updated (plist-get mu4e-index-update-status :updated)))
       (unless (zerop updated)
-        (alert (format "%d Mails updated" updated)
-               :title "Emacs"))
+        (alert "From Emacs mu4e" :title (format "%d Mails updated" updated)))
       )))
 
 (use-package mu4e
