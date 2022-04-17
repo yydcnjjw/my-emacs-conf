@@ -71,7 +71,6 @@
    (org-roam-db-update-idle-seconds 10)
    )
   :init
-  (setq org-roam-v2-ack t)
   :bind (("C-c C-n /" . org-roam-node-find)
          ("C-c C-n r" . org-roam-db-sync)
          ("C-c C-n c" . org-roam-capture)

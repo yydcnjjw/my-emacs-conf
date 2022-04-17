@@ -90,8 +90,8 @@ XML encoding declaration."
            (func (byte-compile (elfeed-search-compile-filter filter))))
       (with-elfeed-db-visit (entry feed)
         (when (funcall func entry feed count)
-          (if (null first-entry)
-              (setq first-entry entry))
+          (when (null first-entry)
+            (setq first-entry entry))
           (setf count (1+ count))))
       (cons count first-entry)))
 
