@@ -45,7 +45,9 @@
 
 (use-package lsp-ui
   :defer t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-show-with-cursor t))
 
 (use-package lsp-ivy
   :defer t
