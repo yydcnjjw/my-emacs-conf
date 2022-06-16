@@ -1,8 +1,8 @@
-;;; my-json.el --- json-mode -*- lexical-binding: t -*-
+;;; my-js.el --- js-mode -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (json-mode)
+;; Package-Requires: (js2-mode)
 
 
 ;; This file is not part of GNU Emacs
@@ -27,16 +27,18 @@
 
 ;;; Code:
 
-(defun my/json ()
-  "JSON mode."
-  (setq-local js-indent-level 2)
+(defun my/js ()
+  "JS mode."
   (lsp))
 
-(use-package json-mode
+(use-package js2-mode
   :defer t
+  :custom
+  (js-indent-level 2)
   :hook
-  (json-mode . my/json))
+  ((js-mode js2-mode) . my/js)
+  )
 
-(provide 'my-json)
+(provide 'my-js)
 
 ;;; my-json.el ends here

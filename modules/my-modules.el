@@ -49,7 +49,7 @@
     python
     web
     pest
-    json
+    js
     spell
     latex
     ;; flutter
