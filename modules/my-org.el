@@ -32,6 +32,8 @@
   :ensure-system-package
   ((xelatex . texlive-most)
    (latexmk . texlive-most))
+  :custom
+  (org-latex-preview-ltxpng-directory ".cache/ltximg/")
   :config
   (defun my/org-latex-export/preview ()
     ""

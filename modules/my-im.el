@@ -43,7 +43,7 @@
   :type 'directory
   :group 'my)
 
-(defcustom my/im-db-dir (expand-file-name ".db" my/im-dir)
+(defcustom my/im-cache-dir (expand-file-name ".cache" my/im-dir)
   "IM db directory."
   :type 'directory
   :group 'my)
@@ -66,19 +66,17 @@
   :defer t
   :custom
   ((org-roam-directory my/im-dir)
-   (org-roam-db-location (expand-file-name "org-roam.db" my/im-db-dir))
+   (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
    (org-roam-db-update-method 'idle-timer)
    (org-roam-db-update-idle-seconds 10)
    )
-  :init
   :bind (("C-c C-n /" . org-roam-node-find)
          ("C-c C-n r" . org-roam-db-sync)
          ("C-c C-n c" . org-roam-capture)
          :map org-mode-map
          (("C-c C-n i" . org-roam-node-insert)
           ("C-c C-n t" . org-roam-tag-add)
-          ("C-c C-n b" . org-roam-buffer-toggle)))
-  )
+          ("C-c C-n b" . org-roam-buffer-toggle))))
 
 (use-package deft
   :after org
