@@ -75,6 +75,7 @@
     separedit
     ;; tree-sitter
     ;; dict
+    hugo
     )
   "")
 
