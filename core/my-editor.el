@@ -105,12 +105,10 @@
   :config
   (global-origami-mode))
 
-(use-package aggressive-indent
-  :defer t
-  :hook
-  ((emacs-lisp-mode) . aggressive-indent-mode))
-
-;; (global-visual-line-mode)
+;; (use-package aggressive-indent
+;;   :defer t
+;;   :hook
+;;   ((emacs-lisp-mode) . aggressive-indent-mode))
 
 (provide 'my-editor)
 
