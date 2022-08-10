@@ -69,7 +69,9 @@
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
    (org-roam-db-update-method 'idle-timer)
    (org-roam-db-update-idle-seconds 10)
-   )
+   (org-roam-node-display-template
+    (concat "${title:*} "
+            (propertize "${tags:40}" 'face 'org-tag))))
   :bind (("C-c C-n /" . org-roam-node-find)
          ("C-c C-n r" . org-roam-db-sync)
          ("C-c C-n c" . org-roam-capture)
