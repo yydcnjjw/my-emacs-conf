@@ -35,11 +35,25 @@
     ;; awesome-tray
     projectile
     vc
-    company
+
+
+    ;; backend for completion
+    ;; company
+    ;; ivy
+    ;; lsp
+
+    ;; for completion
+    vertico
+    orderless
+    embark
+    corfu
+    consult
+
+    ;; for language completion
     lsp
-    ivy
-    avy
     yasnippet
+    
+    avy
     org
     c-cpp
     lisp
@@ -67,7 +81,6 @@
     markdown
     ;; rime
     yaml
-    ;; embark
     ;; grammarly
     mu4e
     ;; wl

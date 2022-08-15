@@ -27,15 +27,23 @@
 
 ;;; Code:
 
-(setq read-process-output-max (* 1024 1024))
+(use-package emacs
+  :custom
+  (read-process-output-max (* 1024 1024)))
 
 (use-package lsp-mode
   :defer t
   :custom
   (lsp-keymap-prefix "C-c l")
   (lsp-completion-provider :none)
+  :init
+  (defun my/lsp-mode ()
+    (if (featurep 'orderless)
+        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+              '(orderless)))
+    (lsp-enable-which-key-integration))
   :hook
-  ((lsp-mode . lsp-enable-which-key-integration))
+  ((lsp-completion-mode . my/lsp-mode))
   :commands (lsp lsp-deferred))
 
 (use-package flycheck
