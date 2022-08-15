@@ -27,6 +27,10 @@
 
 ;;; Code:
 
+(defun my/org-mode ()
+  ""
+  (setq-local truncate-lines nil))
+
 (use-package org
   :defer t
   :ensure-system-package
@@ -34,6 +38,7 @@
    (latexmk . texlive-most))
   :custom
   (org-latex-preview-ltxpng-directory ".cache/ltximg/")
+  :hook (org-mode . my/org-mode)
   :config
   (defun my/org-latex-export/preview ()
     ""
