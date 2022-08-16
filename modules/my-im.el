@@ -67,8 +67,7 @@
   :custom
   ((org-roam-directory my/im-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
-   (org-roam-db-update-method 'idle-timer)
-   (org-roam-db-update-idle-seconds 10)
+   (org-roam-db-update-on-save t)
    (org-roam-node-display-template
     (concat "${title:*} "
             (propertize "${tags:40}" 'face 'org-tag))))
@@ -78,7 +77,9 @@
          :map org-mode-map
          (("C-c C-n i" . org-roam-node-insert)
           ("C-c C-n t" . org-roam-tag-add)
-          ("C-c C-n b" . org-roam-buffer-toggle))))
+          ("C-c C-n b" . org-roam-buffer-toggle)))
+  :config
+  (org-roam-db-autosync-mode))
 
 (use-package deft
   :after org
