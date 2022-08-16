@@ -34,9 +34,19 @@
    (jupyter))
   :after org
   :config
+  (my/push-load-org-babel-language 'python)
   (my/push-load-org-babel-language 'ipython))
 
-(add-hook 'python-mode-hook #'lsp)
+(use-package lsp-mode
+  :defer t
+  :custom
+  (lsp-pylsp-plugins-autopep8-enabled t)
+  :init
+  (defun my/python ()
+    (lsp)
+    )
+  :hook
+  (python-mode . my/python))
 
 (provide 'my-python)
 
