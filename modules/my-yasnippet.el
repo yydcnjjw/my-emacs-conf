@@ -44,7 +44,7 @@
   ((prog-mode . yas-minor-mode)
    (text-mode . yas-minor-mode))
   :bind
-  ("C-c y" . #'company-yasnippet))
+  ("C-c y" . #'yas-insert-snippet))
 
 (use-package yasnippet-snippets
   :after (yasnippet))
