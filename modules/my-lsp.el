@@ -46,11 +46,6 @@
   ((lsp-completion-mode . my/lsp-mode))
   :commands (lsp lsp-deferred))
 
-(use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
-
 (use-package lsp-ui
   :defer t
   :commands lsp-ui-mode

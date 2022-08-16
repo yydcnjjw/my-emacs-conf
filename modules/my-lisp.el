@@ -27,11 +27,6 @@
 
 ;;; Code:
 
-(use-package flycheck
-  :defer t
-  :hook
-  ((emacs-lisp-mode . flycheck-mode)))
-
 (use-package slime
   :commands slime
   :config

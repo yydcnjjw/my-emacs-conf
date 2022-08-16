@@ -52,6 +52,9 @@
     ;; for language completion
     lsp
     yasnippet
+
+    ;; error check
+    flymake
     
     avy
     org
