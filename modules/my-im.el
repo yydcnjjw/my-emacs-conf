@@ -65,10 +65,10 @@
              :repo "org-roam/org-roam")
   :defer t
   :init
-  (when my/emacs-29+
-    (use-package emacsql-sqlite-builtin
-      :defer t)
-    (setq org-roam-database-connector 'sqlite-builtin))
+  ;; (when my/emacs-29+
+  ;;   (use-package emacsql-sqlite-builtin
+  ;;     :defer t)
+  ;;   (setq org-roam-database-connector 'sqlite-builtin))
   :custom
   ((org-roam-directory my/im-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
