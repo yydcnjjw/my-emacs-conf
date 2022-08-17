@@ -53,6 +53,7 @@
   (corfu-auto-delay 0)
   (corfu-auto-prefix 0)
   (corfu-quit-at-boundary nil)
+  (corfu-quit-no-match t)
   (corfu-separator ?\s)
   :init
   (global-corfu-mode)
