@@ -33,9 +33,10 @@
     awesome-pair
     ;; grammatical-edit
     ;; awesome-tray
+    
+    ;; project manage
     projectile
     vc
-
 
     ;; backend for completion
     ;; company
@@ -54,8 +55,9 @@
     yasnippet
 
     ;; error check
-    flymake
-    
+    ;; flymake
+    flycheck
+
     avy
     org
     c-cpp

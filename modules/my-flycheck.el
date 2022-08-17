@@ -1,9 +1,9 @@
-;;; my-flymake.el --- flymake -*- lexical-binding: t -*-
+;;; my-flycheck.el --- flycheck -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
 ;; Version: version
-;; Package-Requires: (flymake)
+;; Package-Requires: (flycheck)
 
 
 ;; This file is not part of GNU Emacs
@@ -28,13 +28,20 @@
 
 ;;; Code:
 
-(defun my/flymake-elisp-mode ()
-  (setq-local elisp-flymake-byte-compile-load-path
-              (append elisp-flymake-byte-compile-load-path load-path))
-  (flymake-mode))
+(use-package flycheck
+  :defer t
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit)
+  :hook
+  ((emacs-lisp-mode . flycheck-mode))
+  )
 
-(add-hook 'emacs-lisp-mode-hook #'my/flymake-elisp-mode)
+(use-package consult-flycheck
+  :defer t
+  :requires consult
+  :bind
+  (("M-g f" . consult-flycheck)))
 
-(provide 'my-flymake)
+(provide 'my-flycheck)
 
-;;; my-flymake.el ends here
+;;; my-flycheck.el ends here
