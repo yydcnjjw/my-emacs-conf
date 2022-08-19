@@ -48,7 +48,7 @@
     (set-fontset-font t characters font nil 'append))
   (set-fontset-font t characters (font-spec :script characters) nil 'append))
 
-(my/set-fontset-font 'han "霞鹜文楷等宽" "Noto Sans Mono CJK")
+(my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
 (my/set-fontset-font 'emoji "Noto Emoji")
 
 (tool-bar-mode -1)
