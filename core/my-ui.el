@@ -38,26 +38,18 @@
                        "Consolas")
                       (t "Hack")))
 
-(defconst my/zh-font (cond
-                      (my/linux-p
-                       "Noto Sans CJK SC")
-                      (my/windows-p
-                       "Consolas")
-                      (t "Noto Sans CJK SC")))
-
 (set-face-attribute 'default nil
-                    :font (format "%s:pixelsize=%d"
-                                  my/en-font
-                                  15))
+                    :font my/en-font)
 
-;; Chinese Font
-(when window-system
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font)
-                      charset
-                      (font-spec
-                       :family my/zh-font
-                       ))))
+(defun my/set-fontset-font (characters defaut-font &optional fallback-fonts)
+  ""
+  (set-fontset-font t characters defaut-font)
+  (dolist (font fallback-fonts)
+    (set-fontset-font t characters font nil 'append))
+  (set-fontset-font t characters (font-spec :script characters) nil 'append))
+
+(my/set-fontset-font 'han "霞鹜文楷等宽" "Noto Sans Mono CJK")
+(my/set-fontset-font 'emoji "Noto Emoji")
 
 (tool-bar-mode -1)
  
