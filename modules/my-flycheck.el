@@ -38,7 +38,7 @@
 
 (use-package consult-flycheck
   :defer t
-  :requires consult
+  :after consult
   :bind
   (("M-g f" . consult-flycheck)))
 
