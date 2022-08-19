@@ -43,20 +43,7 @@
   (defun my/org-latex-export/preview ()
     ""
     (setq org-preview-latex-process-alist
-          '((dvisvgm :programs
-                     ("xelatex" "dvisvgm")
-                     :description "xdv > svg"
-                     :message "you need to install the programs: xelatex and dvisvgm."
-                     :use-xcolor t
-                     :image-input-type "xdv"
-                     :image-output-type "svg"
-                     :image-size-adjust
-                     (1.7 . 1.5)
-                     :latex-compiler
-                     ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
-                     :image-converter
-                     ("dvisvgm %f -n -b min -c %S -o %O"))
-            (imagemagick :programs
+          '((imagemagick :programs
                          ("xelatex" "convert")
                          :description "pdf > png"
                          :message "you need to install the programs: xelatex and imagemagick."
@@ -71,7 +58,7 @@
                          ("convert -density %D -trim -antialias %f -quality 100 %O"))))
     (setq org-format-latex-options
           '(
-            :scale 1.4
+            :scale 1.0
             :html-scale 1.0
             :foreground default
             :background "Transparent"
@@ -133,6 +120,10 @@
 (use-package org-bullets
   :defer t
   :hook (org-mode . org-bullets-mode))
+
+(use-package valign
+  :defer t
+  :hook (org-mode . valign-mode))
                                                              
 (provide 'my-org)
 
