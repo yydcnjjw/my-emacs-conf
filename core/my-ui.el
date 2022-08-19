@@ -38,18 +38,33 @@
                        "Consolas")
                       (t "Hack")))
 
-(set-face-attribute 'default nil
-                    :font my/en-font)
+;; if gui do something in whatver type of emacs instance we are using
+(defun my/apply-if-gui (&rest action)
+  "Do specified ACTION if we're in a gui regardless of daemon or not."
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (when (display-graphic-p frame)
+                      (apply action))))
+    (if (display-graphic-p)
+        (apply action))))
 
 (defun my/set-fontset-font (characters defaut-font &optional fallback-fonts)
   ""
-  (set-fontset-font t characters defaut-font)
+  (set-fontset-font t characters defaut-font nil)
   (dolist (font fallback-fonts)
     (set-fontset-font t characters font nil 'append))
   (set-fontset-font t characters (font-spec :script characters) nil 'append))
 
-(my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
-(my/set-fontset-font 'emoji "Noto Emoji")
+(defun my/setup-font ()
+  ""
+  (set-face-attribute 'default nil
+                      :font my/en-font)
+
+  (my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
+  (my/set-fontset-font 'emoji "Noto Emoji"))
+
+(my/apply-if-gui #'my/setup-font)
 
 (tool-bar-mode -1)
  
