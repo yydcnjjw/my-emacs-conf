@@ -27,20 +27,15 @@
 
 ;;; Code:
 
+(use-package wucuo
+  :hook
+  ((prog-mode . wucuo-start)
+   (text-mode . wucuo-start)))
+
 (use-package flyspell-correct
   :defer t
-  :ensure-system-package
-  (hunspell)
   :bind
-  (("C-c s" . flyspell-correct-wrapper))
-  :hook
-  ((text-mode . flyspell-mode)
-   ((c-mode
-     c++-mode
-     rust-mode
-     typescript-mode
-     js-mode)
-    . flyspell-prog-mode)))
+  (("C-c s" . flyspell-correct-wrapper)))
 
 (provide 'my-spell)
 
