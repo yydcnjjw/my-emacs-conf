@@ -82,6 +82,7 @@
          :map org-mode-map
          (("C-c C-n i" . org-roam-node-insert)
           ("C-c C-n t" . org-roam-tag-add)
+          ("C-c C-n a" . org-roam-alias-add)
           ("C-c C-n b" . org-roam-buffer-toggle)))
   :config
   (org-roam-db-autosync-mode))
