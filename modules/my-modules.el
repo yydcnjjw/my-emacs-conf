@@ -73,7 +73,10 @@
     latex
     ;; flutter
     xclip
+
+    ;; im
     im
+    
     hl-todo
     ;; eaf
     ;; leetcode
@@ -97,8 +100,12 @@
     )
   "")
 
-(dolist (module my/required-module)
-  (require (intern (concat "my-" (symbol-name module)))))
+(defun my/require-modules (modules)
+  "Require MODULES."
+  (dolist (module modules)
+    (require (intern (concat "my-" (symbol-name module))))))
+
+(my/require-modules my/required-module)
 
 (provide 'my-modules)
 

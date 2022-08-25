@@ -59,84 +59,45 @@
   ("C-c c" . org-capture)
   ("C-c a" . org-agenda))
 
-(use-package org-roam
-  :straight (org-roam
-             :host github
-             :repo "org-roam/org-roam")
-  :defer t
-  :init
-  ;; (when my/emacs-29+
-  ;;   (use-package emacsql-sqlite-builtin
-  ;;     :defer t)
-  ;;   (setq org-roam-database-connector 'sqlite-builtin))
-  :custom
-  ((org-roam-directory my/im-dir)
-   (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
-   (org-roam-db-update-on-save t)
-   (org-roam-node-display-template
-    (concat "${title:*} "
-            (propertize "${tags:40}" 'face 'org-tag))))
-  :bind (("C-c C-n /" . org-roam-node-find)
-         ("C-c C-n r" . org-roam-db-sync)
-         ("C-c C-n c" . org-roam-capture)
-         :map org-mode-map
-         (("C-c C-n i" . org-roam-node-insert)
-          ("C-c C-n t" . org-roam-tag-add)
-          ("C-c C-n a" . org-roam-alias-add)
-          ("C-c C-n b" . org-roam-buffer-toggle)))
-  :config
-  (org-roam-db-autosync-mode))
-
-(use-package deft
-  :after org
-  :bind
-  ("C-c C-n d" . deft)
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-default-extension "org")
-  (deft-directory org-roam-directory)
-  :config
-  (defun cm/deft-parse-title (file contents)
-    "Parse the given FILE and CONTENTS and determine the title.
-  If `deft-use-filename-as-title' is nil, the title is taken to
-  be the first non-empty line of the FILE.  Else the base name of the FILE is
-  used as title."
-    (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
-	  (if begin
-	      (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
-	    (deft-base-filename file))))
-  
-  (advice-add 'deft-parse-title :override #'cm/deft-parse-title)
-  
-  (setq deft-strip-summary-regexp
-	    (concat "\\("
-		        "[\n\t]" ;; blank
-		        "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
-		        "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-		        "\\)")))
-
-(use-package org-roam-ui
-  :straight
-  (
-   :host github
-   :repo "org-roam/org-roam-ui"
-   :branch "main"
-   :files ("*.el" "out"))
-  :if (daemonp)
-  :custom
-  (org-roam-ui-sync-theme t)
-  (org-roam-ui-follow t)
-  (org-roam-ui-update-on-save t)
-  (org-roam-ui-open-on-start nil)
-  :config
-  (org-roam-ui-mode))
-
-(use-package org-super-agenda
+(use-package org-capture
+  :straight nil
   :defer t
   :after org
-  :hook
-  (org-agenda-mode . org-super-agenda-mode))
+  :custom
+  (org-capture-templates
+   `(("g" "Groups"
+      entry (function my/gtd-capture-groups-function)
+      "* TODO %?\n%U\n\n  %i"
+      :kill-buffer t)))
+  :config
+  (use-package org-ql)
+  (defun my/gtd-group-list ()
+    (org-ql-select (org-agenda-files)
+      '(and (level 1))
+      :action #'(lambda ()
+                  (cons
+                   (org-element-property
+                    :raw-value (org-element-headline-parser (line-end-position)))
+                   (list
+                    :path (buffer-file-name)
+                    :point (point))))))
+
+  (defun my/gtd-complete-group (group-list)
+    (ivy-read "Groups: " (mapcar #'(lambda (location)
+                                     (car location))
+                                 group-list)))
+
+  (defun my/gtd-capture-groups-function ()
+    (let* ((group-list (my/gtd-group-list))
+           (group (assoc (my/gtd-complete-group
+                          group-list)
+                         group-list))
+           (group-prop (cdr group))
+           (point (plist-get group-prop ':point))
+           (path (plist-get group-prop ':path)))
+      (set-buffer (org-capture-target-buffer path))
+      (goto-char point)))
+  )
 
 (use-package org-agenda
   :straight nil
@@ -160,69 +121,14 @@
             (alltodo "" ((org-super-agenda-groups
                           '((:auto-parent))))))))))
 
-(use-package org-capture
-  :straight nil
-  :defer t
-  :after org
-  :config
-  (use-package org-ql)
-  (defun my/gtd-group-list ()
-    ""
-    (org-ql-select (org-agenda-files)
-                   '(and (level 1))
-                   :action #'(lambda ()
-                               (cons
-                                (org-element-property
-                                 :raw-value (org-element-headline-parser (line-end-position)))
-                                (list
-                                 :path (buffer-file-name)
-                                 :point (point))))))
-
-  (defun my/gtd-complete-group (group-list)
-    ""
-    (ivy-read "Groups: " (mapcar #'(lambda (location)
-                                     (car location))
-                                 group-list)))
-
-  (defun my/gtd-capture-groups-function ()
-    (let* ((group-list (my/gtd-group-list))
-           (group (assoc (my/gtd-complete-group
-                          group-list)
-                         group-list))
-           (group-prop (cdr group))
-           (point (plist-get group-prop ':point))
-           (path (plist-get group-prop ':path)))
-      (set-buffer (org-capture-target-buffer path))
-      (goto-char point)))
-  
-  (setq org-capture-templates
-        `(("g" "Groups"
-           entry (function my/gtd-capture-groups-function)
-           "* TODO %?\n%U\n\n  %i"
-           :kill-buffer t))))
-
-(use-package org-wild-notifier
-  :if (daemonp)
-  :custom
-  (org-wild-notifier-alert-time '(10 1))
-  (org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
-  :config
-  (org-wild-notifier-mode))
-
-;; (use-package org-fc
-;;   :defer t
-;;   :straight
-;;   (org-fc
-;;    :type git :repo "https://git.sr.ht/~l3kn/org-fc"
-;;    :files (:defaults "awk" "demo.org"))
-;;   :custom
-;;   (org-fc-directories (list my/im-dir))
-;;   :bind
-;;   ("C-c f d" . org-fc-dashboard)
-;;   :config
-;;   (require 'org-fc-keymap-hint)
-;;   (require 'org-fc-type-vocab)
-;;   )
+(my/require-modules
+ '(org-roam
+   deft
+   org-super-agenda
+   org-wild-notifier
+   ;; org-fc
+   )
+ )
 
 (provide 'my-im)
 
