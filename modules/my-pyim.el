@@ -43,15 +43,10 @@
   (if (and (boundp 'posframe-workable-p) (posframe-workable-p))
       (setq pyim-page-tooltip 'posframe)
     (setq pyim-page-tooltip 'popup))
+  (require 'liberime)
   (require 'pyim-liberime)
   (liberime-try-select-schema "luna_pinyin_simp")
-  (pyim-default-scheme 'rime-quanpin))
-
-(provide 'my-pyim)
-
-;;; my-pyim.el ends here
-
-
+  (setq pyim-default-scheme 'rime-quanpin))
 
 (provide 'my-pyim)
 

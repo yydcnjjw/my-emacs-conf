@@ -87,7 +87,7 @@
     elfeed
     pyim
     markdown
-    ;; rime
+
     yaml
     ;; grammarly
     mu4e
