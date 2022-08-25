@@ -31,7 +31,8 @@
 (use-package org-roam
   :straight (org-roam
              :host github
-             :repo "org-roam/org-roam")
+             :repo "org-roam/org-roam"
+             :branch "main")
   :defer t
   :init
   ;; (when my/emacs-29+
