@@ -57,9 +57,8 @@
   (corfu-separator ?\s)
   :init
   (global-corfu-mode)
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)
-    (corfu-doc-terminal-mode +1)))
+  (corfu-terminal-mode +1)
+  (corfu-doc-terminal-mode +1))
 
 (provide 'my-corfu)
 
