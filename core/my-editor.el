@@ -110,6 +110,8 @@
 ;;   :hook
 ;;   ((emacs-lisp-mode) . aggressive-indent-mode))
 
+(winner-mode)
+
 (provide 'my-editor)
 
 ;;; my-editor.el ends here
