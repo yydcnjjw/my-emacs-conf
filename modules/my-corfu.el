@@ -60,6 +60,28 @@
   (corfu-terminal-mode +1)
   (corfu-doc-terminal-mode +1))
 
+(use-package cape
+  :bind (("C-c f p" . completion-at-point) ;; capf
+         ("C-c f t" . complete-tag)        ;; etags
+         ("C-c f d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c f h" . cape-history)
+         ("C-c f f" . cape-file)
+         ("C-c f k" . cape-keyword)
+         ("C-c f s" . cape-symbol)
+         ("C-c f a" . cape-abbrev)
+         ("C-c f i" . cape-ispell)
+         ("C-c f l" . cape-line)
+         ("C-c f w" . cape-dict)
+         ("C-c f \\" . cape-tex)
+         ("C-c f _" . cape-tex)
+         ("C-c f ^" . cape-tex)
+         ("C-c f &" . cape-sgml)
+         ("C-c f r" . cape-rfc1345))
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+)
+
 (provide 'my-corfu)
 
 ;;; my-corfu.el ends here
