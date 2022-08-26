@@ -31,18 +31,8 @@
 (use-package vertico
   :init
   (vertico-mode)
-
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  (setq vertico-cycle t)
+  :custom
+  (vertico-cycle t)
   :bind (:map vertico-map
               ("M-RET" . minibuffer-force-complete-and-exit))
   )
@@ -78,11 +68,19 @@
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
 
-;; Enable richer annotations using the Marginalia package
+(use-package vertico-directory
+  :after vertico
+  :load-path
+  (lambda () (expand-file-name "extensions" (file-name-directory (locate-library "vertico"))))
+  :straight nil
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
 (use-package marginalia
   :init
-  ;; Must be in the :init section of use-package such that the mode gets
-  ;; enabled right away. Note that this forces loading the package.
   (marginalia-mode))
 
 (provide 'my-vertico)
