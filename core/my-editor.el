@@ -112,6 +112,10 @@
 
 (winner-mode)
 
+(use-package window-numbering
+  :init
+  (window-numbering-mode))
+
 (provide 'my-editor)
 
 ;;; my-editor.el ends here
