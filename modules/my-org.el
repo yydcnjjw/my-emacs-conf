@@ -43,7 +43,20 @@
   (defun my/org-latex-export/preview ()
     ""
     (setq org-preview-latex-process-alist
-          '((imagemagick :programs
+          '((dvisvgm :programs
+                     ("xelatex" "dvisvgm")
+                     :description "xdv > svg"
+                     :message "you need to install the programs: xelatex and dvisvgm."
+                     :use-xcolor t
+                     :image-input-type "xdv"
+                     :image-output-type "svg"
+                     :image-size-adjust
+                     (1.7 . 1.5)
+                     :latex-compiler
+                     ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                     :image-converter
+                     ("dvisvgm %f -n -b min -c %S -o %O"))
+            (imagemagick :programs
                          ("xelatex" "convert")
                          :description "pdf > png"
                          :message "you need to install the programs: xelatex and imagemagick."
