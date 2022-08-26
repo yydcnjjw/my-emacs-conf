@@ -69,6 +69,7 @@
     web
     pest
     js
+    json
     spell
     latex
     ;; flutter
