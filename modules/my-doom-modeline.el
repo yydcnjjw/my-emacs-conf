@@ -28,10 +28,14 @@
 ;;; Code:
 
 (use-package doom-modeline
-  :hook ((after-init . doom-modeline-mode))
-  :custom
-  (doom-modeline-icon (display-graphic-p))
-  (doom-modeline-minor-modes t))
+  :ensure t
+  :init
+  (doom-modeline-mode))
+
+(my/apply-if-gui
+ (lambda ()
+   (use-package all-the-icons)))
+
 
 (provide 'my-doom-modeline)
 
