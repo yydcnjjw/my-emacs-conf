@@ -66,6 +66,9 @@
 
 (my/apply-if-gui #'my/setup-font)
 
+
+(setq default-frame-alist '((undecorated . t)))
+
 (tool-bar-mode -1)
  
 (menu-bar-mode -1)
