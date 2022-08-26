@@ -76,9 +76,7 @@
   ;;       #'command-completion-default-include-p)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t)
-  :bind (:map vertico-map
-              ("M-RET" . minibuffer-force-complete-and-exit)))
+  (setq enable-recursive-minibuffers t))
 
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
