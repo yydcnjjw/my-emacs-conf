@@ -28,21 +28,16 @@
 
 (require 'my-lib)
 
-(defun my/c-cpp ()
-  "C/C++."
-  (require 'ccls)
-  (setq-local lsp-lens-enable nil)
-  (lsp)
-  )
-
-(use-package ccls
-  :defer t
+(use-package emacs
+  :init
+  (defun my/c-cpp-mode ()
+    "C/C++."
+    (lsp)
+    )
+  :mode
+  ("\\.ipp\\'" . c++-mode)
   :hook
-  ((c-mode c++-mode) . my/c-cpp))
-
-;; (add-hooks-pair '(c-mode c++-mode objc-mode) #'my/c-cpp)
-
-(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
+  ((c-mode c++-mode) . my/c-cpp-mode))
 
 (use-package cmake-mode
   :defer t
