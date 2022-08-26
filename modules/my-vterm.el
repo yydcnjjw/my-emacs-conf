@@ -35,7 +35,9 @@
   (set-face-background 'vterm-color-black "#b2b2b2"))
 
 (use-package vterm-toggle
-  :defer t)
+  :defer t
+  :bind
+  (("C-<f2>" . vterm-toggle)))
 
 (provide 'my-vterm)
 
