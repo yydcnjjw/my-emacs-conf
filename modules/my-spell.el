@@ -29,7 +29,7 @@
 
 (use-package wucuo
   :hook
-  ((prog-mode . wucuo-start)
+  ((prog-mode . flyspell-prog-mode)
    (text-mode . wucuo-start)))
 
 (use-package flyspell-correct
