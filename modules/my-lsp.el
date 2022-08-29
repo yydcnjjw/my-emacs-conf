@@ -36,6 +36,7 @@
   :custom
   (lsp-keymap-prefix "C-c l")
   (lsp-completion-provider :none)
+  (lsp-auto-execute-action nil)
   :init
   (defun my/lsp-mode ()
     (if (featurep 'orderless)
