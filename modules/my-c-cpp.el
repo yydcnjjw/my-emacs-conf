@@ -36,6 +36,14 @@
     )
   :mode
   ("\\.ipp\\'" . c++-mode)
+  :custom
+  (lsp-clients-clangd-args
+   '("--header-insertion-decorators=0"
+     "--header-insertion=never"
+     "--clang-tidy"
+     "--background-index"
+     "--all-scopes-completion"
+     "--pch-storage=disk"))
   :hook
   ((c-mode c++-mode) . my/c-cpp-mode))
 
