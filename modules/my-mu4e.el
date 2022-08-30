@@ -86,15 +86,18 @@
               ("f" . mu4e-views-toggle-auto-view-selected-message) ;; toggle opening messages automatically when moving in the headers view
               ("i" . mu4e-views-mu4e-view-as-nonblocked-html) ;; show currently selected email with all remote content
 	          )
+  :custom
+  (mu4e-views-completion-method 'default)
+  (mu4e-views-next-previous-message-behaviour 'stick-to-current-window)
+  (mu4e-views-auto-view-selected-message t)
+  (mu4e-views-html-filter-external-content nil)
   :config
-  (setq mu4e-views-completion-method 'default) ;; use ivy for completion
   (my/apply-if-gui
    (lambda ()
      (setq mu4e-views-default-view-method "html") ;; make xwidgets default
      (mu4e-views-mu4e-use-view-msg-method "html") ;; select the default
      ))
-  (setq mu4e-views-next-previous-message-behaviour 'stick-to-current-window) ;; when pressing n and p stay in the current window
-  (setq mu4e-views-auto-view-selected-message t))
+  )
 
 (provide 'my-mu4e)
 
