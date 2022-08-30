@@ -30,6 +30,7 @@
 (use-package rustic
   :defer t
   :custom
+  (compilation-ask-about-save nil)
   (lsp-rust-analyzer-proc-macro-enable t)
   (lsp-rust-analyzer-experimental-proc-attr-macros t))
 
