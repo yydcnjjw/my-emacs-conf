@@ -27,14 +27,6 @@
 
 ;;; Code:
 
-(defun my/mu4e-updated-notify ()
-  ""
-  (when mu4e-index-update-status
-    (let ((updated (plist-get mu4e-index-update-status :updated)))
-      (unless (zerop updated)
-        (alert "From Emacs mu4e" :title (format "%d Mails updated" updated)))
-      )))
-
 (use-package mu4e
   :ensure t
   :defer t
@@ -59,8 +51,6 @@
     '((:maildir "/Inbox" :key ?i))))
   :bind
   (("C-c m" . mu4e))
-  :hook
-  ((mu4e-index-updated . my/mu4e-updated-notify))
   :config
   (setq
    message-send-mail-function 'smtpmail-send-it
@@ -98,6 +88,12 @@
      (mu4e-views-mu4e-use-view-msg-method "html") ;; select the default
      ))
   )
+
+(use-package mu4e-alert
+  :defer t
+  :after mu4e
+  :config
+  (mu4e-alert-enable-notifications))
 
 (provide 'my-mu4e)
 
