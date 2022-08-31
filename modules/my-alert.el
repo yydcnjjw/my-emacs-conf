@@ -52,10 +52,25 @@
     ))
 
 (use-package alert-toast
-  :after alert
   :straight (alert-toast
              :host github
-             :repo "gkowzan/alert-toast"))
+             :repo "gkowzan/alert-toast")
+  :after alert
+  :init
+  (defun my/alert-toast--psprocess-init ()
+  "Initialize powershell process."
+  (setq alert-toast--psprocess
+        (make-process :name "powershell-toast"
+                      :buffer "*powershell-toast*"
+                      :command '("powershell.exe" "-noprofile" "-NoExit" "-NonInteractive" "-WindowStyle" "Hidden"
+                                 "-Command" "-")
+                      :coding (alert-toast--coding-page)
+                      :noquery t
+                      :connection-type 'pipe))
+  (process-send-string alert-toast--psprocess "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
+[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml, ContentType=WindowsRuntime] > $null\n"))
+  :config
+  (advice-add #'alert-toast--psprocess-init :override #'my/alert-toast--psprocess-init))
 
 (defun my/alert-notify (info)
   "WSL notify INFO."
