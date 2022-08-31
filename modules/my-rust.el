@@ -31,8 +31,8 @@
   :defer t
   :custom
   (compilation-ask-about-save nil)
-  (lsp-rust-analyzer-proc-macro-enable t)
-  (lsp-rust-analyzer-experimental-proc-attr-macros t))
+  (lsp-rust-analyzer-diagnostics-enable-experimental t)
+  (lsp-rust-analyzer-experimental-proc-attr-macros nil))
 
 (defun my/rust-list-all-installed-target()
   "Rust List all installed target."
