@@ -32,19 +32,21 @@
 
 (use-package orderless
   :config
+  :custom
+  (completion-styles '(orderless basic))
   :init
-  (defun basic-remote-try-completion (string table pred point)
-    (and (vertico--remote-p string)
-         (completion-basic-try-completion string table pred point)))
-  (defun basic-remote-all-completions (string table pred point)
-    (and (vertico--remote-p string)
-         (completion-basic-all-completions string table pred point)))
-  (add-to-list
-   'completion-styles-alist
-   '(basic-remote basic-remote-try-completion basic-remote-all-completions nil))
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic-remote partial-completion)))))
+  ;; (defun basic-remote-try-completion (string table pred point)
+  ;;   (and (vertico--remote-p string)
+  ;;        (completion-basic-try-completion string table pred point)))
+  ;; (defun basic-remote-all-completions (string table pred point)
+  ;;   (and (vertico--remote-p string)
+  ;;        (completion-basic-all-completions string table pred point)))
+  ;; (add-to-list
+  ;;  'completion-styles-alist
+  ;;  '(basic-remote basic-remote-try-completion basic-remote-all-completions nil))
+  ;; (setq completion-category-defaults nil
+  ;;       completion-category-overrides '((file (styles basic-remote partial-completion))))
+  )
 
 (provide 'my-orderless)
 

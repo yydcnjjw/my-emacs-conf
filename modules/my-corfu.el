@@ -48,17 +48,26 @@
   (corfu-mode . corfu-doc-mode))
 
 (use-package corfu
+  :init
+  (defun corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+    (unless (or (bound-and-true-p mct--active)
+                (bound-and-true-p vertico--input))
+      ;; (setq-local corfu-auto nil) Enable/disable auto completion
+      (corfu-mode 1)))
+  
+  (global-corfu-mode)
+  (corfu-terminal-mode +1)
+  (corfu-doc-terminal-mode +1)
   :custom
   (corfu-auto t)
   (corfu-auto-delay 0)
   (corfu-auto-prefix 0)
-  (corfu-quit-at-boundary nil)
-  (corfu-quit-no-match t)
-  (corfu-separator ?\s)
-  :init
-  (global-corfu-mode)
-  (corfu-terminal-mode +1)
-  (corfu-doc-terminal-mode +1))
+  :bind
+  (:map corfu-map ("M-SPC" . corfu-insert-separator))
+  ;; :hook
+  ;; (minibuffer-setup . #'corfu-enable-always-in-minibuffer)
+  )
 
 (use-package cape
   :bind (("C-c f p" . completion-at-point) ;; capf
