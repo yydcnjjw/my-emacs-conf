@@ -41,6 +41,7 @@
    '("--header-insertion-decorators=0"
      "--header-insertion=never"
      "--clang-tidy"
+     "--clang-tidy-checks=performance-*,bugprone-*"
      "--background-index"
      "--all-scopes-completion"
      "--pch-storage=disk"))

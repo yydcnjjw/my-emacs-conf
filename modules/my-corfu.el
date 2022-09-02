@@ -63,8 +63,8 @@
   (corfu-auto t)
   (corfu-auto-delay 0)
   (corfu-auto-prefix 0)
-  :bind
-  (:map corfu-map ("M-SPC" . corfu-insert-separator))
+  (corfu-quit-at-boundary nil)
+  (corfu-quit-no-match t)
   ;; :hook
   ;; (minibuffer-setup . #'corfu-enable-always-in-minibuffer)
   )
