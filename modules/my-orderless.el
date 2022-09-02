@@ -34,6 +34,7 @@
   :config
   :custom
   (completion-styles '(orderless basic))
+  (orderless-matching-styles '(orderless-literal))
   :init
   ;; (defun basic-remote-try-completion (string table pred point)
   ;;   (and (vertico--remote-p string)
