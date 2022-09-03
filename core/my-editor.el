@@ -52,7 +52,7 @@
 ;; auto save
 (use-package emacs
   :custom
-  (auto-save-visited-interval 1)
+  (auto-save-visited-interval 5)
   :hook
   ((prog-mode text-mode) . #'auto-save-visited-mode))
 
@@ -112,7 +112,7 @@
 ;;   :hook
 ;;   ((emacs-lisp-mode) . aggressive-indent-mode))
 
-(winner-mode)
+;; (winner-mode)
 
 (use-package window-numbering
   :init
