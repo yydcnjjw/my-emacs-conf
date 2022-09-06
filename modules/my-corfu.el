@@ -65,6 +65,7 @@
   (corfu-auto-prefix 0)
   (corfu-quit-at-boundary nil)
   (corfu-quit-no-match t)
+  (corfu-on-exact-match nil)
   ;; :hook
   ;; (minibuffer-setup . #'corfu-enable-always-in-minibuffer)
   )
