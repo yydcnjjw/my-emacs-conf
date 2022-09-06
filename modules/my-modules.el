@@ -77,6 +77,7 @@
 
     ;; im
     im
+    org-transclusion
     
     hl-todo
     ;; eaf
