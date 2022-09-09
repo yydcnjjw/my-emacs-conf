@@ -30,6 +30,7 @@
 (use-package rustic
   :defer t
   :custom
+  (rustic-analyzer-command '("rustup" "run" "nightly" "rust-analyzer"))
   (compilation-ask-about-save nil)
   (lsp-rust-analyzer-diagnostics-enable-experimental t)
   (lsp-rust-analyzer-experimental-proc-attr-macros t))
