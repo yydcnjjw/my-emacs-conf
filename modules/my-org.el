@@ -27,9 +27,6 @@
 
 ;;; Code:
 
-(defun my/org-mode ()
-  ""
-  (setq-local truncate-lines nil))
 
 (use-package org
   :defer t
@@ -37,50 +34,62 @@
   ((xelatex . texlive-most)
    (latexmk . texlive-most))
   :custom
+  ;; ui
+  (org-startup-indented t)
+  (org-hide-emphasis-markers t)
+  (org-pretty-entities t)
+  (org-ellipsis " ...")
+
+  ;; todo
+  (org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
+                       (sequence "FIXME(f)" "|" "ABORT(a@/!)")))
+
+  ;; latex preview
   (org-latex-preview-ltxpng-directory ".cache/ltximg/")
-  :hook (org-mode . my/org-mode)
-  :config
-  (defun my/org-latex-export/preview ()
-    ""
-    (setq org-preview-latex-process-alist
-          '((dvisvgm :programs
-                     ("xelatex" "dvisvgm")
-                     :description "xdv > svg"
-                     :message "you need to install the programs: xelatex and dvisvgm."
-                     :use-xcolor t
-                     :image-input-type "xdv"
-                     :image-output-type "svg"
-                     :image-size-adjust
-                     (1.7 . 1.5)
-                     :latex-compiler
-                     ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
-                     :image-converter
-                     ("dvisvgm %f -n -b min -c %S -o %O"))
-            (imagemagick :programs
-                         ("xelatex" "convert")
-                         :description "pdf > png"
-                         :message "you need to install the programs: xelatex and imagemagick."
-                         :use-xcolor t
-                         :image-input-type "pdf"
-                         :imagne-output-type "png"
-                         :image-size-adjust
-                         (1.0 . 1.0)
-                         :latex-compiler
-                         ("xelatex -interaction nonstopmode -output-directory %o %f")
-                         :image-converter
-                         ("convert -density %D -trim -antialias %f -quality 100 %O"))))
-    (setq org-format-latex-options
-          '(
-            :scale 1.0
+  (org-preview-latex-process-alist
+   '((dvisvgm
+      :programs
+      ("xelatex" "dvisvgm")
+      :description "xdv > svg"
+      :message "you need to install the programs: xelatex and dvisvgm."
+      :use-xcolor t
+      :image-input-type "xdv"
+      :image-output-type "svg"
+      :image-size-adjust
+      (1.7 . 1.5)
+      :latex-compiler
+      ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+      :image-converter
+      ("dvisvgm %f -n -b min -c %S -o %O"))
+     (imagemagick
+      :programs
+      ("xelatex" "convert")
+      :description "pdf > png"
+      :message "you need to install the programs: xelatex and imagemagick."
+      :use-xcolor t
+      :image-input-type "pdf"
+      :imagne-output-type "png"
+      :image-size-adjust
+      (1.0 . 1.0)
+      :latex-compiler
+      ("xelatex -interaction nonstopmode -output-directory %o %f")
+      :image-converter
+      ("convert -density %D -trim -antialias %f -quality 100 %O"))))
+  (org-format-latex-options
+   '(:scale 1.0
             :html-scale 1.0
             :foreground default
             :background "Transparent"
-            :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
-          org-preview-latex-default-process 'dvisvgm
-          org-latex-compiler "xelatex"
-          org-latex-pdf-process
-          '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f"))
-    )
+            :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+  (org-preview-latex-default-process 'dvisvgm)
+  (org-latex-compiler "xelatex")
+  (org-latex-pdf-process
+   '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f"))
+
+  :init
+  (defun my/org-mode ()
+    ""
+    (setq-local truncate-lines nil))
 
   (defun my/org-ruby-export (link description format)
     "Export ruby link from org files."
@@ -92,16 +101,6 @@
 
   (defun my/org-ruby-follow (path)
     path)
-  
-  (defface org-ruby-face
-    `((t (:inherit underline)))
-    "org ruby face")
-
-  (org-link-set-parameters "ruby"
-			               :follow #'my/org-ruby-follow
-			               :export #'my/org-ruby-export
-			               :face 'org-ruby-face
-			               )
 
   (defun my/push-load-org-babel-language (language)
     (push (cons language t) org-babel-load-languages)
@@ -109,19 +108,17 @@
      'org-babel-load-languages
      org-babel-load-languages)
     )
-  
-  (setq
-   ;; org ui
-   org-startup-indented t
-   ;; org todo
-   org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
-                       (sequence "FIXME(f)" "|" "ABORT(a@/!)"))
-   ;; 
-   )
-  (set-face-attribute 'org-table nil
-                      :family "Noto Sans Mono CJK SC")
-  (my/org-latex-export/preview)
+  :hook (org-mode . my/org-mode)
+  :config
+  (defface org-ruby-face
+    `((t (:inherit underline)))
+    "org ruby face")
 
+  (org-link-set-parameters "ruby"
+                           :follow #'my/org-ruby-follow
+                           :export #'my/org-ruby-export
+                           :face 'org-ruby-face
+                           )
   ;; ditaa
   (my/push-load-org-babel-language 'ditaa)
   )
@@ -130,14 +127,23 @@
   :defer t
   :after org)
 
+;; for ui
 (use-package org-bullets
   :defer t
   :hook (org-mode . org-bullets-mode))
 
+(use-package org-extra-emphasis)
+
+(use-package org-appear
+  :defer t
+  :custom
+  (org-appear-autolinks t)
+  :hook (org-mode . org-appear-mode))
+
 (use-package valign
   :defer t
   :hook (org-mode . valign-mode))
-                                                             
+
 (provide 'my-org)
 
 ;;; my-org.el ends here
