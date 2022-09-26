@@ -108,7 +108,14 @@
      'org-babel-load-languages
      org-babel-load-languages)
     )
+
+  (defun my/insert-zero-width-space ()
+    (interactive)
+    (insert-char #x200b))
+
   :hook (org-mode . my/org-mode)
+  :bind (:map org-mode-map
+              ("C-x 8 0" . my/insert-zero-width-space))
   :config
   (defface org-ruby-face
     `((t (:inherit underline)))
@@ -120,8 +127,7 @@
                            :face 'org-ruby-face
                            )
   ;; ditaa
-  (my/push-load-org-babel-language 'ditaa)
-  )
+  (my/push-load-org-babel-language 'ditaa))
 
 (use-package org-contrib
   :defer t
@@ -131,21 +137,6 @@
 (use-package org-bullets
   :defer t
   :hook (org-mode . org-bullets-mode))
-
-(use-package ox-odt
-    :straight
-    (ox-odt
-	 :host github
-	 :repo "kjambunathan/org-mode-ox-odt"
-	 :files ("lisp/ox-odt.el"
-		     "etc"
-		     "docs"
-		     "contrib/odt/LibreOffice"))
-    :defer t)
-
-(use-package org-extra-emphasis
-  :after org
-  :hook (org-mode . org-extra-emphasis-mode))
 
 (use-package org-appear
   :defer t
