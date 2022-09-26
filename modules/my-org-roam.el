@@ -33,6 +33,11 @@
   :type 'directory
   :group 'my)
 
+(defcustom my/daily-dir (expand-file-name "daily" my/im-dir)
+  "GTD directory."
+  :type 'directory
+  :group 'my)
+
 (use-package org-roam
   :straight (org-roam
              :host github
@@ -46,6 +51,7 @@
   ;;   (setq org-roam-database-connector 'sqlite-builtin))
   :custom
   ((org-roam-directory my/roam-dir)
+   (org-roam-dailies-directory my/daily-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
    (org-roam-db-update-on-save t)
    (org-roam-node-display-template
