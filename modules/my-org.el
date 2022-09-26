@@ -132,7 +132,20 @@
   :defer t
   :hook (org-mode . org-bullets-mode))
 
-;; (use-package org-extra-emphasis)
+(use-package org-extra-emphasis
+  :after org
+  :init
+  (use-package ox-odt
+    :straight
+    (ox-odt
+	 :host github
+	 :repo "kjambunathan/org-mode-ox-odt"
+	 :files ("lisp/ox-odt.el"
+		     "etc"
+		     "docs"
+		     "contrib/odt/LibreOffice"))
+    :defer t)
+  )
 
 (use-package org-appear
   :defer t
