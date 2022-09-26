@@ -28,6 +28,11 @@
 
 ;;; Code:
 
+(defcustom my/roam-dir (expand-file-name "roam" my/im-dir)
+  "GTD directory."
+  :type 'directory
+  :group 'my)
+
 (use-package org-roam
   :straight (org-roam
              :host github
@@ -40,7 +45,7 @@
   ;;     :defer t)
   ;;   (setq org-roam-database-connector 'sqlite-builtin))
   :custom
-  ((org-roam-directory my/im-dir)
+  ((org-roam-directory my/roam-dir)
    (org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir))
    (org-roam-db-update-on-save t)
    (org-roam-node-display-template
@@ -57,7 +62,7 @@
           ("C-c C-n t" . org-roam-tag-add)
           ("C-c C-n a" . org-roam-alias-add)
           ("C-c C-n b" . org-roam-buffer-toggle)))
-  :config
+  :init
   (defun my/org-roam-backlinks-groupby (backlink)
     (cons
      (org-roam-node-id (org-roam-backlink-source-node backlink))
@@ -81,7 +86,7 @@ When UNIQUE is t, limit to unique sources."
            :point (org-roam-backlink-point backlink)
            :properties (org-roam-backlink-properties backlink)))
         (insert ?\n))))
-
+  :config
   (org-roam-db-autosync-mode))
 
 (use-package org-roam-ui

@@ -48,7 +48,7 @@
   :type 'directory
   :group 'my)
 
-(defcustom my/gtd-dir (list "~/workspace/GTD")
+(defcustom my/gtd-dir (list (expand-file-name "gtd" my/im-dir))
   "GTD directory."
   :type '(list directory)
   :group 'my)

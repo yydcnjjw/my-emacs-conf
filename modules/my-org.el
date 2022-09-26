@@ -132,7 +132,7 @@
   :defer t
   :hook (org-mode . org-bullets-mode))
 
-(use-package org-extra-emphasis)
+;; (use-package org-extra-emphasis)
 
 (use-package org-appear
   :defer t
