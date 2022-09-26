@@ -47,7 +47,8 @@
     vertico
     orderless
     embark
-    corfu
+    ;; corfu
+    company
     consult
 
     ;; for language completion

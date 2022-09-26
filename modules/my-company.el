@@ -75,9 +75,10 @@
           company-minimum-prefix-length 1
           company-backends `(company-cmake
                              company-files
-                             ,(if (my/tabnine-installed-p)
-                                  '(company-capf :with company-tabnine :separate)
-                                'company-capf)
+                             ;; ,(if (my/tabnine-installed-p)
+                             ;;      '(company-capf :with company-tabnine :separate)
+                             ;;    'company-capf)
+                             company-capf
                              company-keywords
                              company-dabbrev)))
   :bind (:map company-active-map

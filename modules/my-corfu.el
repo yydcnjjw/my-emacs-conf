@@ -53,7 +53,7 @@
     "Enable Corfu in the minibuffer if Vertico/Mct are not active."
     (unless (or (bound-and-true-p mct--active)
                 (bound-and-true-p vertico--input))
-      ;; (setq-local corfu-auto nil) Enable/disable auto completion
+      (setq-local corfu-auto nil) ;; Enable/disable auto completion
       (corfu-mode 1)))
   
   (global-corfu-mode)
@@ -66,8 +66,8 @@
   (corfu-quit-at-boundary nil)
   (corfu-quit-no-match t)
   (corfu-on-exact-match nil)
-  ;; :hook
-  ;; (minibuffer-setup . #'corfu-enable-always-in-minibuffer)
+  :hook
+  (minibuffer-setup . corfu-enable-always-in-minibuffer)
   )
 
 (use-package cape
