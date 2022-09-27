@@ -58,19 +58,64 @@
   :after alert
   :init
   (defun my/alert-toast--psprocess-init ()
-  "Initialize powershell process."
-  (setq alert-toast--psprocess
-        (make-process :name "powershell-toast"
-                      :buffer "*powershell-toast*"
-                      :command '("powershell.exe" "-noprofile" "-NoExit" "-NonInteractive" "-WindowStyle" "Hidden"
-                                 "-Command" "-")
-                      :coding (alert-toast--coding-page)
-                      :noquery t
-                      :connection-type 'pipe))
-  (process-send-string alert-toast--psprocess "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
+    "Initialize powershell process."
+    (setq alert-toast--psprocess
+          (make-process :name "powershell-toast"
+                        :buffer "*powershell-toast*"
+                        :command '("powershell.exe" "-noprofile" "-NoExit" "-NonInteractive" "-WindowStyle" "Hidden"
+                                   "-Command" "-")
+                        :coding (alert-toast--coding-page)
+                        :noquery t
+                        :connection-type 'pipe))
+    (process-send-string alert-toast--psprocess "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml, ContentType=WindowsRuntime] > $null\n"))
+
+  (defun my/alert-toast-notify (info)
+    "Send INFO using Windows 10 toast notification.
+Handles :ICON, :SEVERITY, :PERSISTENT, :NEVER-PERSIST, :TITLE and
+:MESSAGE keywords from INFO plist."
+    (let ((data-plist (plist-get info :data))
+          psscript)
+      (if (and (plist-get data-plist :shoulder-person) (plist-get data-plist :shoulder-payload))
+          (setq psscript (format alert-toast--psscript-shoulder
+                                 (s-replace-all alert-toast--psquote-replacements
+                                                (alert-toast--fill-shoulder
+                                                 (plist-get info :title)
+                                                 (plist-get info :message)
+                                                 (alert-toast--icon-path
+                                                  (or (plist-get info :icon)
+                                                      alert-toast-default-icon))
+                                                 (plist-get data-plist :shoulder-person)
+                                                 (plist-get data-plist :shoulder-payload)))))
+        (setq psscript
+              (format alert-toast--psscript-text
+                      (s-replace-all alert-toast--psquote-replacements
+                                     (alert-toast--fill-template
+                                      (plist-get info :title)
+                                      (plist-get info :message)
+                                      (alert-toast--icon-path (or (plist-get info :icon)      alert-toast-default-icon))
+                                      (plist-get data-plist :audio)
+                                      (plist-get data-plist :silent)
+                                      (plist-get data-plist :long)
+                                      (plist-get data-plist :loop)))
+                      (or (cdr (assq (plist-get info :severity) alert-toast-priorities))
+                          (cdr (assq 'normal alert-toast-priorities)))
+                      (if (and (plist-get info :persistent)
+                               (not (plist-get info :never-persist)))
+                          (* 60 60 24 7)  ; a week
+                        alert-fade-time))))
+      (unless alert-toast--psprocess
+        (alert-toast--psprocess-init))
+      (condition-case nil
+          (process-send-string alert-toast--psprocess psscript)
+        (error 
+         (kill-process alert-toast--psprocess)
+         (setq alert-toast--psprocess nil)
+         (alert-toast--psprocess-init)
+         (process-send-string alert-toast--psprocess psscript)))))  
   :config
   (advice-add #'alert-toast--psprocess-init :override #'my/alert-toast--psprocess-init))
+  (advice-add #'my/alert-toast-notify :override #'my/alert-toast-notify)
 
 (defun my/alert-notify (info)
   "WSL notify INFO."
