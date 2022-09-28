@@ -108,14 +108,15 @@ Handles :ICON, :SEVERITY, :PERSISTENT, :NEVER-PERSIST, :TITLE and
         (alert-toast--psprocess-init))
       (condition-case nil
           (process-send-string alert-toast--psprocess psscript)
-        (error 
+        (error
          (kill-process alert-toast--psprocess)
          (setq alert-toast--psprocess nil)
          (alert-toast--psprocess-init)
-         (process-send-string alert-toast--psprocess psscript)))))  
+         (process-send-string alert-toast--psprocess psscript)))))
   :config
-  (advice-add #'alert-toast--psprocess-init :override #'my/alert-toast--psprocess-init))
-  (advice-add #'my/alert-toast-notify :override #'my/alert-toast-notify)
+  (advice-add #'alert-toast--psprocess-init :override #'my/alert-toast--psprocess-init)
+  (advice-add #'alert-toast-notify :override #'my/alert-toast-notify))
+  
 
 (defun my/alert-notify (info)
   "WSL notify INFO."
