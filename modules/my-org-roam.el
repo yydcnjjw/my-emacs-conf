@@ -63,6 +63,7 @@
   :bind (("C-c C-n /" . org-roam-node-find)
          ("C-c C-n r" . org-roam-db-sync)
          ("C-c C-n c" . org-roam-capture)
+         ("C-c C-n d" . org-roam-dailies-goto-today)
          :map org-mode-map
          (("C-c C-n i" . org-roam-node-insert)
           ("C-c C-n t" . org-roam-tag-add)

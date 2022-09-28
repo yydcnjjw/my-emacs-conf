@@ -30,7 +30,7 @@
 (use-package deft
   :after org
   :bind
-  ("C-c C-n d" . deft)
+  ("C-c C-n s" . deft)
   :custom
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
