@@ -48,9 +48,19 @@
   :type 'directory
   :group 'my)
 
-(defcustom my/gtd-dir (list (expand-file-name "gtd" my/im-dir))
+(defcustom my/gtd-dir (expand-file-name "gtd" my/im-dir)
   "GTD directory."
   :type '(list directory)
+  :group 'my)
+
+(defcustom my/agenda-inbox-file (expand-file-name "inbox.org" my/gtd-dir)
+  "GTD directory."
+  :type 'file
+  :group 'my)
+
+(defcustom my/agenda-project-file (expand-file-name "project.org" my/gtd-dir)
+  "GTD directory."
+  :type 'file
   :group 'my)
 
 (use-package org
@@ -65,8 +75,12 @@
   :after org
   :custom
   (org-capture-templates
-   `(("g" "Groups"
+   `(("p" "Project"
       entry (function my/gtd-capture-groups-function)
+      "* TODO %?\n%U\n\n  %i"
+      :kill-buffer t)
+     ("i" "Inbox"
+      entry (file my/agenda-inbox-file)
       "* TODO %?\n%U\n\n  %i"
       :kill-buffer t)))
   :config
@@ -96,30 +110,30 @@
            (point (plist-get group-prop ':point))
            (path (plist-get group-prop ':path)))
       (set-buffer (org-capture-target-buffer path))
-      (goto-char point)))
-  )
+      (goto-char point))))
 
 (use-package org-agenda
   :straight nil
   :defer t
   :after org
-  :config
-  ;; use as-is if you don't have an existing org-agenda setup
-  ;; otherwise push the directory to the existing list
-  (setq org-agenda-files my/gtd-dir
-        ;; org-tags-exclude-from-inheritance '("repeat")
-        org-agenda-tags-column -100)
-  ;; a useful view to see what can be accomplished today
-  (setq org-agenda-custom-commands
-        '(("g" "group view"
-           ((agenda "" ((org-agenda-span 'day)
-                        (org-super-agenda-groups
-                         '((:name "Today"
-                                  :time-grid t
-                                  :date today
-                                  :scheduled today)))))
-            (alltodo "" ((org-super-agenda-groups
-                          '((:auto-parent))))))))))
+  :custom
+  (org-agenda-files (list my/gtd-dir))
+  (org-agenda-tags-column -100)
+  (org-refile-targets '((my/agenda-project-file . (:level . 1))))
+  (org-agenda-custom-commands
+   '(("d" "today view"
+      ((agenda "" ((org-agenda-span 'day)
+                   (org-agenda-show-log t)
+                   (org-agenda-log-mode-items '(closed clock state))
+                   (org-super-agenda-groups
+                    '((:name "Today"
+                             :time-grid t)))))))
+     ("i" "inbox view"
+      ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
+     ("p" "project group view"
+      ((alltodo "" ((org-agenda-files (list my/agenda-project-file))
+                    (org-super-agenda-groups
+                     '((:auto-parent))))))))))
 
 (my/require-modules
  '(org-roam
