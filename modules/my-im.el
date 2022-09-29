@@ -145,43 +145,49 @@
   (defvar my/agenda-sync-buffer-name "*agenda-sync*")
   (defvar my/agenda-sync-timer nil)
 
-  (defun my/agenda-sync-cmd ()
-    (format "rclone sync -P %s %s:%s" my/gtd-dir my/agenda-rclone-remote my/agenda-rclone-remote-gtd-dir))
+  (defun my/agenda-sync-cmd (source dest)
+    (format "rclone sync -P %s %s" source dest))
+
+  (defun my/agenda-sync-remote-path ()
+      (format "%s:%s" my/agenda-rclone-remote my/agenda-rclone-remote-gtd-dir))
 
   (defun my/run-agenda-sync-timer ()
     (unless my/agenda-sync-timer
-      (message (format "[agenda] Starting automatically sync for %s" my/gtd-dir))
+      (message (format "[agenda] Starting automatically sync %s to %s"
+                       (my/agenda-sync-remote-path) my/gtd-dir))
       (setq my/agenda-sync-timer
             (run-with-timer
              my/agenda-sync-interval nil
              (lambda ()
                (cancel-timer my/agenda-sync-timer)
                (setq my/agenda-sync-timer nil)
-               (my/async-agenda-sync)
+               (my/async-agenda-sync-remote)
                )))))
 
   (defun my/agenda-sync-sentinel (proc event)
     (my/run-agenda-sync-timer))
   
-  (defun my/async-agenda-sync ()
+  (defun my/async-agenda-sync-remote ()
     (interactive)
-    (let ((proc (start-process-shell-command my/agenda-sync-buffer-name
-                                             my/agenda-sync-buffer-name
-                                             (my/agenda-sync-cmd))))
+    (let ((proc (start-process-shell-command
+                 my/agenda-sync-buffer-name
+                 my/agenda-sync-buffer-name
+                 (my/agenda-sync-cmd (my/agenda-sync-remote-path) my/gtd-dir))))
       (set-process-sentinel proc #'my/agenda-sync-sentinel)))
 
-  (defun my/agenda-sync ()
+  (defun my/agenda-sync-local ()
     (interactive)
-    (message (format "[agenda] sync %s" my/gtd-dir))
-    (call-process-shell-command (my/agenda-sync-cmd)
-                                            nil
-                                            my/agenda-sync-buffer-name
-                                            t))
+    (message (format "[agenda] sync %s to %s" my/gtd-dir (my/agenda-sync-remote-path)))
+    (call-process-shell-command (my/agenda-sync-cmd
+                                 my/gtd-dir (my/agenda-sync-remote-path))
+                                nil
+                                my/agenda-sync-buffer-name
+                                t))
 
   (defun my/agenda-sync-after-save-hook-func ()
     (when (and (eq major-mode 'org-mode)
                (string-prefix-p my/gtd-dir buffer-file-name))
-      (my/agenda-sync)))
+      (my/agenda-sync-local)))
 
   (when (daemonp)
     (my/run-agenda-sync-timer))
