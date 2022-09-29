@@ -150,7 +150,7 @@
 
   (defun my/run-agenda-sync-timer ()
     (unless my/agenda-sync-timer
-      (message (format "Starting automatically sync for %s" my/gtd-dir))
+      (message (format "[agenda] Starting automatically sync for %s" my/gtd-dir))
       (setq my/agenda-sync-timer
             (run-with-timer
              my/agenda-sync-interval nil
@@ -172,7 +172,7 @@
 
   (defun my/agenda-sync ()
     (interactive)
-    (message (format "Agenda: sync %s" my/gtd-dir))
+    (message (format "[agenda] sync %s" my/gtd-dir))
     (call-process-shell-command (my/agenda-sync-cmd)
                                             nil
                                             my/agenda-sync-buffer-name
