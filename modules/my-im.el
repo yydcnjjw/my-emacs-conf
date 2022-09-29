@@ -157,7 +157,7 @@
              (lambda ()
                (cancel-timer my/agenda-sync-timer)
                (setq my/agenda-sync-timer nil)
-               (my/async-org-agenda-sync)
+               (my/async-agenda-sync)
                )))))
 
   (defun my/agenda-sync-sentinel (proc event)
@@ -168,7 +168,7 @@
     (let ((proc (start-process-shell-command my/agenda-sync-buffer-name
                                              my/agenda-sync-buffer-name
                                              (my/agenda-sync-cmd))))
-      (set-process-sentinel proc #'my/org-agenda-sync-sentinel)))
+      (set-process-sentinel proc #'my/agenda-sync-sentinel)))
 
   (defun my/agenda-sync ()
     (interactive)
