@@ -126,6 +126,7 @@
   (org-agenda-files (list my/gtd-dir))
   (org-agenda-tags-column -100)
   (org-refile-targets '((my/agenda-project-file . (:level . 1))))
+  (org-habit-show-all-today t)
   (org-agenda-custom-commands
    '(("d" "today view"
       ((agenda "" ((org-agenda-span 'day)
@@ -133,7 +134,8 @@
                    (org-agenda-log-mode-items '(closed clock state))
                    (org-super-agenda-groups
                     '((:name "Today"
-                             :time-grid t)))))))
+                             :time-grid t
+                             :habit t)))))))
      ("i" "inbox view"
       ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
      ("p" "project group view"
@@ -191,6 +193,8 @@
 
   (when (daemonp)
     (my/run-agenda-sync-timer))
+
+  (add-to-list 'org-modules 'org-habit)
 
   :hook
   (after-save . my/agenda-sync-after-save-hook-func))
