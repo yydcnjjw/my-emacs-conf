@@ -193,7 +193,7 @@
       (my/agenda-sync-local)))
 
   (when (daemonp)
-    (my/run-agenda-sync-timer))
+    (my/async-agenda-sync-remote))
 
   (add-to-list 'org-modules 'org-habit)
 
