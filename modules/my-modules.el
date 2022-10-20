@@ -100,6 +100,7 @@
     ;; tree-sitter
     ;; dict
     hugo
+    anki
     )
   "")
 
