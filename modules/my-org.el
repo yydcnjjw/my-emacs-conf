@@ -64,11 +64,11 @@
      (imagemagick
       :programs
       ("xelatex" "convert")
-      :description "pdf > png"
+      :description "pdf > svg"
       :message "you need to install the programs: xelatex and imagemagick."
       :use-xcolor t
       :image-input-type "pdf"
-      :imagne-output-type "png"
+      :imagne-output-type "svg"
       :image-size-adjust
       (1.0 . 1.0)
       :latex-compiler
@@ -127,7 +127,9 @@
                            :face 'org-ruby-face
                            )
   ;; ditaa
-  (my/push-load-org-babel-language 'ditaa))
+  (my/push-load-org-babel-language 'ditaa)
+  ;; dot
+  (my/push-load-org-babel-language 'dot))
 
 (use-package org-contrib
   :defer t
