@@ -101,6 +101,7 @@
     ;; dict
     hugo
     anki
+    pdf-tools
     )
   "")
 
