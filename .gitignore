@@ -17,6 +17,8 @@
 /rime/
 /pyim/
 /dy-modules/
+/.extension/
+/.log/
 
 /%backup%~
 /session.*
@@ -35,3 +37,4 @@
 /projects
 /flycheck_init.el
 /org-fc-reviews.tsv
+/history
