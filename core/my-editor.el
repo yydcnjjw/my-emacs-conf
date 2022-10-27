@@ -118,6 +118,13 @@
   :init
   (window-numbering-mode))
 
+(use-package symbol-overlay
+  :bind
+  (("M-s s" . symbol-overlay-put)
+   ("M-s M-s n" . symbol-overlay-switch-forward)
+   ("M-s M-s p" . symbol-overlay-switch-backward)
+   ("M-s M-s d" . symbol-overlay-remove-all)))
+
 (provide 'my-editor)
 
 ;;; my-editor.el ends here
