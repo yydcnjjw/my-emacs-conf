@@ -29,8 +29,10 @@
 
 (use-package insert-translated-name
   :straight (:host github
-                   :repo "manateelazycat/insert-translated-name")
-  :defer t
+                   :repo "yydcnjjw/insert-translated-name"
+                   :branch "old"
+                   ;; :files ("*.el" "*.ts")
+                   )
   :bind
   (("C-c C" . insert-translated-name-insert))
   :config
@@ -40,10 +42,9 @@
   :defer t
   :bind
   (("C-c t" . gts-do-translate))
-  :config
-  (setq gts-translate-list '(("en" "zh")))
-
-  (setq gts-default-translator
+  :custom
+  (gts-translate-list '(("en" "zh")))
+  (gts-default-translator
         (gts-translator
          :picker (gts-prompt-picker)
          :engines (list (gts-bing-engine)
