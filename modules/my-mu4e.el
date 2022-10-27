@@ -34,7 +34,7 @@
   (:host github
          :repo "djcb/mu"
          :branch "master"
-         :files ("build/mu4e/*")
+         :files ("build/install/share/emacs/site-lisp/mu4e/*")
          :pre-build `(("autogen.sh" "--prefix"
                        ,(expand-file-name "build/install" (straight--repos-dir "mu")))
                       ("make")))
@@ -60,7 +60,6 @@
   :init
   (when (daemonp)
     (mu4e t)))
-
 
 (use-package mu4e-views
   :after mu4e
