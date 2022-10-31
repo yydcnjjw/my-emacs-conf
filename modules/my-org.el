@@ -34,7 +34,7 @@
    (latexmk . texlive-most))
   :custom
   ;; ui
-  (org-startup-folded showall)
+  (org-startup-folded 'showall)
   (org-startup-with-inline-images t)
   (org-startup-with-latex-preview t)
   (org-startup-indented t)
