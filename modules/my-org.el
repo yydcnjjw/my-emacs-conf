@@ -27,7 +27,6 @@
 
 ;;; Code:
 
-
 (use-package org
   :defer t
   :ensure-system-package
@@ -35,6 +34,9 @@
    (latexmk . texlive-most))
   :custom
   ;; ui
+  (org-startup-folded showall)
+  (org-startup-with-inline-images t)
+  (org-startup-with-latex-preview t)
   (org-startup-indented t)
   (org-hide-emphasis-markers t)
   (org-pretty-entities t)
@@ -140,6 +142,7 @@
   :defer t
   :hook (org-mode . org-bullets-mode))
 
+;; for editor
 (use-package org-appear
   :defer t
   :custom
@@ -149,6 +152,10 @@
 (use-package valign
   :defer t
   :hook (org-mode . valign-mode))
+
+;; for export
+(use-package htmlize
+  :defer t)
 
 (provide 'my-org)
 
