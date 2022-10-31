@@ -27,6 +27,12 @@
 
 ;;; Code:
 
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.md\\'" . gfm-mode)
+  :custom
+  (markdown-command "pandoc"))
+
 (provide 'my-markdown)
 
 ;;; my-markdown.el ends here
