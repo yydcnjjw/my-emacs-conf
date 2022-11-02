@@ -35,8 +35,8 @@
   :custom
   ;; ui
   (org-startup-folded 'showall)
-  (org-startup-with-inline-images t)
-  (org-startup-with-latex-preview t)
+  ;; (org-startup-with-inline-images t)
+  ;; (org-startup-with-latex-preview t)
   (org-startup-indented t)
   (org-hide-emphasis-markers t)
   (org-pretty-entities t)
@@ -151,11 +151,35 @@
 
 (use-package valign
   :defer t
-  :hook (org-mode . valign-mode))
+  :init
+  (defun my/valign-mode ()
+    (when (display-graphic-p)
+      (valign-mode)))
+  :hook (org-mode . my/valign-mode))
 
 ;; for export
 (use-package htmlize
   :defer t)
+
+;; for cite
+(use-package citar
+  :no-require
+  :custom
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
+
+(use-package citar-embark
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode)
+  :custom
+  (citar-at-point-function 'embark-act))
+
+(use-package citeproc
+  :defer t)
+
 
 (provide 'my-org)
 
