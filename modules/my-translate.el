@@ -38,6 +38,28 @@
   :config
   (setq insert-translated-name-translate-engine "youdao"))
 
+;; (use-package insert-translated-name
+;;   :straight (:host github
+;;                    :repo "manateelazycat/insert-translated-name"
+;;                    :branch "master"
+;;                    :files ("*.el" "*.ts")
+;;                    )
+;;   :init
+;;   (use-package deno-bridge
+;;     :straight (:host github
+;;                      :repo "manateelazycat/deno-bridge"
+;;                      :branch "master"
+;;                      :files ("*.el")
+;;                      )
+;;     )
+;;   (defun my/start-insert-translated-name ()
+;;     ""
+;;     (interactive)
+;;     (unless (member "insert-translated-name" deno-bridge-app-list)
+;;       (deno-bridge-start "insert-translated-name" deno-translator-ts-path)))
+;;   :bind
+;;   (("C-c C" . insert-translated-name-insert)))
+
 (use-package go-translate
   :defer t
   :bind
