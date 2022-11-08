@@ -39,11 +39,6 @@
   :hook
   (web-mode . my/web-mode))
 
-(use-package emmet-mode
-  :defer t
-  :hook
-  ((web-mode css-mode) . emmet-mode))
-
 (use-package css-mode
   :defer t
   :hook
@@ -80,6 +75,7 @@
 
 (use-package typescript-mode
   :defer t
+  :after tree-sitter
   :custom
   (typescript-indent-level 2)
   :mode ("\\.tsx\\'")
@@ -98,8 +94,29 @@
            "--tsProbeLocations"
            node-modules-path
            "--stdio"))
-        lsp-eslint-enable nil))
+        lsp-eslint-enable nil)
+  :config
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
 
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
+  )
+
+(use-package tsi
+  :after tree-sitter
+  :straight (:host github :repo "orzechowskid/tsi.el")
+  :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
+  :init
+  (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
+  (add-hook 'json-mode-hook (lambda () (tsi-json-mode 1)))
+  (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
+  (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
+
+(use-package emmet-mode
+  :defer t
+  :hook
+  ((web-mode css-mode typescript-mode) . emmet-mode))
 
 (provide 'my-web)
 

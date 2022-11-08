@@ -27,40 +27,50 @@
 
 ;;; Code:
 
+;; (use-package tree-sitter
+;;   :defer t
+;;   :hook
+;;   ((rust-mode
+;;     rustic-mode
+;;     python-mode
+;;     typescript-mode
+;;     javascript-mode
+;;     json-mode
+;;     js2-mode
+;;     c-mode
+;;     c++-mode
+;;     sh-mode
+;;     css-mode
+;;     html-mode
+;;     mhtml-mode
+;;     go-mode
+;;     emacs-lisp-mode
+;;     lisp-interaction-mode
+;;     lisp-mode
+;;     )
+;;    . tree-sitter-mode)
+;;   :config
+;;   (dolist (item '((emacs-lisp-mode . elisp)
+;;                   (lisp-mode . elisp)
+;;                   (lisp-interaction-mode . elisp)))
+;;     (add-to-list
+;;      'tree-sitter-major-mode-language-alist
+;;      item)
+;;     )
+;;   )
+
 (use-package tree-sitter
-  :defer t
-  :hook
-  ((rust-mode
-    rustic-mode
-    python-mode
-    typescript-mode
-    javascript-mode
-    json-mode
-    js2-mode
-    c-mode
-    c++-mode
-    sh-mode
-    css-mode
-    html-mode
-    mhtml-mode
-    go-mode
-    emacs-lisp-mode
-    lisp-interaction-mode
-    lisp-mode
-    )
-   . tree-sitter-mode)
+  :ensure t
   :config
-  (dolist (item '((emacs-lisp-mode . elisp)
-                  (lisp-mode . elisp)
-                  (lisp-interaction-mode . elisp)))
-    (add-to-list
-     'tree-sitter-major-mode-language-alist
-     item)
-    )
-  )
+  ;; activate tree-sitter on any buffer containing code for which it has a parser available
+  (global-tree-sitter-mode)
+  ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
+  ;; by switching on and off
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
-  :defer t)
+  :defer t
+  :after tree-sitter)
 
 (provide 'my-tree-sitter)
 

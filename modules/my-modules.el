@@ -95,7 +95,7 @@
     ;; wl
     alert
     separedit
-    ;; tree-sitter
+    tree-sitter
     ;; dict
     hugo
     anki
