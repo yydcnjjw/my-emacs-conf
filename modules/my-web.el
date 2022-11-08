@@ -62,6 +62,45 @@
     '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))
   )
 
+(defun my/js-mode ()
+  "JS mode."
+  (lsp))
+
+(use-package js2-mode
+  :defer t
+  :custom
+  (js-indent-level 2)
+  :hook
+  ((js-mode js2-mode) . my/js-mode)
+  )
+
+(defun my/typescript-mode ()
+  "Typescript."
+  (lsp))
+
+(use-package typescript-mode
+  :defer t
+  :custom
+  (typescript-indent-level 2)
+  :mode ("\\.tsx\\'")
+  :hook
+  (typescript-mode . my/typescript-mode)
+  :init
+  (defun my/yarn-global-dir()
+    "Yarn global dir."
+    (string-trim (shell-command-to-string "yarn global dir")))
+  (setq lsp-clients-angular-language-server-command
+        (let ((node-modules-path (my/yarn-global-dir)))
+          (list
+           "ngserver"
+           "--ngProbeLocations"
+           node-modules-path
+           "--tsProbeLocations"
+           node-modules-path
+           "--stdio"))
+        lsp-eslint-enable nil))
+
+
 (provide 'my-web)
 
 ;;; my-web.el ends here

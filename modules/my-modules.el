@@ -64,12 +64,10 @@
     c-cpp
     lisp
     go
-    ts
     rust
     python
     web
     pest
-    js
     json
     spell
     latex
