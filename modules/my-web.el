@@ -78,9 +78,8 @@
   :after tree-sitter
   :custom
   (typescript-indent-level 2)
-  :mode ("\\.tsx\\'")
   :hook
-  (typescript-mode . my/typescript-mode)
+  ((typescript-mode typescriptreact-mode) . my/typescript-mode)
   :init
   (defun my/yarn-global-dir()
     "Yarn global dir."
