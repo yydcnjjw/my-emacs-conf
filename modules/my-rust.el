@@ -31,9 +31,15 @@
   :defer t
   :custom
   (rustic-analyzer-command '("rustup" "run" "nightly" "rust-analyzer"))
-  (compilation-ask-about-save nil)
   (lsp-rust-analyzer-diagnostics-enable-experimental t)
-  (lsp-rust-analyzer-experimental-proc-attr-macros t))
+  (lsp-rust-analyzer-experimental-proc-attr-macros t)
+  :mode ("\\.rs\\'" . rustic-mode)
+  :init
+  (defun my/rust-mode ()
+    (setq-local buffer-save-without-query t))
+  :hook
+  ((rust-mode rustic-mode) . my/rust-mode)
+  )
 
 (defun my/rust-list-all-installed-target()
   "Rust List all installed target."
