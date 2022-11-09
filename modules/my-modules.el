@@ -100,6 +100,7 @@
     hugo
     anki
     pdf-tools
+    olivetti
     )
   "")
 
