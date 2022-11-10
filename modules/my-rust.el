@@ -36,7 +36,8 @@
   :mode ("\\.rs\\'" . rustic-mode)
   :init
   (defun my/rust-mode ()
-    (setq-local buffer-save-without-query t))
+    (setq-local buffer-save-without-query t)
+    (lsp))
   :hook
   ((rust-mode rustic-mode) . my/rust-mode)
   )
