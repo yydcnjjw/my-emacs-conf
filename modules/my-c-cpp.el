@@ -35,7 +35,8 @@
     (lsp)
     )
   :mode
-  ("\\.ipp\\'" . c++-mode)
+  (("\\.ipp\\'" . c++-mode)
+   ("\\.mm\\'" . objc-mode))
   :custom
   (lsp-clients-clangd-args
    '("--header-insertion-decorators=0"
@@ -46,7 +47,7 @@
      "--all-scopes-completion"
      "--pch-storage=disk"))
   :hook
-  ((c-mode c++-mode) . my/c-cpp-mode))
+  ((c-mode c++-mode objc-mode) . my/c-cpp-mode))
 
 (use-package cmake-mode
   :defer t
