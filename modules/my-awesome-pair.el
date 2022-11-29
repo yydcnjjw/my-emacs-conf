@@ -57,7 +57,7 @@
                    'css-mode-hook
                    'ruby-mode-hook
                    'coffee-mode-hook
-                   'rustic-mode-hook
+                   'rust-mode-hook
                    'qmake-mode-hook
                    'lua-mode-hook
                    'swift-mode-hook

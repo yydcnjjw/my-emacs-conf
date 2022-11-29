@@ -27,32 +27,27 @@
 
 ;;; Code:
 
-(use-package rustic
-  :defer t
+(use-package rust-mode
   :custom
-  (rustic-analyzer-command '("rustup" "run" "nightly" "rust-analyzer"))
+  (lsp-rust-analyzer-server-command '("rustup" "run" "nightly" "rust-analyzer"))
   (lsp-rust-analyzer-diagnostics-enable-experimental t)
   (lsp-rust-analyzer-experimental-proc-attr-macros t)
-  :mode ("\\.rs\\'" . rustic-mode)
   :init
+  (defun my/rust-list-all-installed-target()
+    "Rust List all installed target."
+    (split-string (shell-command-to-string "rustup target list --installed")))
+
+  (defun my/lsp-rust-analyzer-set-target ()
+    ""
+    (interactive)
+    (let ((target (ivy-read "Target: " (my/rust-list-all-installed-target))))
+      (setq lsp-rust-analyzer-cargo-target target)
+      (lsp-workspace-restart (lsp--read-workspace)))
+    )
   (defun my/rust-mode ()
-    (setq-local buffer-save-without-query t)
     (lsp))
   :hook
-  ((rust-mode rustic-mode) . my/rust-mode)
-  )
-
-(defun my/rust-list-all-installed-target()
-  "Rust List all installed target."
-  (split-string (shell-command-to-string "rustup target list --installed")))
-
-(defun my/lsp-rust-analyzer-set-target ()
-  ""
-  (interactive)
-  (let ((target (ivy-read "Target: " (my/rust-list-all-installed-target))))
-    (setq lsp-rust-analyzer-cargo-target target)
-    (lsp-workspace-restart (lsp--read-workspace)))
-  )
+  (rust-mode . my/rust-mode))
 
 (provide 'my-rust)
 
