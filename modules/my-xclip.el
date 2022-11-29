@@ -28,7 +28,7 @@
 ;;; Code:
 
 (use-package xclip
-  :if (and my/linux-p (not window-system))
+  :if (and my/linux-p (eq 'x window-system))
   :ensure-system-package xclip
   :config
   (xclip-mode 1))
