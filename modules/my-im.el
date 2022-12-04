@@ -196,6 +196,7 @@
     (my/async-agenda-sync-remote))
 
   (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'org-modules 'ol-man)
 
   :hook
   (after-save . my/agenda-sync-after-save-hook-func))

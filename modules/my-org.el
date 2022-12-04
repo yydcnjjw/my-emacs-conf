@@ -180,7 +180,6 @@
 (use-package citeproc
   :defer t)
 
-
 (provide 'my-org)
 
 ;;; my-org.el ends here
