@@ -29,21 +29,18 @@
 
 (require 'my-const)
 
-(defun my/wsl-proxy-address ()
-  "WSL proxy address."
-  (use-package f)
-  (let ((text (f-read-text "/etc/resolv.conf")))
-    (string-match "^nameserver[ ]+\\(.*\\)$" text)
-    (match-string 1 text)))
+
+(defconst my/proxy-address (if my/wsl-p
+                               my/wsl-host-address
+                             "127.0.0.1"))
+
+(defconst my/proxy-port "8118")
 
 (when (or (not (boundp 'url-proxy-services)) (null url-proxy-services))
-  (let ((proxy-address
-         (if my/wsl-p (my/wsl-proxy-address)
-           "127.0.0.1")))
-    (setq url-proxy-services
-          `(("http" . ,(format "%s:8118" proxy-address))
-            ("https" . ,(format "%s:8118" proxy-address))
-            ))))
+  (setq url-proxy-services
+          `(("http" . ,(format "%s:%s" my/proxy-address my/proxy-port))
+            ("https" . ,(format "%s:%s" my/proxy-address my/proxy-port))
+            )))
 
 
 (provide 'my-proxy)

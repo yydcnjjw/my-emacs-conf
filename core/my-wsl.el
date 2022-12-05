@@ -42,7 +42,16 @@
   (setq
    browse-url-wsl-program  "/mnt/c/Windows/System32/cmd.exe"
    browse-url-wsl-args     '("/c")
-   browse-url-handlers '(("\\`https?:" . my/browse-url-wsl))))
+   browse-url-handlers '(("\\`https?:" . my/browse-url-wsl)))
+
+  (defun my/fetch-wsl-host-address ()
+    "WSL proxy address."
+    (use-package f)
+    (let ((text (f-read-text "/etc/resolv.conf")))
+      (string-match "^nameserver[ ]+\\(.*\\)$" text)
+      (match-string 1 text)))
+
+  (defconst my/wsl-host-address (my/fetch-wsl-host-address)))
 
 (provide 'my-wsl)
 

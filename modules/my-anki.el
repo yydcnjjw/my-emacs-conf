@@ -31,53 +31,52 @@
   :straight (:host github :repo "orgtre/anki-editor")
   :commands anki-editor-mode
   :custom
-  (anki-editor-api-host "localhost")
   (anki-editor-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rgb-24bit.github.io/org-html-theme-list/org/style/main.css\"/>")
   (anki-editor-org-tags-as-anki-tags nil)
   :init
-  (defun my/anki-editor--build-fields ()
-  "Build a list of fields from subheadings of current heading.
 
-Return a list of cons of (FIELD-NAME . FIELD-CONTENT)."  
-  (save-excursion
-    (cl-loop with inhibit-message = t ; suppress echo message from `org-babel-exp-src-block'
-             initially (unless (org-goto-first-child)
-                         (cl-return))
-             for last-pt = (point)
-             for element = (org-element-at-point)
-             for heading = (substring-no-properties
-                            (org-element-property :raw-value element))
-             for format = (anki-editor-entry-format)
-             ;; contents-begin includes drawers and scheduling data,
-             ;; which we'd like to ignore, here we skip these
-             ;; elements and reset contents-begin.
-             for begin = (if (org-element-property :contents-begin element)
-                             (cl-loop for eoh = (org-element-property :contents-begin element)
-                                  then (org-element-property :end subelem)
-                                  for subelem = (progn
-                                                  (goto-char eoh)
-                                                  (org-element-context))
-                                  while (memq (org-element-type subelem)
-                                              '(drawer planning property-drawer))
-                                  finally return (org-element-property :begin subelem))
-                           nil)
-             for end = (org-element-property :contents-end element)
-             for raw = (or (and begin
-                                end
-                                (buffer-substring-no-properties
-                                 begin
-                                 ;; in case the buffer is narrowed,
-                                 ;; e.g. by `org-map-entries' when
-                                 ;; scope is `tree'
-                                 (min (point-max) end)))
-                           "")
-             for content = (anki-editor--export-string raw format)
-             collect (cons heading content)
-             ;; proceed to next field entry and check last-pt to
-             ;; see if it's already the last entry
-             do (org-forward-heading-same-level nil t)
-             until (= last-pt (point)))))
-  (advice-add #'anki-editor--build-fields :override #'my/anki-editor--build-fields))
+  (cl-defun my/anki-editor--fetch (url
+                                &rest settings
+                                &key
+                                (type "GET")
+                                data success _error
+                                (parser 'buffer-string)
+                                &allow-other-keys)
+    "Fetch URL using curl.
+The api is borrowed from request.el."
+    ;; This exists because request.el's sync mode calls curl asynchronously under
+    ;; the hood, which doesn't work on some machines (like mine) where the process
+    ;; sentinel never gets called. After some debugging of Emacs, it seems that in
+    ;; 'process.c' the pselect syscall to the file descriptor of inotify used by
+    ;; 'autorevert' always returns a nonzero value and causes 'status_notify' never
+    ;; being called. To determine whether it's a bug in Emacs and make a patch
+    ;; requires more digging.
+    (let ((tempfile (make-temp-file "emacs-anki-editor"))
+          (responsebuf (generate-new-buffer " *anki-editor-curl*")))
+      (when data
+        (with-temp-file tempfile
+          (setq buffer-file-coding-system 'utf-8)
+          (set-buffer-multibyte t)
+          (insert data)))
+      (unwind-protect
+          (with-current-buffer responsebuf
+            (apply #'call-process "curl" nil t nil (list
+                                                    url
+                                                    "--silent"
+                                                    "-X" type
+                                                    "--proxy"
+                                                    (format "http://%s:%s" my/proxy-address my/proxy-port)
+                                                    "--data-binary"
+                                                    (concat "@" tempfile)))
+
+            (goto-char (point-min))
+            (when success
+              (apply success (list :data (funcall parser)))))
+        (kill-buffer responsebuf)
+        (delete-file tempfile)
+        )))
+
+  (advice-add #'anki-editor--fetch :override #'my/anki-editor--fetch))
 
 (provide 'my-anki)
 
