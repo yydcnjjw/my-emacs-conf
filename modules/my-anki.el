@@ -31,6 +31,7 @@
   :straight (:host github :repo "orgtre/anki-editor")
   :commands anki-editor-mode
   :custom
+  (anki-editor-api-host "localhost")
   (anki-editor-html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rgb-24bit.github.io/org-html-theme-list/org/style/main.css\"/>")
   (anki-editor-org-tags-as-anki-tags nil)
   :init
