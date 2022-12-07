@@ -58,7 +58,7 @@
   (("C-c e" . elfeed))
   :bind (:map elfeed-search-mode-map
               ("B" . my/elfeed-search-webkit-browse-url))
-  :init
+  :config
   (defun my/elfeed-search-webkit-browse-url (entry)
     "Display the currently selected item in xwidget-webkit-browser."
     (interactive (list (elfeed-search-selected :ignore-region)))
@@ -130,6 +130,8 @@ XML encoding declaration."
         (alert (elfeed-entry-title entry)
                :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))))))
 
+  ;; FIXME: (void-function (setf (elfeed-meta)))
+  (eval-when-compile (require 'elfeed))
   (defun my/elfeed-update-feed-bg (url)
     "Update a specific feed at background."
     (elfeed-with-fetch url
