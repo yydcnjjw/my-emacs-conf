@@ -56,7 +56,20 @@
   :demand
   :bind
   (("C-c e" . elfeed))
-  :config
+  :bind (:map elfeed-search-mode-map
+              ("B" . my/elfeed-search-webkit-browse-url))
+  :init
+  (defun my/elfeed-search-webkit-browse-url (entry)
+    "Display the currently selected item in xwidget-webkit-browser."
+    (interactive (list (elfeed-search-selected :ignore-region)))
+    (require 'elfeed-show)
+    (when (elfeed-entry-p entry)
+      (elfeed-untag entry 'unread)
+      (elfeed-search-update-entry entry)
+      (unless elfeed-search-remain-on-entry (forward-line))
+      (let ((link (elfeed-entry-link entry)))
+        (xwidget-webkit-browse-url link))))
+  
   ;; FIXME: workaround https://github.com/skeeto/elfeed/issues/258
   (defun my/elfeed-xml-parse-region (&optional beg end buffer parse-dtd _parse-ns)
     "Decode (if needed) and parse XML file. Uses coding system from
@@ -104,16 +117,66 @@ XML encoding declaration."
   (defvar my/elfeed-pending-count 0)
   (defvar my/elfeed-auto-update-timer nil)
 
-  (defun my/elfeed-reset-auto-update-timer ()
+  (defun my/elfeed-reset-update-timer ()
     (cancel-timer my/elfeed-update-timer)
     (setq my/elfeed-update-timer nil))
 
-  (defun my/elfeed-update ()
-    "elfeed update"
+  (defun my/elfeed-alert-update-unread ()
+    (let* ((count-and-first-entry (my/elfeed-query-count-and-first-entry "+unread"))
+           (newcnt (car count-and-first-entry))
+           (entry (cdr count-and-first-entry)))
+      (when (> newcnt my/elfeed-unread-count)
+        (elfeed-log 'info (format "alert %s" (elfeed-entry-title entry)))
+        (alert (elfeed-entry-title entry)
+               :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))))))
+
+  (defun my/elfeed-update-feed-bg (url)
+    "Update a specific feed at background."
+    (elfeed-with-fetch url
+      (if (elfeed-is-status-error status use-curl)
+          (let ((print-escape-newlines t))
+            (elfeed-handle-http-error
+             url (if use-curl elfeed-curl-error-message status)))
+        (condition-case error
+            (let ((feed (elfeed-db-get-feed url)))
+              (unless use-curl
+                (elfeed-move-to-first-empty-line)
+                (set-buffer-multibyte t))
+              (unless (eql elfeed-curl-status-code 304)
+                ;; Update Last-Modified and Etag
+                (setf (elfeed-meta feed :last-modified)
+                      (cdr (assoc "last-modified" elfeed-curl-headers))
+                      (elfeed-meta feed :etag)
+                      (cdr (assoc "etag" elfeed-curl-headers)))
+                (if (equal url elfeed-curl-location)
+                    (setf (elfeed-meta feed :canonical-url) nil)
+                  (setf (elfeed-meta feed :canonical-url) elfeed-curl-location))
+                (let* ((xml (elfeed-xml-parse-region (point) (point-max)))
+                       (entries (cl-case (elfeed-feed-type xml)
+                                  (:atom (elfeed-entries-from-atom url xml))
+                                  (:rss (elfeed-entries-from-rss url xml))
+                                  (:rss1.0 (elfeed-entries-from-rss1.0 url xml))
+                                  (otherwise
+                                   (error (elfeed-handle-parse-error
+                                           url "Unknown feed type."))))))
+                  (elfeed-db-add entries))))
+          (error (elfeed-handle-parse-error url error))))
+      (unless use-curl
+        (kill-buffer))))
+  
+  (defun my/elfeed-update-bg ()
+    "Update all the feeds in `elfeed-feeds' at background."
+    (elfeed-log 'info "Elfeed update: %s"
+                (format-time-string "%B %e %Y %H:%M:%S %Z"))
+    (mapc #'my/elfeed-update-feed-bg (elfeed--shuffle (elfeed-feed-list)))
+    (elfeed-db-save))
+  
+  (defun my/elfeed-async-update ()
+    "elfeed async update"
     (elfeed-log 'info "starting automatically update")
     (unless my/elfeed-update-timer
       (setq my/elfeed-unread-count (my/elfeed-query-count "+unread"))
-      (elfeed-update)
+      (my/elfeed-update-bg)
       (setq my/elfeed-update-timer
             (run-with-timer
              1 1
@@ -127,19 +190,16 @@ XML encoding declaration."
                      (elfeed-unjam)
                      (my/elfeed-reset-auto-update-timer))
                  (setq my/elfeed-pending-count 0)
-                 (my/elfeed-reset-auto-update-timer)
+                 (my/elfeed-reset-update-timer)
                  (elfeed-log 'info "Automatic update has been completed")
-                 (let* ((count-and-first-entry (my/elfeed-query-count-and-first-entry "+unread"))
-                        (newcnt (car count-and-first-entry))
-                        (entry (cdr count-and-first-entry)))
-                   (when (> newcnt my/elfeed-unread-count)
-                     (elfeed-log 'info (format "alert %s" (elfeed-entry-title entry)))
-                     (alert (elfeed-entry-title entry)
-                            :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count)))))
-                 ))))
-      ))
-  (setq my/elfeed-auto-update-timer
-        (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-update)))
+                 (my/elfeed-alert-update-unread)))))))
+
+  (defun my/elfeed-auto-update ()
+    (interactive)
+    (setq my/elfeed-auto-update-timer
+          (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-async-update)))
+
+  (my/elfeed-auto-update))
 
 (provide 'my-elfeed)
 
