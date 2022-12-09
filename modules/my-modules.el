@@ -101,6 +101,7 @@
     anki
     pdf-tools
     olivetti
+    nov
     )
   "")
 
