@@ -29,8 +29,8 @@
 
 (use-package dashboard
   :defer t
-  :hook
-  ((after-init .  dashboard-setup-startup-hook))
+  :init
+  (dashboard-setup-startup-hook)
   :config
   (setq dashboard-items '()))
 
