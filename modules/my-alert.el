@@ -109,7 +109,7 @@ Handles :ICON, :SEVERITY, :PERSISTENT, :NEVER-PERSIST, :TITLE and
       (condition-case nil
           (process-send-string alert-toast--psprocess psscript)
         (error
-         (kill-process alert-toast--psprocess)
+         ;; (kill-process alert-toast--psprocess)
          (setq alert-toast--psprocess nil)
          (alert-toast--psprocess-init)
          (process-send-string alert-toast--psprocess psscript)))))
