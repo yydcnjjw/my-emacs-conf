@@ -68,6 +68,7 @@
     python
     web
     pest
+    lua
     json
     spell
     latex
