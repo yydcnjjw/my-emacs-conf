@@ -34,14 +34,17 @@
                                my/wsl-host-address
                              "127.0.0.1"))
 
-(defconst my/proxy-port "8118")
+(defconst my/http-proxy-port "8118")
+(defconst my/socks5-proxy-port "8888")
 
 (when (or (not (boundp 'url-proxy-services)) (null url-proxy-services))
   (setq url-proxy-services
-          `(("http" . ,(format "%s:%s" my/proxy-address my/proxy-port))
-            ("https" . ,(format "%s:%s" my/proxy-address my/proxy-port))
+          `(("http" . ,(format "%s:%s" my/proxy-address my/http-proxy-port))
+            ("https" . ,(format "%s:%s" my/proxy-address my/http-proxy-port))
             )))
 
+;; (setenv "HTTP_PROXY" (format "socks5://%s:%s" my/proxy-address my/socks5-proxy-port))
+;; (setenv "HTTPS_PROXY" (format "socks5://%s:%s" my/proxy-address my/socks5-proxy-port))
 
 (provide 'my-proxy)
 
