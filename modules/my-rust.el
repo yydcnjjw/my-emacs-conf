@@ -32,6 +32,7 @@
   (lsp-rust-analyzer-server-command '("rustup" "run" "nightly" "rust-analyzer"))
   (lsp-rust-analyzer-diagnostics-enable-experimental t)
   (lsp-rust-analyzer-experimental-proc-attr-macros t)
+  ;; (lsp-rust-all-features t)
   :init
   (defun my/rust-list-all-installed-target()
     "Rust List all installed target."
@@ -47,7 +48,13 @@
   (defun my/rust-mode ()
     (lsp))
   :hook
-  (rust-mode . my/rust-mode))
+  (rust-mode . my/rust-mode)
+  :config
+  (with-eval-after-load 'lsp
+    (let ((client (gethash 'rust-analyzer lsp-clients)))
+      (setf (lsp--client-major-modes client) '(rust-mode rustic-mode rust-ts-mode)))
+    (add-to-list 'lsp-language-id-configuration '(rust-ts-mode . "rust")))
+  )
 
 (provide 'my-rust)
 
