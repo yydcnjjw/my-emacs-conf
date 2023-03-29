@@ -31,12 +31,20 @@
 
 (require 'my-const)
 
-(defconst my/en-font (cond
+(defcustom my/en-font (cond
                       (my/linux-p
                        "Hack")
                       (my/windows-p
                        "Consolas")
-                      (t "Hack")))
+                      (t "Hack"))
+  "English font."
+  :type 'string
+  :group 'my)
+
+(defcustom my/font-size 12
+  "Font size."
+  :type 'number
+  :group 'my)
 
 ;; if gui do something in whatver type of emacs instance we are using
 (defun my/apply-if-gui (&rest action)
@@ -58,13 +66,13 @@
 
 (defun my/setup-font ()
   ""
-  (set-face-attribute 'default nil
-                      :font my/en-font)
+  (add-to-list
+   'default-frame-alist `(font . ,(format "%s-%d" my/en-font my/font-size)))
 
   (my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
   (my/set-fontset-font 'emoji "Noto Emoji"))
 
-(my/apply-if-gui #'my/setup-font)
+(my/setup-font)
 
 (tool-bar-mode -1)
  
