@@ -103,6 +103,7 @@
     pdf-tools
     olivetti
     nov
+    openai
     )
   "")
 
