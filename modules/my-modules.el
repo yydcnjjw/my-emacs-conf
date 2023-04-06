@@ -87,7 +87,7 @@
     atomic-chrome
     vterm
     elfeed
-    pyim
+    rime
     markdown
 
     yaml

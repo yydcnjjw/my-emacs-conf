@@ -1,8 +1,8 @@
-;;; my-pyim.el --- pyim -*- lexical-binding: t -*-
+;;; my-rime.el --- rime -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
-;; Package-Requires: (pyim)
+;; Package-Requires: (rime popup posframe)
 
 
 ;; This file is not part of GNU Emacs
@@ -30,24 +30,20 @@
 (use-package popup
   :defer t)
 
-(use-package liberime
-  :defer t
+(use-package posframe
+  :defer t)
+
+(use-package rime
   :custom
-  (liberime-auto-build t))
+  (default-input-method "rime")
+  (rime-show-candidate 'posframe)
+  (rime-disable-predicates
+   '(rime-predicate-evil-mode-p
+     rime-predicate-after-alphabet-char-p
+     rime-predicate-prog-in-code-p
+     rime-predicate-in-code-string-p
+     rime-predicate-space-after-cc-p)))
 
-(use-package pyim
-  :defer t
-  :init
-  (setq default-input-method "pyim")
-  :config
-  (if (and (boundp 'posframe-workable-p) (posframe-workable-p))
-      (setq pyim-page-tooltip 'posframe)
-    (setq pyim-page-tooltip 'popup))
-  (require 'liberime)
-  (require 'pyim-liberime)
-  (liberime-try-select-schema "luna_pinyin_simp")
-  (setq pyim-default-scheme 'rime-quanpin))
+(provide 'my-rime)
 
-(provide 'my-pyim)
-
-;;; my-pyim.el ends here
+;;; my-rime.el ends here
