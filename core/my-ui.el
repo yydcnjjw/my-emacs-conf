@@ -69,8 +69,10 @@
   (add-to-list
    'default-frame-alist `(font . ,(format "%s-%d" my/en-font my/font-size)))
 
-  (my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
-  (my/set-fontset-font 'emoji "Noto Emoji"))
+  (my/apply-if-gui
+   (lambda ()
+     (my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
+     (my/set-fontset-font 'emoji "Noto Emoji"))))
 
 (my/setup-font)
 
