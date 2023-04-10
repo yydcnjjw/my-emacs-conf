@@ -29,6 +29,8 @@
 
 (setq package-enable-at-startup nil)
 (defvar bootstrap-version)
+(setq straight-repository-branch "develop")
+(setq native-comp-async-report-warnings-errors nil)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 6))
