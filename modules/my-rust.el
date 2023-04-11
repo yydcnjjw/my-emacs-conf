@@ -48,7 +48,7 @@
   (defun my/rust-mode ()
     (lsp))
   :hook
-  (rust-mode . my/rust-mode)
+  ((rust-mode rust-ts-mode) . my/rust-mode)
   :config
   (with-eval-after-load 'lsp
     (let ((client (gethash 'rust-analyzer lsp-clients)))
