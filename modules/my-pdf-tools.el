@@ -31,7 +31,7 @@
   :init
   (pdf-loader-install)
   :hook
-  (pdf-view-mode . pdf-view-midnight-minor-mode))
+  (pdf-view-mode . pdf-view-themed-minor-mode))
 
 (provide 'my-pdf-tools)
 
