@@ -32,6 +32,7 @@
   (lsp-rust-analyzer-server-command '("rustup" "run" "nightly" "rust-analyzer"))
   (lsp-rust-analyzer-diagnostics-enable-experimental t)
   (lsp-rust-analyzer-experimental-proc-attr-macros t)
+  (lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"])
   ;; (lsp-rust-all-features t)
   :init
   (defun my/rust-list-all-installed-target()
