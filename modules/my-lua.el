@@ -28,7 +28,8 @@
 ;;; Code:
 
 (use-package lua-mode
-  :defer t)
+  :defer t
+  :hook (lua-mode . lsp))
 
 (provide 'my-lua)
 
