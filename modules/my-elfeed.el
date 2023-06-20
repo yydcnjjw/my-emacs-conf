@@ -54,6 +54,8 @@
 (use-package elfeed
   :if (daemonp)
   :demand
+  :custom
+  (shr-inhibit-images t)
   :bind
   (("C-c e" . elfeed))
   :bind (:map elfeed-search-mode-map
@@ -202,6 +204,13 @@ XML encoding declaration."
           (run-at-time nil my/elfeed-auto-update-interval #'my/elfeed-async-update)))
 
   (my/elfeed-auto-update))
+
+
+(use-package elfeed-webkit
+  :ensure
+  :after elfeed
+  :bind (:map elfeed-show-mode-map
+              ("%" . elfeed-webkit-toggle)))
 
 (provide 'my-elfeed)
 
