@@ -89,9 +89,9 @@
   :hook
   ((prog-mode) . drag-stuff-mode))
 
-;; (use-package indent-guide
-;;   :config
-;;   (indent-guide-global-mode))
+(use-package indent-guide
+  :config
+  (indent-guide-global-mode))
 
 (use-package multiple-cursors
   :defer t
