@@ -30,8 +30,8 @@
 (use-package org
   :defer t
   :ensure-system-package
-  ((xelatex . texlive-most)
-   (latexmk . texlive-most))
+  ((xelatex . texlive)
+   (latexmk . texlive))
   :custom
   ;; ui
   (org-startup-folded 'showall)
