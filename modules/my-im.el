@@ -142,7 +142,12 @@
      ("p" "project group view"
       ((alltodo "" ((org-agenda-files (list my/agenda-project-file))
                     (org-super-agenda-groups
-                     '((:auto-parent)))))))))
+                     '((:auto-parent)))))))
+     ("r" "reading view"
+      ((tags-todo "reading"
+                  ((org-agenda-files (list my/agenda-project-file))
+                   (org-super-agenda-groups
+                    '((:auto-parent)))))))))
 
   :init
   (defvar my/agenda-sync-buffer-name "*agenda-sync*")
