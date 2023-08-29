@@ -28,10 +28,6 @@
 ;;; Code:
 
 (use-package rust-mode
-  ;; :custom
-  ;; (lsp-rust-analyzer-server-command '("rustup" "run" "nightly" "rust-analyzer"))
-
-  ;; (lsp-rust-all-features t)
   :init
   (setq rust-indent-offset 4
         lsp-rust-analyzer-diagnostics-enable-experimental t
@@ -57,7 +53,7 @@
   :config
   (with-eval-after-load 'lsp
     (let ((client (gethash 'rust-analyzer lsp-clients)))
-      (setf (lsp--client-major-modes client) '(rust-mode rustic-mode rust-ts-mode)))
+      (setf (lsp--client-major-modes client) '(rust-mode rust-ts-mode)))
     (add-to-list 'lsp-language-id-configuration '(rust-ts-mode . "rust")))
   )
 
