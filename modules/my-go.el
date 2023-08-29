@@ -28,8 +28,10 @@
 ;;; Code:
 
 (use-package go-mode
+  :custom
+  ((go-ts-mode-indent-offset 4))
   :hook
-  (go-mode . lsp)
+  ((go-mode go-ts-mode) . lsp)
   )
 
 (provide 'my-go)
