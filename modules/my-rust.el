@@ -28,13 +28,17 @@
 ;;; Code:
 
 (use-package rust-mode
-  :custom
-  (lsp-rust-analyzer-server-command '("rustup" "run" "nightly" "rust-analyzer"))
-  (lsp-rust-analyzer-diagnostics-enable-experimental t)
-  (lsp-rust-analyzer-experimental-proc-attr-macros t)
-  (lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"])
+  ;; :custom
+  ;; (lsp-rust-analyzer-server-command '("rustup" "run" "nightly" "rust-analyzer"))
+
   ;; (lsp-rust-all-features t)
   :init
+  (setq rust-indent-offset 4
+        lsp-rust-analyzer-diagnostics-enable-experimental t
+        lsp-rust-analyzer-experimental-proc-attr-macros t
+        lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"]
+        lsp-rust-analyzer-check-all-targets nil)
+
   (defun my/rust-list-all-installed-target()
     "Rust List all installed target."
     (split-string (shell-command-to-string "rustup target list --installed")))
