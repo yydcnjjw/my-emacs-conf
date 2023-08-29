@@ -60,19 +60,23 @@
     flycheck
 
     avy
+
+    ;; language support
     org
     c-cpp
     lisp
     go
     rust
     python
+    php
     web
     pest
     lua
     json
-    spell
     latex
     ;; flutter
+
+    spell
     xclip
 
     ;; im
@@ -96,7 +100,6 @@
     ;; wl
     alert
     separedit
-    tree-sitter
     ;; dict
     hugo
     anki
