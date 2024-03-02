@@ -171,6 +171,9 @@
    '(org-tag ((t (:inherit fixed-pitch :bold t))))
    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
    )
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   )
 
 (use-package org-contrib
