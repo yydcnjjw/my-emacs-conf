@@ -33,15 +33,6 @@
   ((xelatex . texlive)
    (latexmk . texlive))
   :custom
-  ;; ui
-  (org-startup-folded 'showall)
-  ;; (org-startup-with-inline-images t)
-  ;; (org-startup-with-latex-preview t)
-  (org-startup-indented t)
-  (org-hide-emphasis-markers t)
-  (org-pretty-entities t)
-  (org-ellipsis " ...")
-
   ;; todo
   (org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
                        (sequence "FIXME(f)" "|" "ABORT(a@/!)")))
@@ -89,10 +80,6 @@
    '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape\" -outdir=%o %f"))
 
   :init
-  (defun my/org-mode ()
-    ""
-    (setq-local truncate-lines nil))
-
   (defun my/org-ruby-export (link description format)
     "Export ruby link from org files."
     (let ((desc (or description link)))
@@ -115,7 +102,6 @@
     (interactive)
     (insert-char #x200b))
 
-  :hook (org-mode . my/org-mode)
   :bind (:map org-mode-map
               ("C-x 8 0" . my/insert-zero-width-space))
   :config
@@ -128,10 +114,64 @@
                            :export #'my/org-ruby-export
                            :face 'org-ruby-face
                            )
+
+  ;; `org-babel'
   ;; ditaa
   (my/push-load-org-babel-language 'ditaa)
   ;; dot
-  (my/push-load-org-babel-language 'dot))
+  (my/push-load-org-babel-language 'dot)
+  )
+
+
+;; org display
+(use-package org
+  :defer f
+  :custom
+  (org-startup-folded 'showall)
+  ;; (org-startup-with-inline-images t)
+  ;; (org-startup-with-latex-preview t)
+  (org-startup-indented t)
+  (org-hide-emphasis-markers t)
+  (org-pretty-entities t)
+  (org-ellipsis " ...")
+
+  :init
+  (defun my/org-mode-pretty ()
+    (setq-local truncate-lines nil)
+    (variable-pitch-mode)
+    (visual-line-mode)
+
+    (my/set-fontset-font 'han "LXGW WenKai" nil (selected-frame))
+    )
+
+  :hook (org-mode . my/org-mode-pretty)
+  :config
+  (custom-theme-set-faces
+   'user
+   '(variable-pitch ((t (:family "LXGW WenKai" :height 135))))
+   '(fixed-pitch ((t (:family "Hack" :height 120))))
+
+
+   '(org-level-1 ((t (:inherit outline-1 :height 1.25))))
+   `(org-block ((t :inherit (shadow fixed-pitch)
+			       ,@(and (>= emacs-major-version 27) '(:extend t)))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+   '(org-link ((t (:inherit link))))
+   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-property-value ((t (:inherit (default fixed-pitch)))) t)
+   '(org-drawer ((((class color) (min-colors 88) (background light)) (:foreground "Blue1" :inherit fixed-pitch))
+                 (((class color) (min-colors 88) (background dark)) (:foreground "LightSkyBlue" :inherit fixed-pitch))
+                 (((class color) (min-colors 16) (background light)) (:foreground "Blue" :inherit fixed-pitch))
+                 (((class color) (min-colors 16) (background dark)) (:foreground "LightSkyBlue" :inherit fixed-pitch))
+                 (((class color) (min-colors 8)) (:foreground "blue" :bold t :inherit fixed-pitch))
+                 (t (:bold t :inherit fixed-pitch))))
+   '(org-special-keyword ((t (:inherit (font-lock-keyword-face fixed-pitch)))))
+   '(org-tag ((t (:inherit fixed-pitch :bold t))))
+   '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+   )
+  )
 
 (use-package org-contrib
   :defer t

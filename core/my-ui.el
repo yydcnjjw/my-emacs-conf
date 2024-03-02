@@ -57,12 +57,12 @@
     (if (display-graphic-p)
         (apply action))))
 
-(defun my/set-fontset-font (characters defaut-font &optional fallback-fonts)
+(defun my/set-fontset-font (characters defaut-font &optional fallback-fonts frame)
   ""
-  (set-fontset-font t characters defaut-font nil)
+  (set-fontset-font t characters defaut-font frame)
   (dolist (font fallback-fonts)
-    (set-fontset-font t characters font nil 'append))
-  (set-fontset-font t characters (font-spec :script characters) nil 'append))
+    (set-fontset-font t characters font frame 'append))
+  (set-fontset-font t characters (font-spec :script characters) frame 'append))
 
 (defun my/setup-font ()
   ""
@@ -71,7 +71,7 @@
 
   (my/apply-if-gui
    (lambda ()
-     (my/set-fontset-font 'han "霞鹜文楷等宽" '("Noto Sans Mono CJK"))
+     (my/set-fontset-font 'han "LXGW WenKai Mono" '("Noto Sans Mono CJK"))
      (my/set-fontset-font 'emoji "Noto Emoji"))))
 
 (my/setup-font)
