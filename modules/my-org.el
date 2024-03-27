@@ -160,7 +160,7 @@
    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
    '(org-link ((t (:inherit link))))
    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   '(org-property-value ((t (:inherit (default fixed-pitch)))) t)
+   '(org-property-value ((t (:inherit (fixed-pitch default)))))
    '(org-drawer ((((class color) (min-colors 88) (background light)) (:foreground "Blue1" :inherit fixed-pitch))
                  (((class color) (min-colors 88) (background dark)) (:foreground "LightSkyBlue" :inherit fixed-pitch))
                  (((class color) (min-colors 16) (background light)) (:foreground "Blue" :inherit fixed-pitch))
