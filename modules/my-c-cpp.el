@@ -49,7 +49,7 @@
      "-j=4"
      "--malloc-trim"))
   :hook
-  ((c-mode c++-mode objc-mode) . my/c-cpp-mode))
+  ((c-mode c++-mode objc-mode c-ts-mode c++-ts-mode) . my/c-cpp-mode))
 
 (use-package cmake-mode
   :defer t
