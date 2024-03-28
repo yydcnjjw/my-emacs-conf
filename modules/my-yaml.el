@@ -27,8 +27,9 @@
 
 ;;; Code:
 
-(use-package yaml-mode
-  :defer t)
+(use-package yaml-pro
+  :defer t
+  :hook (yaml-mode yaml-pro-ts-mode))
 
 (provide 'my-yaml)
 
