@@ -32,11 +32,6 @@
   :init
   (doom-modeline-mode))
 
-(my/apply-if-gui
- (lambda ()
-   (use-package all-the-icons)))
-
-
 (provide 'my-doom-modeline)
 
 ;;; my-doom-modeline.el ends here
