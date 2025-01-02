@@ -45,7 +45,7 @@
      "--clang-tidy-checks=performance-*,bugprone-*"
      "--background-index"
      "--all-scopes-completion"
-     "--pch-storage=disk"
+     "--pch-storage=memory"
      "-j=4"
      "--malloc-trim"))
   :hook
