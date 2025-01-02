@@ -31,7 +31,8 @@
   :ensure t
   :mode ("\\.md\\'" . gfm-mode)
   :custom
-  (markdown-command "pandoc"))
+  (markdown-command "pandoc")
+  :hook (gfm-mode . my/valign-mode))
 
 (provide 'my-markdown)
 
