@@ -28,6 +28,8 @@
 ;;; Code:
 
 (use-package wucuo
+  :custom
+  (ispell-extra-args '("--lang=en_US"))
   :hook
   ((prog-mode . flyspell-prog-mode)
    (text-mode . wucuo-start)))
