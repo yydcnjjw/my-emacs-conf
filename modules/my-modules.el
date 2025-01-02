@@ -108,6 +108,7 @@
     olivetti
     nov
     openai
+    logview
     )
   "")
 
