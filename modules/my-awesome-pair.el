@@ -37,7 +37,9 @@
     (dolist (hook (list
                    'c-mode-common-hook
                    'c-mode-hook
+                   'c-ts-mode-hook
                    'c++-mode-hook
+                   'c++-ts-mode-hook
                    'java-mode-hook
                    'haskell-mode-hook
                    'emacs-lisp-mode-hook
@@ -46,12 +48,14 @@
                    'maxima-mode-hook
                    'ielm-mode-hook
                    'sh-mode-hook
+                   'bash-ts-mode-hook
                    'makefile-gmake-mode-hook
                    'php-mode-hook
                    'python-mode-hook
                    'js-mode-hook
                    'typescript-mode-hook
                    'go-mode-hook
+                   'go-ts-mode-hook
                    'qml-mode-hook
                    'jade-mode-hook
                    'css-mode-hook
