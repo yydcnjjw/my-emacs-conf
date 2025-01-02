@@ -148,8 +148,8 @@
   :config
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "LXGW WenKai" :height 135))))
-   '(fixed-pitch ((t (:family "Hack" :height 120))))
+   '(variable-pitch ((t (:family "LXGW WenKai" :height 110))))
+   '(fixed-pitch ((t (:family "Hack" :height 100))))
 
 
    '(org-level-1 ((t (:inherit outline-1 :height 1.25))))
