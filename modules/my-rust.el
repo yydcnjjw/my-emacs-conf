@@ -33,7 +33,8 @@
         lsp-rust-analyzer-diagnostics-enable-experimental t
         lsp-rust-analyzer-experimental-proc-attr-macros t
         lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"]
-        lsp-rust-analyzer-check-all-targets nil)
+        lsp-rust-analyzer-check-all-targets nil
+        lsp-rust-analyzer-library-directories '("~/.cargo/registry/src" "~/.rustup/toolchains" "~/.cargo/git/checkouts/"))
 
   (defun my/rust-list-all-installed-target()
     "Rust List all installed target."
