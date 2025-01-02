@@ -40,3 +40,20 @@
 /history
 /nov-places
 /tree-sitter/
+
+### Emacs ###
+/tutorial
+
+### tramp ###
+/.tramp
+/tramp
+
+### dired ###
+/image-dired
+
+### logview ###
+/logview-cache.extmap
+
+### lsp-mode ###
+/lsp-cache/
+/lsp-ltex/
