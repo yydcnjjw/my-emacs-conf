@@ -31,8 +31,7 @@
   :custom
   ((go-ts-mode-indent-offset 4))
   :hook
-  ((go-mode go-ts-mode) . lsp)
-  )
+  ((go-mode go-ts-mode) . lsp))
 
 (provide 'my-go)
 
