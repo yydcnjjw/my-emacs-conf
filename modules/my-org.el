@@ -29,6 +29,7 @@
 
 (use-package org
   :defer t
+  :straight (:type built-in)
   :ensure-system-package
   ((xelatex . texlive)
    (latexmk . texlive))
@@ -178,7 +179,8 @@
 
 (use-package org-contrib
   :defer t
-  :after org)
+  :after org
+  :straight (:repo "https://github.com/emacsmirror/org-contrib"))
 
 ;; for ui
 (use-package org-bullets
