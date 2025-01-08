@@ -28,38 +28,31 @@
 ;;; Code:
 
 (use-package mu4e
-  :ensure t
   :defer t
   :straight
-  (:host github
-         :repo "djcb/mu"
-         :branch "master"
-         :files ("build/install/share/emacs/site-lisp/mu4e/*")
-         :pre-build `(("autogen.sh" "--prefix"
-                       ,(expand-file-name "build/install" (straight--repos-dir "mu")))
-                      ("make")))
+  ( :host github
+    :repo "djcb/mu"
+    :branch "master"
+    :files ("build/mu4e/*")
+    :pre-build (("./autogen.sh")
+                ("make")))
   :custom
-  ((mail-user-agent 'mu4e-user-agent)
-   (mu4e-mu-binary (expand-file-name "build/install/bin/mu" (straight--repos-dir "mu")))
-   (mu4e-sent-messages-behavior 'sent)
-   (mu4e-sent-folder "/Sent")
-   (mu4e-drafts-folder "/Drafts")
-   (mu4e-trash-folder "/Deleted")
-   (mu4e-get-mail-command "offlineimap")
-   (mu4e-update-interval 60)
-   (mu4e-maildir-shortcuts
-    '((:maildir "/Inbox" :key ?i))))
+  (mail-user-agent 'mu4e-user-agent)
+  (mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")))
+  (mu4e-sent-messages-behavior 'sent)
+  (mu4e-sent-folder "/Sent")
+  (mu4e-drafts-folder "/Drafts")
+  (mu4e-trash-folder "/Deleted")
+  (mu4e-get-mail-command "offlineimap")
+  (mu4e-update-interval 60)
+  (mu4e-maildir-shortcuts
+   '((:maildir "/Inbox" :key ?i)))
+  (message-send-mail-function 'smtpmail-send-it)
+  (smtpmail-default-smtp-server "smtp.office365.com")
+  (smtpmail-smtp-server "smtp.office365.com")
+  (smtpmail-local-domain "yydcnjjw.outlook.com")
   :bind
-  (("C-c m" . mu4e))
-  :config
-  (setq
-   message-send-mail-function 'smtpmail-send-it
-   smtpmail-default-smtp-server "smtp.office365.com"
-   smtpmail-smtp-server "smtp.office365.com"
-   smtpmail-local-domain "yydcnjjw.outlook.com")
-  :init
-  (when (daemonp)
-    (mu4e t)))
+  (("C-c m" . mu4e)))
 
 (use-package mu4e-views
   :after mu4e
