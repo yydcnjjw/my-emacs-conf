@@ -27,13 +27,17 @@
 
 ;;; Code:
 
-(setq package-enable-at-startup nil)
+(setq package-enable-at-startup nil
+      native-comp-async-report-warnings-errors nil
+      straight-log t)
+
 (defvar bootstrap-version)
-(setq straight-repository-branch "develop")
-(setq native-comp-async-report-warnings-errors nil)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
@@ -49,8 +53,6 @@
 
 (eval-when-compile
   (require 'use-package))
-
-(use-package use-package-ensure-system-package)
 
 (provide 'my-package)
 
