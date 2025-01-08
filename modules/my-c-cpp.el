@@ -51,10 +51,10 @@
   :hook
   ((c-mode c++-mode objc-mode c-ts-mode c++-ts-mode) . my/c-cpp-mode))
 
-(use-package cmake-mode
-  :defer t
-  :hook
-  (cmake-mode . lsp))
+;; (use-package cmake-mode
+;;   :defer t
+;;   :hook
+;;   (cmake-mode . lsp))
 
 (provide 'my-c-cpp)
 
