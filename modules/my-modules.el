@@ -87,7 +87,9 @@
     hl-todo
     ;; eaf
     ;; leetcode
-    plantuml
+
+    text-graph
+    
     translate
     atomic-chrome
     vterm

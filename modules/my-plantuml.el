@@ -27,15 +27,7 @@
 
 ;;; Code:
 
-(use-package plantuml-mode
-  :custom
-  ((plantuml-default-exec-mode 'executable))
-  :defer t
-  :after org
-  :config
-  (setq org-plantuml-exec-mode 'plantuml)
-  (my/push-load-org-babel-language 'plantuml)
-  )
+
 
 (provide 'my-plantuml)
 
