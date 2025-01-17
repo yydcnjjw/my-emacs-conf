@@ -77,11 +77,11 @@
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
-(use-package pangu-spacing
-  :custom
-  (pangu-spacing-real-insert-separtor t)
-  :config
-  (global-pangu-spacing-mode 1))
+;; (use-package pangu-spacing
+;;   :custom
+;;   (pangu-spacing-real-insert-separtor t)
+;;   :config
+;;   (global-pangu-spacing-mode 1))
 
 (use-package drag-stuff
   :config
@@ -124,6 +124,11 @@
    ("M-s M-s n" . symbol-overlay-switch-forward)
    ("M-s M-s p" . symbol-overlay-switch-backward)
    ("M-s M-s d" . symbol-overlay-remove-all)))
+
+
+;; https://www.lukas-barth.net/blog/emacs-wsl-copy-clipboard/
+(if my/wsl-p
+    (setq select-active-regions nil))
 
 (provide 'my-editor)
 
