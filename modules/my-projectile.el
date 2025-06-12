@@ -31,15 +31,19 @@
   :defer t
   :ensure-system-package
   (rg . ripgrep)
+  :custom
+  (projectile-indexing-method 'alien)
+  (projectile-enable-caching t)
   :config
   (progn
-    (setq projectile-indexing-method 'hybrid
-          projectile-enable-caching t)
     (projectile-mode))
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind
-  (([remap projectile-ag] . projectile-ripgrep)))
+  (([remap projectile-ag] . projectile-ripgrep))
+  ;; :custom
+  ;; (projectile-globally-unignored-directories '("~/.cargo"))
+  )
 
 (use-package ripgrep
   :defer t)
