@@ -106,6 +106,8 @@
   :bind (:map org-mode-map
               ("C-x 8 0" . my/insert-zero-width-space))
   :config
+  (require 'org-protocol)
+
   (defface org-ruby-face
     `((t (:inherit underline)))
     "org ruby face")
@@ -149,8 +151,8 @@
   :config
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "LXGW WenKai" :height 110))))
-   '(fixed-pitch ((t (:family "Hack" :height 100))))
+   '(variable-pitch ((t (:family "LXGW WenKai" :height 150))))
+   '(fixed-pitch ((t (:family "Hack" :height 140))))
 
 
    '(org-level-1 ((t (:inherit outline-1 :height 1.25))))
@@ -183,9 +185,9 @@
   :straight (:repo "https://github.com/emacsmirror/org-contrib"))
 
 ;; for ui
-(use-package org-bullets
+(use-package org-superstar
   :defer t
-  :hook (org-mode . org-bullets-mode))
+  :hook (org-mode . org-superstar-mode))
 
 ;; for editor
 (use-package org-appear
