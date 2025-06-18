@@ -111,6 +111,8 @@
     nov
     openai
     logview
+
+    ellama
     )
   "")
 
