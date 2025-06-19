@@ -41,40 +41,54 @@
   :type 'string
   :group 'my)
 
-(defcustom my/font-size 12
+(defcustom my/font-size 11
   "Font size."
   :type 'number
   :group 'my)
 
 ;; if gui do something in whatver type of emacs instance we are using
-(defun my/apply-if-gui (&rest action)
+(defmacro my/apply-if-gui (action)
   "Do specified ACTION if we're in a gui regardless of daemon or not."
-  (if (daemonp)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                  (when (display-graphic-p frame)
-                      (apply action))))
-    (if (display-graphic-p)
-        (apply action))))
+  `(add-hook 'after-make-frame-functions
+            #'(lambda (frame)
+                (when (display-graphic-p frame)
+                  (funcall ,action frame)))))
 
 (defun my/set-fontset-font (characters defaut-font &optional fallback-fonts frame)
-  ""
+  "Set fontset font with CHARACTERS DEFAUT-FONT &optional FALLBACK-FONTS FRAME."
   (set-fontset-font t characters defaut-font frame)
   (dolist (font fallback-fonts)
     (set-fontset-font t characters font frame 'append))
   (set-fontset-font t characters (font-spec :script characters) frame 'append))
 
-(defun my/setup-font ()
-  ""
-  (add-to-list
-   'default-frame-alist `(font . ,(format "%s-%d" my/en-font my/font-size)))
+(defun my/is-screen-2k ()
+  (> (display-pixel-width) 1920))
 
-  (my/apply-if-gui
-   (lambda ()
-     (my/set-fontset-font 'han "LXGW WenKai Mono" '("Noto Sans Mono CJK"))
-     (my/set-fontset-font 'emoji "Noto Emoji"))))
+(defun my/center-frame (frame)
+  "Center FRAME."
+  (let* ((screen-width (display-pixel-width))
+         (screen-height (display-pixel-height))
+         (frame-width (frame-pixel-width frame))
+         (frame-height (frame-pixel-height frame))
+         (left-pos (max 0 (/ (- screen-width frame-width) 2)))
+         (top-pos (max 0 (/ (- screen-height frame-height) 2))))
+    (message "screen width: %d screen height: %d" screen-width screen-height)
+    (message "frame width: %d frame height: %d" screen-width screen-height)
+    (message "left: %d top: %d" left-pos top-pos)
+    (set-frame-position frame left-pos top-pos)))
 
-(my/setup-font)
+(defun my/init-frame (frame)
+  "Init FRAME."
+  ;; setup font
+  (set-frame-font (format "%s-%d" my/en-font my/font-size))
+  (my/set-fontset-font 'han "LXGW WenKai Mono" '("Noto Sans Mono CJK"))
+  (my/set-fontset-font 'emoji "Noto Emoji")
+
+  ;; setup frame position
+  (my/center-frame frame)
+  )
+
+(my/apply-if-gui #'my/init-frame)
 
 (tool-bar-mode -1)
  

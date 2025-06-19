@@ -149,13 +149,28 @@
 
   :hook (org-mode . my/org-mode-pretty)
   :config
+  
+
+  (defun adjust-org-font (frame)
+    (if (my/is-screen-2k)
+        (custom-theme-set-faces
+         'user
+         '(variable-pitch ((t (:family "LXGW WenKai" :height 150))))
+         '(fixed-pitch ((t (:family "Hack" :height 140))))
+         '(org-level-1 ((t (:inherit outline-1 :height 1.25))))
+         )
+      (custom-theme-set-faces
+       'user
+       '(variable-pitch ((t (:family "LXGW WenKai"))))
+       '(fixed-pitch ((t (:family "Hack"))))
+       )
+      )
+    )
+
+  (my/apply-if-gui #'adjust-org-font)
+  
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "LXGW WenKai" :height 150))))
-   '(fixed-pitch ((t (:family "Hack" :height 140))))
-
-
-   '(org-level-1 ((t (:inherit outline-1 :height 1.25))))
    `(org-block ((t :inherit (shadow fixed-pitch)
 			       ,@(and (>= emacs-major-version 27) '(:extend t)))))
    '(org-code ((t (:inherit (shadow fixed-pitch)))))
