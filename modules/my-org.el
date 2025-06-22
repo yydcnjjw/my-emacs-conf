@@ -152,7 +152,7 @@
   
 
   (defun adjust-org-font (frame)
-    (if (my/is-screen-2k)
+    (if (my/is-screen-2k frame)
         (custom-theme-set-faces
          'user
          '(variable-pitch ((t (:family "LXGW WenKai" :height 150))))
