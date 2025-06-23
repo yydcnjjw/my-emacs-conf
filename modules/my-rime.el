@@ -40,7 +40,8 @@
   (rime-disable-predicates
    '(rime-predicate-evil-mode-p
      ;; rime-predicate-after-alphabet-char-p
-     rime-predicate-prog-in-code-p)))
+     ;; rime-predicate-prog-in-code-p
+     )))
 
 (provide 'my-rime)
 
