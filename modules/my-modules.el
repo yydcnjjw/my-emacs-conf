@@ -107,12 +107,11 @@
     hugo
     anki
     pdf-tools
-    olivetti
     nov
     openai
     logview
 
-    ellama
+    llm
     )
   "")
 
