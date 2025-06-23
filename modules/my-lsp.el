@@ -40,12 +40,15 @@
   (lsp-completion-provider :none)
   (lsp-auto-execute-action nil)
   (lsp-keep-workspace-alive nil)
+  (lsp-copilot-enabled t)
+  (lsp-copilot-version nil)
   :init
   (defun my/lsp-mode ()
     (if (featurep 'orderless)
         (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
               '(orderless)))
-    (lsp-enable-which-key-integration))
+    (lsp-enable-which-key-integration)
+    (lsp-inline-completion-company-integration-mode))
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
     "Try to parse bytecode instead of json."
     (or
