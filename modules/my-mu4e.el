@@ -51,6 +51,7 @@
   (smtpmail-default-smtp-server "smtp.office365.com")
   (smtpmail-smtp-server "smtp.office365.com")
   (smtpmail-local-domain "yydcnjjw.outlook.com")
+  (mu4e-search-results-limit -1)
   :bind
   (("C-c m" . mu4e)))
 
@@ -75,10 +76,10 @@
   (mu4e-views-html-filter-external-content nil)
   :config
   (my/apply-if-gui
-   (lambda ()
-     (setq mu4e-views-default-view-method "html") ;; make xwidgets default
-     (mu4e-views-mu4e-use-view-msg-method "html") ;; select the default
-     ))
+   #'(lambda (frame)
+       (setq mu4e-views-default-view-method "html") ;; make xwidgets default
+       (mu4e-views-mu4e-use-view-msg-method "html") ;; select the default
+       ))
   )
 
 (use-package mu4e-alert
