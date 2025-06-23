@@ -60,19 +60,6 @@
 ;;   :bind
 ;;   (("C-c C" . insert-translated-name-insert)))
 
-(use-package go-translate
-  :defer t
-  :bind
-  (("C-c t" . gts-do-translate))
-  :custom
-  (gts-translate-list '(("en" "zh")))
-  (gts-default-translator
-        (gts-translator
-         :picker (gts-prompt-picker)
-         :engines (list (gts-bing-engine)
-                        (gts-google-engine))
-         :render (gts-buffer-render))))
-
 (provide 'my-translate)
 
 ;;; my-translate.el ends here
