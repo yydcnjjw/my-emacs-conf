@@ -60,6 +60,9 @@
   (("C-c e" . elfeed))
   :bind (:map elfeed-search-mode-map
               ("B" . my/elfeed-search-webkit-browse-url))
+  :hook
+  ((elfeed-search-mode . olivetti-mode)
+   (elfeed-show-mode . olivetti-mode))
   :config
   (defun my/elfeed-search-webkit-browse-url (entry)
     "Display the currently selected item in xwidget-webkit-browser."
