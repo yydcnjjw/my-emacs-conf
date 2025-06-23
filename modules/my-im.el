@@ -83,11 +83,11 @@
   (org-capture-templates
    `(("p" "Project"
       entry (function my/gtd-capture-groups-function)
-      "* TODO %?\n%U\n\n  %i"
+      "* TODO %:description%?\n%U\n\n  %i"
       :kill-buffer t)
      ("i" "Inbox"
       entry (file my/agenda-inbox-file)
-      "* TODO %?\n%U\n\n  %i"
+      "* TODO %:description%?\n%U\n\n  %i"
       :kill-buffer t)))
   :config
   (use-package org-ql)
