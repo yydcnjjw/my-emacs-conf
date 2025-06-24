@@ -31,35 +31,23 @@
   :ensure t
   :config
   (require 'gptel-integrations)
-  (setq gptel-model 'gemma3:12b
+  (setq gptel-model 'deepseek-r1:14b
         gptel-backend (gptel-make-ollama "Ollama"
                         :host "localhost:11434"
                         :stream t
-                        :models '(gemma3:12b))))
+                        :models '(deepseek-r1:14b))))
 
 (use-package magit-gptcommit
   :straight t
   :demand t
   :after magit
-  :bind (:map git-commit-mode-map
-              ("C-c C-g" . magit-gptcommit-commit-accept))
-  :init
-  (require 'llm-ollama)
-  :custom
-  (magit-gptcommit-llm-provider
-   (make-llm-ollama
-    :embedding-model "gemma3:12b"
-    :chat-model "gemma3:12b"
-    :default-chat-temperature 0.1))
-
   :config
-  ;; Enable magit-gptcommit-mode to watch staged changes and generate commit message automatically in magit status buffer
-  ;; This mode is optional, you can also use `magit-gptcommit-generate' to generate commit message manually
-  ;; `magit-gptcommit-generate' should only execute on magit status buffer currently
-  ;; (magit-gptcommit-mode 1)
-
-  ;; Add gptcommit transient commands to `magit-commit'
-  ;; Eval (transient-remove-suffix 'magit-commit '(1 -1)) to remove gptcommit transient commands
+  (require 'llm-ollama)
+  (setq magit-gptcommit-debug t)
+  (setq magit-gptcommit-llm-provider
+        (make-llm-ollama
+         :embedding-model "gemma3:12b"
+         :chat-model "gemma3:12b"))
   (magit-gptcommit-status-buffer-setup))
 
 (use-package mcp
