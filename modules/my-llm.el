@@ -31,11 +31,12 @@
   :ensure t
   :config
   (require 'gptel-integrations)
-  (setq gptel-model 'deepseek-r1:14b
+  (setq gptel-default-mode 'org-mode
+        gptel-model 'gemma3:12b
         gptel-backend (gptel-make-ollama "Ollama"
                         :host "localhost:11434"
                         :stream t
-                        :models '(deepseek-r1:14b))))
+                        :models '(gemma3:12b))))
 
 (use-package magit-gptcommit
   :straight t
@@ -56,8 +57,12 @@
              :host github
              :repo "lizqwerscott/mcp.el")
   :after gptel
-  :custom (mcp-hub-servers
-           `(("blender" . (:command "uvx" :args ("blender-mcp")))))
+  :custom
+  (mcp-hub-servers
+   `(("blender" .
+      (:command "uvx"
+                :args ("blender-mcp")
+                :env (:HTTPS_PROXY ,(getenv "HTTPS_PROXY"))))))
   :config (require 'mcp-hub)
   :hook (after-init . mcp-hub-start-all-server))
 
