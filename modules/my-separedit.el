@@ -31,11 +31,11 @@
   :defer t
   :custom
   (separedit-default-mode 'markdown-mode)
+  (separedit-continue-fill-column t)
+  (separedit-remove-trailing-spaces-in-comment t)
   :bind
-  (
-   :map prog-mode-map
-   (("C-c '" . separedit))
-   ))
+  ("C-c '" . separedit)
+)
 
 (provide 'my-separedit)
 
