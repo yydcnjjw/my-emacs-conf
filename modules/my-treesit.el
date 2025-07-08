@@ -33,7 +33,8 @@
   :custom
   (treesit-auto-install t)
   :config
-  (global-treesit-auto-mode))
+  ;; (global-treesit-auto-mode)
+  )
 
 (provide 'my-treesit)
 
