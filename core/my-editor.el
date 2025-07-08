@@ -101,12 +101,6 @@
 (use-package edit-indirect
   :defer t)
 
-(use-package origami
-  :bind
-  (("C-c C-f" . origami-toggle-node))
-  :config
-  (global-origami-mode))
-
 ;; (use-package aggressive-indent
 ;;   :defer t
 ;;   :hook
