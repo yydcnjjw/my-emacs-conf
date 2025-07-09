@@ -89,10 +89,6 @@
   :hook
   ((prog-mode) . drag-stuff-mode))
 
-(use-package indent-guide
-  :config
-  (indent-guide-global-mode))
-
 (use-package multiple-cursors
   :defer t
   :bind
@@ -100,13 +96,6 @@
 
 (use-package edit-indirect
   :defer t)
-
-;; (use-package aggressive-indent
-;;   :defer t
-;;   :hook
-;;   ((emacs-lisp-mode) . aggressive-indent-mode))
-
-;; (winner-mode)
 
 (use-package window-numbering
   :init
