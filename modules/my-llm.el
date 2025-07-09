@@ -37,6 +37,13 @@
                         :host "localhost:11434"
                         :stream t
                         :models '(gemma3:12b))))
+(use-package llm
+  :defer t
+  :config
+  (setq my/generic-llm-provider
+        (make-llm-ollama
+         :embedding-model "gemma3:12b"
+         :chat-model "gemma3:12b")))
 
 (use-package magit-gptcommit
   :straight t
@@ -45,26 +52,23 @@
   :config
   (require 'llm-ollama)
   (setq magit-gptcommit-debug t)
-  (setq magit-gptcommit-llm-provider
-        (make-llm-ollama
-         :embedding-model "gemma3:12b"
-         :chat-model "gemma3:12b"))
+  (setq magit-gptcommit-llm-provider my/generic-llm-provider)
   (magit-gptcommit-status-buffer-setup))
 
-(use-package mcp
-  :ensure t
-  :straight (mcp
-             :host github
-             :repo "lizqwerscott/mcp.el")
-  :after gptel
-  :custom
-  (mcp-hub-servers
-   `(("blender" .
-      (:command "uvx"
-                :args ("blender-mcp")
-                :env (:HTTPS_PROXY ,(getenv "HTTPS_PROXY"))))))
-  :config (require 'mcp-hub)
-  :hook (after-init . mcp-hub-start-all-server))
+;; (use-package mcp
+;;   :ensure t
+;;   :straight (mcp
+;;              :host github
+;;              :repo "lizqwerscott/mcp.el")
+;;   :after gptel
+;;   :custom
+;;   (mcp-hub-servers
+;;    `(("blender" .
+;;       (:command "uvx"
+;;                 :args ("blender-mcp")
+;;                 :env (:HTTPS_PROXY ,(getenv "HTTPS_PROXY"))))))
+;;   :config (require 'mcp-hub)
+;;   :hook (after-init . mcp-hub-start-all-server))
 
 (provide 'my-llm)
 
