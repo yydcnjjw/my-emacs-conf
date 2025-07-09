@@ -38,27 +38,54 @@
   :config
   (setq insert-translated-name-translate-engine "youdao"))
 
-;; (use-package insert-translated-name
-;;   :straight (:host github
-;;                    :repo "manateelazycat/insert-translated-name"
-;;                    :branch "master"
-;;                    :files ("*.el" "*.ts")
-;;                    )
-;;   :init
-;;   (use-package deno-bridge
-;;     :straight (:host github
-;;                      :repo "manateelazycat/deno-bridge"
-;;                      :branch "master"
-;;                      :files ("*.el")
-;;                      )
-;;     )
-;;   (defun my/start-insert-translated-name ()
-;;     ""
-;;     (interactive)
-;;     (unless (member "insert-translated-name" deno-bridge-app-list)
-;;       (deno-bridge-start "insert-translated-name" deno-translator-ts-path)))
-;;   :bind
-;;   (("C-c C" . insert-translated-name-insert)))
+
+(use-package emacs
+  :after
+  (separedit)
+  :bind
+  (("C-c t" . my/translate-dwim))
+  :config
+  (require 'my-llm)
+  (setq my/translate-llm-provider my/generic-llm-provider)
+
+  (defvar my/translate-buffer-name "*my/translate*")
+  (defvar my/translate-buffer nil)
+
+  (defun my/translate-dwim ()
+    "Translate dwim."
+    (interactive)
+    (let* ((parent-buffer (current-buffer))
+           (block (cond
+                   ((memq major-mode '(markdown-mode org-mode gfm-mode))
+                    (list :beginning (point-min)
+                          :end (point-max)
+                          :major-mode major-mode))
+                   (t (separedit--block-info))))
+           (beg (plist-get block :beginning))
+           (end (plist-get block :end))
+           (block-major-mode (plist-get block :major-mode))
+           (buffer (or (get-buffer my/translate-buffer-name)
+                       (generate-new-buffer my/translate-buffer-name))))
+      (with-current-buffer buffer
+        (erase-buffer)
+        (funcall (or block-major-mode 'fundamental-mode))
+        (llm-chat-streaming-to-point
+         my/translate-llm-provider
+         (llm-make-chat-prompt
+          (with-current-buffer parent-buffer
+            (buffer-substring-no-properties beg end))
+          :context
+          "
+指令: 翻译成中文
+要求:
+- 不要添加任何解释
+- 忽略注释
+"
+          :temperature 0)
+         buffer (point-max)
+         (lambda ()))
+        )
+      (display-buffer buffer))))
 
 (provide 'my-translate)
 
