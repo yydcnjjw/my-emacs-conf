@@ -39,21 +39,37 @@
                         :models '(gemma3:12b))))
 (use-package llm
   :defer t
-  :config
-  (setq my/generic-llm-provider
-        (make-llm-ollama
-         :embedding-model "gemma3:12b"
-         :chat-model "gemma3:12b")))
+  :init
+  (defcustom my/local-llm-provider nil
+    ""
+    :group 'my
+    :type '(choice
+            (sexp :tag "llm provider")
+            (function :tag "Function that returns an llm provider.")))
+  (defcustom my/gemini-llm-provider nil
+    ""
+    :group 'my
+    :type '(choice
+            (sexp :tag "llm provider")
+            (function :tag "Function that returns an llm provider.")))
+  :custom
+  (llm-warn-on-nonfree nil))
 
 (use-package magit-gptcommit
   :straight t
   :demand t
   :after magit
   :config
-  (require 'llm-ollama)
-  (setq magit-gptcommit-debug t)
-  (setq magit-gptcommit-llm-provider my/generic-llm-provider)
   (magit-gptcommit-status-buffer-setup))
+
+(use-package plz
+  :defer t
+  :custom
+  (plz-curl-default-args `("--silent"
+                           "--compressed"
+                           "--location"
+                           "-x"
+                           ,(getenv "SOCKS5_PROXY"))))
 
 ;; (use-package mcp
 ;;   :ensure t
