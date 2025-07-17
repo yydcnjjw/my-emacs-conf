@@ -57,6 +57,7 @@
       org-mode
       gfm-mode
       mu4e-view-mode
+      elfeed-show-mode
       fundamental-mode))
   (defvar my/translate-buffer-name "*my/translate*")
   (defvar my/translate-buffer nil)
