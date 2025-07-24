@@ -37,16 +37,17 @@
   (my/push-load-org-babel-language 'python)
   (my/push-load-org-babel-language 'ipython))
 
-(use-package lsp-mode
-  :defer t
-  :custom
-  (lsp-pylsp-plugins-autopep8-enabled t)
-  :init
-  (defun my/python ()
-    (lsp)
-    )
-  :hook
-  (python-mode . my/python))
+
+(use-package pet
+  :config
+  (add-hook 'python-base-mode-hook 'pet-mode -10))
+
+(use-package lsp-pyright
+  :ensure t
+  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
 
 (provide 'my-python)
 
