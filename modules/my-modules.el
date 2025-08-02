@@ -62,6 +62,7 @@
     avy
 
     ;; language support
+    language
     treesit
     org
     c-cpp
