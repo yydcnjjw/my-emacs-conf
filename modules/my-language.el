@@ -33,6 +33,11 @@
 (use-package just-mode
   :defer t)
 
+(use-package protobuf-mode
+  :straight (:host github
+                   :repo "emacsmirror/protobuf-mode")
+   :mode (("\\.proto\\'" . protobuf-mode)))
+
 (provide 'my-language)
 
 ;;; my-language.el ends here
