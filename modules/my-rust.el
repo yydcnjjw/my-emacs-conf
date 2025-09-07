@@ -32,9 +32,7 @@
   (setq rust-indent-offset 4
         lsp-rust-analyzer-diagnostics-enable-experimental t
         lsp-rust-analyzer-experimental-proc-attr-macros t
-        lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"]
-        lsp-rust-analyzer-check-all-targets nil
-        lsp-rust-analyzer-library-directories '("~/.cargo/registry/src" "~/.rustup/toolchains" "~/.cargo/git/checkouts/"))
+        lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"])
 
   (defun my/rust-list-all-installed-target()
     "Rust List all installed target."
@@ -47,15 +45,16 @@
       (setq lsp-rust-analyzer-cargo-target target)
       (lsp-workspace-restart (lsp--read-workspace)))
     )
-  (defun my/rust-mode ()
-    (lsp))
-  :hook
-  ((rust-mode rust-ts-mode) . my/rust-mode)
+  (defun my/lsp ()
+    (when (derived-mode-p 'rust-mode) (lsp)))
+
   :config
   (with-eval-after-load 'lsp
     (let ((client (gethash 'rust-analyzer lsp-clients)))
       (setf (lsp--client-major-modes client) '(rust-mode rust-ts-mode)))
     (add-to-list 'lsp-language-id-configuration '(rust-ts-mode . "rust")))
+  :hook
+  ((hack-local-variables . my/lsp))
   )
 
 (provide 'my-rust)
