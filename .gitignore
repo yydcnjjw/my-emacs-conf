@@ -57,3 +57,6 @@
 ### lsp-mode ###
 /lsp-cache/
 /lsp-ltex/
+
+### Magit ###
+/forge-database.sqlite
