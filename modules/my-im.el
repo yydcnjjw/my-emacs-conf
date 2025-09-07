@@ -75,59 +75,11 @@
   (("C-c c" . org-capture)
    ("C-c a" . org-agenda)))
 
-(use-package org-capture
-  :straight nil
-  :defer t
-  :after org
-  :custom
-  (org-capture-templates
-   `(("p" "Project"
-      entry (function my/gtd-capture-groups-function)
-      "* TODO %:description%?\n%U\n\n  %i"
-      :kill-buffer t)
-     ("i" "Inbox"
-      entry (file my/agenda-inbox-file)
-      "* TODO %:description%?\n%U\n\n  %i"
-      :kill-buffer t)))
-  :config
-  (use-package org-ql)
-
-  (defun my/agenda-project-files ()
-    (directory-files my/agenda-project-dir t org-agenda-file-regexp))
-
-  (defun my/gtd-todo-heading-list ()
-    (org-ql-select (my/agenda-project-files)
-      '(and (tags "todo") (not (todo)))
-      :action #'(lambda ()
-                  (cons
-                   (substring-no-properties (format "%s %s" (org-get-title) (org-get-heading t t t t)))
-                   (list
-                    :path (buffer-file-name)
-                    :point (point)))
-                  )))
-
-  (defun my/gtd-complete-group (todo-heading-list)
-    (ivy-read "Todo: " (mapcar #'(lambda (location)
-                                   (car location))
-                               todo-heading-list)))
-
-  (defun my/gtd-capture-groups-function ()
-    (let* ((todo-heading-list (my/gtd-todo-heading-list))
-           (todo-heading (assoc (my/gtd-complete-group
-                            todo-heading-list)
-                           todo-heading-list))
-           (todo-heading-prop (cdr todo-heading))
-           (point (plist-get todo-heading-prop ':point))
-           (path (plist-get todo-heading-prop ':path)))
-      (set-buffer (org-capture-target-buffer path))
-      (goto-char point))))
-
 (use-package org-agenda
   :straight nil
   :defer t
   :after org
   :custom
-  (org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
   (org-agenda-tags-column -100)
   (org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)")))
   (org-log-into-drawer t)
@@ -154,6 +106,10 @@
       ((alltodo "" ((org-agenda-files (my/agenda-project-files))
                     (org-super-agenda-groups
                      '((:auto-category)))))))))
+  :config
+  (defun my/agenda-project-files ()
+    (directory-files my/agenda-project-dir t org-agenda-file-regexp))
+  (setq org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
 
   :init
   (defvar my/agenda-sync-buffer-name "*agenda-sync*")
@@ -217,6 +173,50 @@
 
   :hook
   (after-save . my/agenda-sync-after-save-hook-func))
+
+(use-package org-capture
+  :straight nil
+  :defer t
+  :after org-agenda
+  :custom
+  (org-capture-templates
+   `(("p" "Project"
+      entry (function my/gtd-capture-groups-function)
+      "* TODO %:description%?\n%U\n\n  %i"
+      :kill-buffer t)
+     ("i" "Inbox"
+      entry (file my/agenda-inbox-file)
+      "* TODO %:description%?\n%U\n\n  %i"
+      :kill-buffer t)))
+  :config
+  (use-package org-ql)
+  
+  (defun my/gtd-todo-heading-list ()
+    (org-ql-select (my/agenda-project-files)
+      '(and (tags "todo") (not (todo)))
+      :action #'(lambda ()
+                  (cons
+                   (substring-no-properties (format "%s %s" (org-get-title) (org-get-heading t t t t)))
+                   (list
+                    :path (buffer-file-name)
+                    :point (point)))
+                  )))
+
+  (defun my/gtd-complete-group (todo-heading-list)
+    (ivy-read "Todo: " (mapcar #'(lambda (location)
+                                   (car location))
+                               todo-heading-list)))
+
+  (defun my/gtd-capture-groups-function ()
+    (let* ((todo-heading-list (my/gtd-todo-heading-list))
+           (todo-heading (assoc (my/gtd-complete-group
+                            todo-heading-list)
+                           todo-heading-list))
+           (todo-heading-prop (cdr todo-heading))
+           (point (plist-get todo-heading-prop ':point))
+           (path (plist-get todo-heading-prop ':path)))
+      (set-buffer (org-capture-target-buffer path))
+      (goto-char point))))
 
 (my/require-modules
  '(org-roam
