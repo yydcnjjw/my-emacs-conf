@@ -34,9 +34,6 @@
   ((xelatex . texlive)
    (latexmk . texlive))
   :custom
-  ;; todo
-  (org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)")
-                       (sequence "FIXME(f)" "|" "ABORT(a@/!)")))
 
   ;; latex preview
   (org-latex-preview-ltxpng-directory ".cache/ltximg/")

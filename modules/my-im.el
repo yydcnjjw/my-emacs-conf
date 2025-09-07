@@ -49,8 +49,8 @@
   :type 'file
   :group 'my)
 
-(defcustom my/agenda-project-file (expand-file-name "project.org" my/gtd-dir)
-  "GTD directory."
+(defcustom my/agenda-project-dir (expand-file-name "project" my/gtd-dir)
+  "GTD project directory."
   :type 'file
   :group 'my)
 
@@ -91,30 +91,34 @@
       :kill-buffer t)))
   :config
   (use-package org-ql)
-  (defun my/gtd-group-list ()
-    (org-ql-select (org-agenda-files)
-      '(and (level 1))
+
+  (defun my/agenda-project-files ()
+    (directory-files my/agenda-project-dir t org-agenda-file-regexp))
+
+  (defun my/gtd-todo-heading-list ()
+    (org-ql-select (my/agenda-project-files)
+      '(and (tags "todo") (not (todo)))
       :action #'(lambda ()
                   (cons
-                   (org-element-property
-                    :raw-value (org-element-headline-parser (line-end-position)))
+                   (substring-no-properties (format "%s %s" (org-get-title) (org-get-heading t t t t)))
                    (list
                     :path (buffer-file-name)
-                    :point (point))))))
+                    :point (point)))
+                  )))
 
-  (defun my/gtd-complete-group (group-list)
-    (ivy-read "Groups: " (mapcar #'(lambda (location)
-                                     (car location))
-                                 group-list)))
+  (defun my/gtd-complete-group (todo-heading-list)
+    (ivy-read "Todo: " (mapcar #'(lambda (location)
+                                   (car location))
+                               todo-heading-list)))
 
   (defun my/gtd-capture-groups-function ()
-    (let* ((group-list (my/gtd-group-list))
-           (group (assoc (my/gtd-complete-group
-                          group-list)
-                         group-list))
-           (group-prop (cdr group))
-           (point (plist-get group-prop ':point))
-           (path (plist-get group-prop ':path)))
+    (let* ((todo-heading-list (my/gtd-todo-heading-list))
+           (todo-heading (assoc (my/gtd-complete-group
+                            todo-heading-list)
+                           todo-heading-list))
+           (todo-heading-prop (cdr todo-heading))
+           (point (plist-get todo-heading-prop ':point))
+           (path (plist-get todo-heading-prop ':path)))
       (set-buffer (org-capture-target-buffer path))
       (goto-char point))))
 
@@ -123,10 +127,17 @@
   :defer t
   :after org
   :custom
-  (org-agenda-files (list my/gtd-dir))
+  (org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
   (org-agenda-tags-column -100)
-  (org-refile-targets '((my/agenda-project-file . (:level . 1))))
+  (org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)")))
+  (org-log-into-drawer t)
+  (org-log-redeadline t)
+  (org-log-reschedule t)
+  (org-log-repeat 'time)
+  (org-log-done 'time)
+  (org-agenda-hide-tags-regexp "todo\\|habit")
   (org-habit-show-all-today t)
+  (org-archive-location ".org_archive::* From %s")
   (org-agenda-custom-commands
    '(("d" "today view"
       ((agenda "" ((org-agenda-span 'day)
@@ -140,14 +151,9 @@
      ("i" "inbox view"
       ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
      ("p" "project group view"
-      ((alltodo "" ((org-agenda-files (list my/agenda-project-file))
+      ((alltodo "" ((org-agenda-files (my/agenda-project-files))
                     (org-super-agenda-groups
-                     '((:auto-parent)))))))
-     ("r" "reading view"
-      ((tags-todo "reading"
-                  ((org-agenda-files (list my/agenda-project-file))
-                   (org-super-agenda-groups
-                    '((:auto-parent)))))))))
+                     '((:auto-category)))))))))
 
   :init
   (defvar my/agenda-sync-buffer-name "*agenda-sync*")
@@ -202,6 +208,12 @@
 
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'ol-man)
+
+
+  (defun my/org-refile-target-verify-function ()
+    (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
+  (setq org-refile-targets '((my/agenda-project-files . (:maxlevel . 3)))
+        org-refile-target-verify-function 'my/org-refile-target-verify-function)
 
   :hook
   (after-save . my/agenda-sync-after-save-hook-func))
