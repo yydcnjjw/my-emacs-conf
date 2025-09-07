@@ -38,6 +38,9 @@
   :ensure-system-package
   (git))
 
+(use-package forge
+  :after magit)
+
 (provide 'my-vc)
 
 ;;; my-vc.el ends here
