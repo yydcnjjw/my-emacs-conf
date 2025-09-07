@@ -26,17 +26,6 @@
 ;; commentary
 
 ;;; Code:
-
-(use-package gptel
-  :ensure t
-  :config
-  (require 'gptel-integrations)
-  (setq gptel-default-mode 'org-mode
-        gptel-model 'gemma3:12b
-        gptel-backend (gptel-make-ollama "Ollama"
-                        :host "localhost:11434"
-                        :stream t
-                        :models '(gemma3:12b))))
 (use-package llm
   :defer t
   :init
@@ -54,6 +43,17 @@
             (function :tag "Function that returns an llm provider.")))
   :custom
   (llm-warn-on-nonfree nil))
+
+(use-package gptel
+  :ensure t
+  :config
+  (require 'gptel-integrations)
+  (setq gptel-default-mode 'org-mode
+        gptel-model 'gemma3:12b
+        gptel-backend (gptel-make-ollama "Ollama"
+                        :host "localhost:11434"
+                        :stream t
+                        :models '(gemma3:12b))))
 
 (use-package magit-gptcommit
   :straight t
