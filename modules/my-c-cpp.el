@@ -36,7 +36,8 @@
     )
   :mode
   (("\\.ipp\\'" . c++-mode)
-   ("\\.mm\\'" . objc-mode))
+   ("\\.mm\\'" . objc-mode)
+   ("\\.cmake\\'" . cmake-ts-mode))
   :custom
   (lsp-clients-clangd-args
    '("--header-insertion-decorators=0"
