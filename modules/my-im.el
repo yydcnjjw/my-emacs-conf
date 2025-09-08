@@ -197,7 +197,7 @@
   
   (defun my/gtd-todo-heading-list ()
     (org-ql-select (my/agenda-project-files)
-      '(and (tags "todo") (not (todo)))
+      '(and (tags "todo") (not (or (todo) (done))))
       :action #'(lambda ()
                   (cons
                    (substring-no-properties (format "%s %s" (org-get-title) (org-get-heading t t t t)))
