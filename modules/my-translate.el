@@ -58,7 +58,8 @@
       gfm-mode
       mu4e-view-mode
       elfeed-show-mode
-      fundamental-mode))
+      fundamental-mode
+      help-mode))
   (defvar my/translate-buffer-name "*my/translate*")
   (defvar my/translate-buffer nil)
   (defvar my/translate-llm-request nil)
@@ -68,6 +69,10 @@
     (interactive)
     (let* ((parent-buffer (current-buffer))
            (block (cond
+                   ((use-region-p)
+                    (list :beginning (region-beginning)
+                          :end (region-end)
+                          :major-mode 'fundamental-mode))
                    ((memq major-mode my/translate-major-modes)
                     (list :beginning (point-min)
                           :end (point-max)
@@ -94,7 +99,7 @@
                                      :context
                                      "
 目标:
-翻译所有内容到中文。
+翻译所有内容到中文
 
 规则:
 - 保留结构 (# 标题,换行符,markdown,org)
