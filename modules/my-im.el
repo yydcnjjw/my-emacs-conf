@@ -180,13 +180,17 @@
   :after org-agenda
   :custom
   (org-capture-templates
-   `(("p" "Project"
-      entry (function my/gtd-capture-groups-function)
+   `(("t" "Todo heading"
+      entry (function my/gtd-capture-todo-heading-function)
       "* TODO %:description%?\n%U\n\n  %i"
       :kill-buffer t)
      ("i" "Inbox"
       entry (file my/agenda-inbox-file)
       "* TODO %:description%?\n%U\n\n  %i"
+      :kill-buffer t)
+     ("e" "Elfeed"
+      entry (file my/agenda-inbox-file)
+      (function my/gtd-capture-elfeed-template)
       :kill-buffer t)))
   :config
   (use-package org-ql)
@@ -207,16 +211,23 @@
                                    (car location))
                                todo-heading-list)))
 
-  (defun my/gtd-capture-groups-function ()
+  (defun my/gtd-capture-todo-heading-function ()
     (let* ((todo-heading-list (my/gtd-todo-heading-list))
            (todo-heading (assoc (my/gtd-complete-group
-                            todo-heading-list)
-                           todo-heading-list))
+                                 todo-heading-list)
+                                todo-heading-list))
            (todo-heading-prop (cdr todo-heading))
            (point (plist-get todo-heading-prop ':point))
            (path (plist-get todo-heading-prop ':path)))
       (set-buffer (org-capture-target-buffer path))
-      (goto-char point))))
+      (goto-char point)))
+
+  (defun my/gtd-capture-elfeed-template ()
+    (let* ((entry elfeed-show-entry)
+           (title (elfeed-entry-title entry))
+           (link (elfeed-entry-link entry)))
+      (format "* TODO [[%s][%s]] :reading:" link title))
+    ))
 
 (my/require-modules
  '(org-roam
