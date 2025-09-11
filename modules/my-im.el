@@ -28,6 +28,7 @@
 ;;; Code:
 
 (require 'my-const)
+(require 'my-lib)
 
 (defcustom my/im-dir "~/workspace/my-im"
   "IM directory."
@@ -229,15 +230,6 @@
       (format "* TODO [[%s][%s]] :reading:" link title))
     ))
 
-(my/require-modules
- '(org-roam
-   deft
-   org-super-agenda
-   org-wild-notifier
-   ;; org-fc
-   )
- )
-
 ;; (use-package org-download
 ;;   :defer t
 ;;   :after org
@@ -246,6 +238,12 @@
 ;;   (setq org-download-image-dir "./image"
 ;;         org-download-heading-lvl 1
 ;;         ))
+
+(my/require-modules
+ '(org-roam
+   deft
+   org-super-agenda
+   org-wild-notifier))
 
 (provide 'my-im)
 

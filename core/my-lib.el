@@ -98,6 +98,11 @@ Example:
   (dolist (pair pairs)
     (add-hooks-pair (car pair) (cdr pair))))
 
+(defun my/require-modules (modules)
+  "Require MODULES."
+  (dolist (module modules)
+    (require (intern (concat "my-" (symbol-name module))))))
+
 (provide 'my-lib)
 
 ;;; my-lib.el ends here

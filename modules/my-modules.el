@@ -26,7 +26,9 @@
 
 ;;; Code:
 
-(defcustom my/required-module
+(require 'my-lib)
+
+(defvar my/required-module
   '(dashboard
     doom-modeline
     ;; smartparens
@@ -113,13 +115,7 @@
     logview
 
     llm
-    )
-  "")
-
-(defun my/require-modules (modules)
-  "Require MODULES."
-  (dolist (module modules)
-    (require (intern (concat "my-" (symbol-name module))))))
+    ))
 
 (my/require-modules my/required-module)
 
