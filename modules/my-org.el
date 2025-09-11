@@ -140,14 +140,13 @@
     (setq-local truncate-lines nil)
     (variable-pitch-mode)
     (visual-line-mode)
+    (setq olivetti-body-width 120)
+    (olivetti-mode)
 
-    (my/set-fontset-font 'han "LXGW WenKai" nil (selected-frame))
-    )
+    (my/set-fontset-font 'han "LXGW WenKai" nil (selected-frame)))
 
   :hook (org-mode . my/org-mode-pretty)
   :config
-  
-
   (defun adjust-org-font (frame)
     (if (my/is-screen-2k frame)
         (custom-theme-set-faces
