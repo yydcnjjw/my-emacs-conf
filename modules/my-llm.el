@@ -71,6 +71,21 @@
                            "-x"
                            ,(getenv "SOCKS5_PROXY"))))
 
+(use-package ellama
+  :ensure t
+  :after llm
+  :bind ("C-c o" . ellama)
+  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
+  :init
+  (setopt
+   ellama-auto-scroll t
+   ellama-language "中文"
+   ellama-provider my/gemini-llm-provider
+   ellama-define-word-prompt-template "定义 %s")
+  :config
+  (ellama-session-mode-line-global-mode)
+)
+
 ;; (use-package mcp
 ;;   :ensure t
 ;;   :straight (mcp

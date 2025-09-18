@@ -60,3 +60,6 @@
 
 ### Magit ###
 /forge-database.sqlite
+
+### Ellama ###
+/ellama-sessions/
