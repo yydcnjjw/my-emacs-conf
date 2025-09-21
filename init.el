@@ -32,52 +32,25 @@
 ;; Always load newest byte code
 (setq load-prefer-newer t)
 
-(defvar my/root-dir (file-name-directory load-file-name)
+(defconst my/root-dir (file-name-directory load-file-name)
   "The root dir of my Emacs.")
 (setq user-emacs-directory my/root-dir)
 
-(defvar my/core-dir (expand-file-name "core" my/root-dir)
-  "Core dir.")
+(defconst my/lib-dir (expand-file-name "lib" my/root-dir)
+  "Lib directory.")
 
-(defvar my/modules-dir (expand-file-name "modules" my/root-dir)
-  "Modules dir.")
+(defconst my/config-dir (expand-file-name "config" my/root-dir)
+  "Config directory.")
 
-(defvar my/dy-modules-dir (expand-file-name "dy-modules" my/root-dir)
-  "Dynamic modules dir.")
-
-(defvar my/vendor-dir (expand-file-name "vendor" my/root-dir)
-  "Vendor dir.")
-
-(defvar my/assets-dir (expand-file-name "assets" my/root-dir)
-  "Assets dir.")
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
+(let ((custom-file (expand-file-name "custom.el" user-emacs-directory)))
+  (when (file-exists-p custom-file)
+    (load custom-file)))
 
 ;; add directories to Emacs's `load-path'
-(add-to-list 'load-path my/core-dir)
-(add-to-list 'load-path my/modules-dir)
-(add-to-list 'load-path my/vendor-dir)
-(defun add-subdirs-to-load-path (dir)
-  "Recursive add directory DIR to `load-path'."
-  (mapcar
-   (lambda (path) (add-to-list 'load-path path))
-   (delete-dups (mapcar 'file-name-directory
-                        (directory-files-recursively dir "\.el$")))))
-(add-subdirs-to-load-path my/vendor-dir)
+(add-to-list 'load-path my/lib-dir)
+(add-to-list 'load-path my/config-dir)
 
-;; reduce the frequency of garbage collection by making it happen on
-;; each 50MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 50000000)
-
-;; warn when opening files bigger than 100MB
-(setq large-file-warning-threshold 100000000)
-
-;; load the core stuff
-(require 'my-core)
-
-;; modules
-(require 'my-modules)
+;; load the config
+(require 'init-config)
 
 ;;; init.el ends here
