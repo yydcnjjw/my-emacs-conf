@@ -50,8 +50,8 @@
   :init
   (context-menu-mode t)
   (setq-default enable-recursive-minibuffers t
-		minibuffer-prompt-properties
-		'(read-only t cursor-intangible t face minibuffer-prompt))
+                minibuffer-prompt-properties
+                '(read-only t cursor-intangible t face minibuffer-prompt))
   (setopt read-extended-command-predicate #'command-completion-default-include-p))
 
 (use-package vertico-directory
@@ -70,9 +70,9 @@
   :defer t
   :init
   (setopt completion-styles '(orderless basic)
-	  completion-category-overrides '((file (styles partial-completion)))
-	  ;; completion-pcm-leading-wildcard t
-	  )
+          completion-category-overrides '((file (styles partial-completion)))
+          ;; completion-pcm-leading-wildcard t
+          )
   (setq completion-category-defaults nil))
 
 (use-package marginalia
@@ -141,6 +141,7 @@
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   :hook (completion-list-mode . consult-preview-at-point-mode)
+  :functions (consult-xref consult-register-window)
 
   ;; The :init configuration is always executed (Not lazy)
   :init
@@ -191,6 +192,8 @@
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :commands
+  (embark-prefix-help-command)
   :init
   (setq-default prefix-help-command #'embark-prefix-help-command)
   :config

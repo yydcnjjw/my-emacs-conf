@@ -36,27 +36,27 @@
   :defer t
   :init
   (setopt org-adapt-indentation t
-	  org-hide-leading-stars t
-	  org-pretty-entities t
-	  org-ellipsis " ..."
-	  org-startup-folded 'nofold
-	  org-hide-drawer-startup t)
+          org-hide-leading-stars t
+          org-pretty-entities t
+          org-ellipsis " ..."
+          org-startup-folded 'nofold
+          org-hide-drawer-startup t)
 
   (setopt org-src-fontify-natively t
-	  org-src-tab-acts-natively t
-	  org-edit-src-content-indentation 0)
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 0)
 
   (setopt org-auto-align-tags t
-	  org-tags-column -80
-	  org-fold-catch-invisible-edits 'show-and-error
-	  org-special-ctrl-a/e t
-	  org-insert-heading-respect-content t)
+          org-tags-column -80
+          org-fold-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-insert-heading-respect-content t)
 
   (setopt org-priority-lowest ?F
-	  org-priority-default ?E)
+          org-priority-default ?E)
 
   (setq org-priority-faces
-	'((65 . "#BF616A")
+        '((65 . "#BF616A")
           (66 . "#EBCB8B")
           (67 . "#B48EAD")
           (68 . "#81A1C1")
@@ -77,7 +77,7 @@
 
   (require 'org-indent)
   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-  
+
   (set-face-attribute 'org-block nil :inherit 'fixed-pitch :height 0.85)
   (set-face-attribute 'org-block-begin-line nil :inherit '(org-meta-line))
   (set-face-attribute 'org-block-end-line nil :inherit '(org-meta-line))
@@ -96,17 +96,17 @@
   (defun my/org-theme-init-mode ()
     (when (my/is-screen-2k)
       (face-remap-add-relative 'default :height 1.25))
-    
+
     (variable-pitch-mode)
     (visual-line-mode)
 
     (setq-local olivetti-body-width 120)
-    
+
     (olivetti-mode)
 
     (org-indent-mode)
     (my/setup-prettify-symbols))
-  
+
   :hook
   ((org-mode . my/org-theme-init-mode))
   :commands
@@ -124,19 +124,19 @@
   (setopt org-hide-emphasis-markers t)
   (setopt org-appear-autoemphasis t
           org-appear-autolinks t
-	  org-appear-autosubmarkers t))
+          org-appear-autosubmarkers t))
 
 
 (use-package org-superstar
   :config
   (setopt org-superstar-leading-bullet " "
-	  org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇")
-	  org-superstar-special-todo-items t
-	  org-superstar-todo-bullet-alist '(("TODO"  . 9744)
+          org-superstar-headline-bullets-list '("◉" "○" "⚬" "◈" "◇")
+          org-superstar-special-todo-items t
+          org-superstar-todo-bullet-alist '(("TODO"  . 9744)
                                             ("WAIT"  . 9744)
                                             ("READ"  . 9744)
                                             ("PROG"  . 9744)
-					    ("DONE"  . 9745)))
+                                            ("DONE"  . 9745)))
   :hook (org-mode . org-superstar-mode))
 
 (use-package svg-tag-mode

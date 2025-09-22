@@ -40,7 +40,7 @@
   :after magit
   :init
   (setopt forge-database-file
-	  (expand-file-name "forge-database.sqlite" my/emacs-cache-dir)))
+          (expand-file-name "forge-database.sqlite" my/emacs-cache-dir)))
 
 (use-package vc-msg
   :defer t)

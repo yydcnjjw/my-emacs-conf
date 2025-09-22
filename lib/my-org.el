@@ -90,10 +90,10 @@
       ("convert -density %D -trim -antialias %f -quality 100 %O")))
    org-format-latex-options
    '(:scale 1.0
-	    :html-scale 1.0
-	    :foreground default
-	    :background "Transparent"
-	    :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+            :html-scale 1.0
+            :foreground default
+            :background "Transparent"
+            :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
    org-preview-latex-default-process 'dvisvgm
    org-latex-compiler "xelatex"
    org-latex-pdf-process

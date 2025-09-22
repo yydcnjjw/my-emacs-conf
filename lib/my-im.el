@@ -146,20 +146,20 @@
 (defun my/gtd-todo-heading-list ()
   "GTD todo heading list."
   (org-ql-select (my/agenda-project-files)
-		 '(and (tags "todo") (not (or (todo) (done))))
-		 :action #'(lambda ()
-			     (cons
-			      (substring-no-properties (format "%s %s" (org-get-title) (org-get-heading t t t t)))
-			      (list
-			       :path (buffer-file-name)
-			       :point (point)))
-			     )))
+    '(and (tags "todo") (not (or (todo) (done))))
+    :action #'(lambda ()
+                (cons
+                 (substring-no-properties (format "%s %s" (org-get-title) (org-get-heading t t t t)))
+                 (list
+                  :path (buffer-file-name)
+                  :point (point)))
+                )))
 
 (defun my/gtd-complete-group (todo-heading-list)
   "GTD complete group with TODO-HEADING-LIST."
   (completing-read "Todo: " (mapcar #'(lambda (location)
-					(car location))
-				    todo-heading-list)))
+                                        (car location))
+                                    todo-heading-list)))
 
 (defun my/gtd-capture-todo-heading-function ()
   "GTD capture todo heading function."

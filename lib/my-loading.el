@@ -33,7 +33,7 @@
 (defmacro my/require-modules (&rest modules)
   "Require PREFIX - MODULES."
   (dolist (module modules)
-     (require module)))
+    (require module)))
 
 (provide 'my-loading)
 

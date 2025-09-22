@@ -40,24 +40,24 @@
   (("C-c e" . elfeed)
    (:map elfeed-search-mode-map
          ("B" . my/elfeed-search-webkit-browse-url)))
-   :hook
-   ((elfeed-search-mode . olivetti-mode)
-    (elfeed-show-mode . olivetti-mode))
-   :init
-   (setopt shr-inhibit-images t)
-   :functions
-   (my/elfeed-auto-update)
-   :config
-   (require 'my-elfeed)
-   
-   (advice-add 'elfeed-xml-parse-region :override 'my/elfeed-xml-parse-region)
+  :hook
+  ((elfeed-search-mode . olivetti-mode)
+   (elfeed-show-mode . olivetti-mode))
+  :init
+  (setopt shr-inhibit-images t)
+  :functions
+  (my/elfeed-auto-update)
+  :config
+  (require 'my-elfeed)
 
-   ;; FIXME: (void-function (setf (elfeed-meta)))
-   ;; (eval-when-compile (require 'elfeed))
-   (my/elfeed-auto-update)
+  (advice-add 'elfeed-xml-parse-region :override 'my/elfeed-xml-parse-region)
 
-   (when (my/is-screen-2k)
-     (set-face-attribute 'message-header-subject nil :height 1.2)))
+  ;; FIXME: (void-function (setf (elfeed-meta)))
+  ;; (eval-when-compile (require 'elfeed))
+  (my/elfeed-auto-update)
+
+  (when (my/is-screen-2k)
+    (set-face-attribute 'message-header-subject nil :height 1.2)))
 
 
 (use-package elfeed-org

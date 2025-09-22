@@ -51,8 +51,8 @@
   :type 'string)
 
 (defcustom my/local-llm-provider (make-llm-ollama
-				  :embedding-model "gemma3:12b"
-				  :chat-model "gemma3:12b")
+                                  :embedding-model "gemma3:12b"
+                                  :chat-model "gemma3:12b")
   "Local llm provider."
   :group 'my
   :type '(choice
@@ -60,7 +60,7 @@
           (function :tag "Function that returns an llm provider.")))
 
 (defcustom my/gemini-llm-provider (lambda ()
-				    (make-llm-gemini
+                                    (make-llm-gemini
                                      :key my/gemini-api-key
                                      :chat-model my/gemini-default-chat-model))
   "Gemini llm provider."
@@ -70,11 +70,11 @@
           (function :tag "Function that returns an llm provider.")))
 
 (defcustom my/translate-llm-provider my/gemini-llm-provider
-    "Translate llm provider."
-    :group 'my
-    :type '(choice
-            (sexp :tag "llm provider")
-            (function :tag "Function that returns an llm provider.")))
+  "Translate llm provider."
+  :group 'my
+  :type '(choice
+          (sexp :tag "llm provider")
+          (function :tag "Function that returns an llm provider.")))
 
 (defun my/get-llm-provider (provider)
   "Return llm provider stored in PROVIDER."

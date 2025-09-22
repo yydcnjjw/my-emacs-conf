@@ -46,38 +46,38 @@
   :after org
   :init
   (setopt org-agenda-tags-column -100
-	  org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)"))
-	  org-log-into-drawer t
-	  org-log-redeadline 'time
-	  org-log-reschedule 'time
-	  org-log-repeat 'time
-	  org-log-done 'time
-	  org-agenda-hide-tags-regexp "todo\\|habit"
-	  org-habit-show-all-today t
-	  org-archive-location ".org_archive::* From %s"
-	  org-agenda-custom-commands
-	  '(("d" "today view"
-	     ((agenda "" ((org-agenda-span 'day)
-			  (org-agenda-show-log t)
-			  (org-agenda-log-mode-add-notes nil)
-			  (org-agenda-log-mode-items '(closed clock state))
-			  (org-super-agenda-groups
-			   '((:name "Today"
-				    :time-grid t
-				    :habit t)))))))
-	    ("i" "inbox view"
-	     ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
-	    ("p" "project group view"
-	     ((alltodo "" ((org-agenda-files (my/agenda-project-files))
-			   (org-super-agenda-groups
-			    '((:auto-category)))))))))
+          org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)"))
+          org-log-into-drawer t
+          org-log-redeadline 'time
+          org-log-reschedule 'time
+          org-log-repeat 'time
+          org-log-done 'time
+          org-agenda-hide-tags-regexp "todo\\|habit"
+          org-habit-show-all-today t
+          org-archive-location ".org_archive::* From %s"
+          org-agenda-custom-commands
+          '(("d" "today view"
+             ((agenda "" ((org-agenda-span 'day)
+                          (org-agenda-show-log t)
+                          (org-agenda-log-mode-add-notes nil)
+                          (org-agenda-log-mode-items '(closed clock state))
+                          (org-super-agenda-groups
+                           '((:name "Today"
+                                    :time-grid t
+                                    :habit t)))))))
+            ("i" "inbox view"
+             ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
+            ("p" "project group view"
+             ((alltodo "" ((org-agenda-files (my/agenda-project-files))
+                           (org-super-agenda-groups
+                            '((:auto-category)))))))))
   :config
   (require 'my-org-theme)
   (require 'my-im)
   (setopt org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'ol-man)
-  
+
   :init
   (when (daemonp)
     (require 'my-im)
@@ -86,7 +86,7 @@
   (defun my/org-refile-target-verify-function ()
     (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
   (setopt org-refile-targets '((my/agenda-project-files . (:maxlevel . 3)))
-	  org-refile-target-verify-function 'my/org-refile-target-verify-function)
+          org-refile-target-verify-function 'my/org-refile-target-verify-function)
   :hook
   ((org-agenda-mode . my/setup-prettify-symbols)
    (after-save . my/agenda-sync-after-save-hook-func)))
@@ -101,18 +101,18 @@
   :after org-agenda
   :config
   (setq org-capture-templates
-	`(("t" "Todo heading"
-	   entry (function my/gtd-capture-todo-heading-function)
-	   "* TODO %:description%?\n%U\n\n  %i"
-	   :kill-buffer t)
-	  ("i" "Inbox"
-	   entry (file my/agenda-inbox-file)
-	   "* TODO %:description%?\n%U\n\n  %i"
-	   :kill-buffer t)
-	  ("e" "Elfeed"
-	   entry (file my/agenda-inbox-file)
-	   (function my/gtd-capture-elfeed-template)
-	   :kill-buffer t))))
+        `(("t" "Todo heading"
+           entry (function my/gtd-capture-todo-heading-function)
+           "* TODO %:description%?\n%U\n\n  %i"
+           :kill-buffer t)
+          ("i" "Inbox"
+           entry (file my/agenda-inbox-file)
+           "* TODO %:description%?\n%U\n\n  %i"
+           :kill-buffer t)
+          ("e" "Elfeed"
+           entry (file my/agenda-inbox-file)
+           (function my/gtd-capture-elfeed-template)
+           :kill-buffer t))))
 
 (use-package org-super-agenda
   :defer t
@@ -138,14 +138,14 @@
   :config
   (require 'my-org-roam)
   (setopt org-roam-directory my/roam-dir
-	  org-roam-dailies-directory my/daily-dir
-	  org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir)
-	  org-roam-db-update-on-save t
-	  org-roam-node-display-template
-	  (concat "${title:*} "
-		  (propertize "${tags:40}" 'face 'org-tag))
-	  org-roam-mode-sections
-	  '(my/org-roam-backlinks-section org-roam-reflinks-section))
+          org-roam-dailies-directory my/daily-dir
+          org-roam-db-location (expand-file-name "org-roam.db" my/im-cache-dir)
+          org-roam-db-update-on-save t
+          org-roam-node-display-template
+          (concat "${title:*} "
+                  (propertize "${tags:40}" 'face 'org-tag))
+          org-roam-mode-sections
+          '(my/org-roam-backlinks-section org-roam-reflinks-section))
   (org-roam-db-autosync-mode))
 
 (use-package org-roam-ui
@@ -159,9 +159,9 @@
   :if (daemonp)
   :init
   (setopt org-roam-ui-sync-theme t
-	  org-roam-ui-follow t
-	  org-roam-ui-update-on-save t
-	  org-roam-ui-open-on-start nil)
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start nil)
   :config
   (org-roam-ui-mode))
 
@@ -171,7 +171,7 @@
   (org-wild-notifier-mode)
   :init
   (setopt org-wild-notifier-alert-time '(10 1)
-	  org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
+          org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
   :config
   (org-wild-notifier-mode))
 

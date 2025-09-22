@@ -45,10 +45,10 @@
   :defer t
   :init
   (setopt plz-curl-default-args `("--silent"
-				  "--compressed"
-				  "--location"
-				  "-x"
-				  ,(getenv "SOCKS5_PROXY"))))
+                                  "--compressed"
+                                  "--location"
+                                  "-x"
+                                  ,(getenv "SOCKS5_PROXY"))))
 
 (use-package magit-gptcommit
   :after magit
@@ -71,10 +71,10 @@
   (my/gemini-llm-provider)
   :config
   (setopt ellama-auto-scroll t
-	  ellama-language "中文"
-	  ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
-	  ellama-provider my/gemini-llm-provider
-	  ellama-define-word-prompt-template "定义 %s")
+          ellama-language "中文"
+          ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
+          ellama-provider my/gemini-llm-provider
+          ellama-define-word-prompt-template "定义 %s")
   (ellama-session-mode-line-global-mode))
 
 (provide 'init-llm)

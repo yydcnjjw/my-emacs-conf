@@ -62,8 +62,8 @@
   (ibuffer-projectile-set-filter-groups)
   :hook
   (ibuffer . (lambda ()
-	       (ibuffer-projectile-set-filter-groups)
-	       (unless (eq ibuffer-sorting-mode 'alphabetic)
+               (ibuffer-projectile-set-filter-groups)
+               (unless (eq ibuffer-sorting-mode 'alphabetic)
                  (ibuffer-do-sort-by-alphabetic)))))
 
 (provide 'init-project)

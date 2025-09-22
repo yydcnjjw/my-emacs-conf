@@ -90,10 +90,10 @@ coding system from XML encoding declaration."
          (filter (elfeed-search-parse-filter query))
          (func (byte-compile (elfeed-search-compile-filter filter))))
     (with-elfeed-db-visit (entry feed)
-      (when (funcall func entry feed count)
-        (when (null first-entry)
-          (setq first-entry entry))
-        (setf count (1+ count))))
+                          (when (funcall func entry feed count)
+                            (when (null first-entry)
+                              (setq first-entry entry))
+                            (setf count (1+ count))))
     (cons count first-entry)))
 
 (defun my/elfeed-query-count (query)
@@ -118,52 +118,52 @@ coding system from XML encoding declaration."
     (when (> newcnt my/elfeed-unread-count)
       (elfeed-log 'info (format "alert %s" (elfeed-entry-title entry)))
       (when (featurep 'alert)
-	;; TODO: warn
-	(alert (elfeed-entry-title entry)
+        ;; TODO: warn
+        (alert (elfeed-entry-title entry)
                :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))))
       )))
 
 (defun my/elfeed-update-feed-bg (url)
   "Elfeed update a specific feed with URL at background."
   (elfeed-with-fetch url
-    (if (elfeed-is-status-error status use-curl)
-        (let ((print-escape-newlines t))
-          (elfeed-handle-http-error
-           url (if use-curl elfeed-curl-error-message status)))
-      (condition-case error
-          (let ((feed (elfeed-db-get-feed url)))
-            (unless use-curl
-              (elfeed-move-to-first-empty-line)
-              (set-buffer-multibyte t))
-            (unless (eql elfeed-curl-status-code 304)
-              ;; Update Last-Modified and Etag
-              (setf (elfeed-meta feed :last-modified)
-                    (cdr (assoc "last-modified" elfeed-curl-headers))
-                    (elfeed-meta feed :etag)
-                    (cdr (assoc "etag" elfeed-curl-headers)))
-              (if (equal url elfeed-curl-location)
-                  (setf (elfeed-meta feed :canonical-url) nil)
-                (setf (elfeed-meta feed :canonical-url) elfeed-curl-location))
-              (let* ((xml (elfeed-xml-parse-region (point) (point-max)))
-                     (entries (cl-case (elfeed-feed-type xml)
-                                (:atom (elfeed-entries-from-atom url xml))
-                                (:rss (elfeed-entries-from-rss url xml))
-                                (:rss1.0 (elfeed-entries-from-rss1.0 url xml))
-                                (otherwise
-                                 (error (elfeed-handle-parse-error
-                                         url "Unknown feed type."))))))
-                (elfeed-db-add entries))))
-        (error (elfeed-handle-parse-error url error))))
-    (unless use-curl
-      (kill-buffer))))
-  
+                     (if (elfeed-is-status-error status use-curl)
+                         (let ((print-escape-newlines t))
+                           (elfeed-handle-http-error
+                            url (if use-curl elfeed-curl-error-message status)))
+                       (condition-case error
+                           (let ((feed (elfeed-db-get-feed url)))
+                             (unless use-curl
+                               (elfeed-move-to-first-empty-line)
+                               (set-buffer-multibyte t))
+                             (unless (eql elfeed-curl-status-code 304)
+                               ;; Update Last-Modified and Etag
+                               (setf (elfeed-meta feed :last-modified)
+                                     (cdr (assoc "last-modified" elfeed-curl-headers))
+                                     (elfeed-meta feed :etag)
+                                     (cdr (assoc "etag" elfeed-curl-headers)))
+                               (if (equal url elfeed-curl-location)
+                                   (setf (elfeed-meta feed :canonical-url) nil)
+                                 (setf (elfeed-meta feed :canonical-url) elfeed-curl-location))
+                               (let* ((xml (elfeed-xml-parse-region (point) (point-max)))
+                                      (entries (cl-case (elfeed-feed-type xml)
+                                                 (:atom (elfeed-entries-from-atom url xml))
+                                                 (:rss (elfeed-entries-from-rss url xml))
+                                                 (:rss1.0 (elfeed-entries-from-rss1.0 url xml))
+                                                 (otherwise
+                                                  (error (elfeed-handle-parse-error
+                                                          url "Unknown feed type."))))))
+                                 (elfeed-db-add entries))))
+                         (error (elfeed-handle-parse-error url error))))
+                     (unless use-curl
+                       (kill-buffer))))
+
 (defun my/elfeed-update-bg ()
   "Update all the feeds in `elfeed-feeds' at background."
   (elfeed-log 'info "Elfeed update: %s"
               (format-time-string "%B %e %Y %H:%M:%S %Z"))
   (mapc #'my/elfeed-update-feed-bg (elfeed--shuffle (elfeed-feed-list)))
   (elfeed-db-save))
-  
+
 (defun my/elfeed-async-update ()
   "Elfeed async update."
   (elfeed-log 'info "starting automatically update")

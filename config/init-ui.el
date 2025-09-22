@@ -91,7 +91,6 @@
 (use-package spacemacs-theme
   :defer t
   :init
-  
   (my/eval-if-graphic #'init-theme))
 
 (use-package dashboard

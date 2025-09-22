@@ -37,19 +37,18 @@
    corfu-popupinfo-mode)
   :init
   (setopt corfu-auto t
-	  corfu-auto-prefix 1
-	  corfu-quit-at-boundary t
-	  corfu-cycle t)
+          corfu-auto-prefix 1
+          corfu-quit-at-boundary t
+          corfu-cycle t)
   (global-corfu-mode)
 
   (corfu-history-mode)
-  (corfu-popupinfo-mode)
-  )
+  (corfu-popupinfo-mode))
 
 (use-package emacs
   :init
   (setopt tab-always-indent 'complete
-	  text-mode-ispell-word-completion nil))
+          text-mode-ispell-word-completion nil))
 
 (use-package dabbrev
   :defer t

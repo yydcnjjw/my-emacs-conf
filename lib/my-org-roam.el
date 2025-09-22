@@ -52,13 +52,13 @@ When UNIQUE is t, limit to unique sources."
                                             (seq-group-by #'my/org-roam-backlinks-groupby
                                                           (org-roam-backlinks-get node))))))
     (magit-insert-section (org-roam-backlinks)
-			  (magit-insert-heading "Backlinks:")
-			  (dolist (backlink backlinks)
-			    (org-roam-node-insert-section
-			     :source-node (org-roam-backlink-source-node backlink)
-			     :point (org-roam-backlink-point backlink)
-			     :properties (org-roam-backlink-properties backlink)))
-			  (insert ?\n))))
+                          (magit-insert-heading "Backlinks:")
+                          (dolist (backlink backlinks)
+                            (org-roam-node-insert-section
+                             :source-node (org-roam-backlink-source-node backlink)
+                             :point (org-roam-backlink-point backlink)
+                             :properties (org-roam-backlink-properties backlink)))
+                          (insert ?\n))))
 
 (provide 'my-org-roam)
 

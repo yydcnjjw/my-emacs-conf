@@ -32,8 +32,8 @@
 
 (require 'my-path)
 
-(indent-tabs-mode -1)
-(setq tab-width 4)
+(setq-default tab-width 4
+              indent-tabs-mode nil)
 
 (setopt require-final-newline t)
 
@@ -41,7 +41,7 @@
 (use-package emacs
   :init
   (setopt auto-save-visited-interval 5
-	  auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" my/emacs-cache-dir))
+          auto-save-list-file-prefix (expand-file-name "auto-save-list/.saves-" my/emacs-cache-dir))
   :hook
   ((prog-mode text-mode) . auto-save-visited-mode))
 
@@ -56,8 +56,8 @@
 
 ;; transient
 (setopt transient-levels-file (expand-file-name "transient/levels.el" my/emacs-cache-dir)
-	transient-values-file (expand-file-name "transient/values.el" my/emacs-cache-dir)
-	transient-history-file (expand-file-name "transient/history.el" my/emacs-cache-dir))
+        transient-values-file (expand-file-name "transient/values.el" my/emacs-cache-dir)
+        transient-history-file (expand-file-name "transient/history.el" my/emacs-cache-dir))
 
 ;; recentf
 (setopt recentf-save-file (expand-file-name "recentf" my/emacs-cache-dir))
@@ -137,15 +137,15 @@
   :defer t
   :init
   (setopt default-input-method "rime"
-	  rime-show-candidate 'posframe
-	  rime-user-data-dir (expand-file-name "rime" my/emacs-cache-dir)))
+          rime-show-candidate 'posframe
+          rime-user-data-dir (expand-file-name "rime" my/emacs-cache-dir)))
 
 (use-package separedit
   :defer t
   :init
   (setq separedit-default-mode 'markdown-mode)
   (setopt separedit-continue-fill-column t
-	  separedit-remove-trailing-spaces-in-comment t)
+          separedit-remove-trailing-spaces-in-comment t)
   :bind
   ("C-c '" . separedit))
 

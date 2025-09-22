@@ -41,8 +41,8 @@
     "Lsp register major MODE."
     (dolist (mode modes)
       (add-hook 'hack-local-variables-hook
-	      #'(lambda ()
-		  (when (derived-mode-p mode) (lsp)))))
+                #'(lambda ()
+                    (when (derived-mode-p mode) (lsp)))))
     ))
 
 (my/require-modules
@@ -57,15 +57,15 @@
   :init
   (my/lsp-register-major-mode 'c-mode 'c++-mode 'objc-mode)
   (setopt lsp-clients-clangd-args
-   '("--header-insertion-decorators=0"
-     "--header-insertion=never"
-     "--clang-tidy"
-     "--clang-tidy-checks=performance-*,bugprone-*"
-     "--background-index"
-     "--all-scopes-completion"
-     "--pch-storage=memory"
-     "-j=4"
-     "--malloc-trim"))
+          '("--header-insertion-decorators=0"
+            "--header-insertion=never"
+            "--clang-tidy"
+            "--clang-tidy-checks=performance-*,bugprone-*"
+            "--background-index"
+            "--all-scopes-completion"
+            "--pch-storage=memory"
+            "-j=4"
+            "--malloc-trim"))
   :mode
   (("\\.ipp\\'" . c++-mode)
    ("\\.mm\\'" . objc-mode)
@@ -135,18 +135,18 @@
   (setopt
    logview-cache-filename (expand-file-name "logview-cache.extmap" my/emacs-cache-dir)
    logview-additional-level-mappings '(("PASOVAT" . ((error "error")
-						     (warning "warning")
-						     (information "info")
-						     (debug "debug")
-						     (trace "trace")
-						     (aliases "pasovat"))))
+                                                     (warning "warning")
+                                                     (information "info")
+                                                     (debug "debug")
+                                                     (trace "trace")
+                                                     (aliases "pasovat"))))
    logview-additional-timestamp-formats
    '(("PASOVAT" . ((java-pattern . "yyyy-MMM-dd HH:mm:ss.SSSSSS"))))
    logview-additional-submodes
    ;; [][LEVEL][RX:IGNORED:[^]]+] MESSAGE
    '(("PASOVAT" . ((format . "[TIMESTAMP][THREAD][LEVEL]MESSAGE")
-		   (levels . "PASOVAT")
-		   (timestamp . ("PASOVAT")))))
+                   (levels . "PASOVAT")
+                   (timestamp . ("PASOVAT")))))
    ))
 
 (provide 'init-prog-language)

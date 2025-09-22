@@ -46,10 +46,10 @@
   (lsp)
   :init
   (setopt lsp-keymap-prefix "C-c l"
-	  lsp-completion-provider :none
-	  lsp-auto-execute-action nil
-	  lsp-keep-workspace-alive nil
-	  lsp-session-file (expand-file-name ".lsp-session-v1" my/emacs-cache-dir))
+          lsp-completion-provider :none
+          lsp-auto-execute-action nil
+          lsp-keep-workspace-alive nil
+          lsp-session-file (expand-file-name ".lsp-session-v1" my/emacs-cache-dir))
   :hook
   ((lsp-completion-mode . my/lsp-completion-mode))
   :config
