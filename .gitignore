@@ -1,65 +1,7 @@
+### Emacs ###
 /elpa/
-/url/
-/snippets/
-/transient/
-/eshell/
-/persist/
-/dicts/
-/eaf/
-/quelpa/
-/request/
-/emms/
 /eln-cache/
-/auto-save-list/
 /straight/
 /.cache/
-/.wl/
-/rime/
-/pyim/
-/dy-modules/
-/.extension/
-/.log/
 
-/%backup%~
-/session.*
-/recentf
-/projectile-bookmarks.eld
-/projectile.cache
-/tramp
 /custom.el
-/org-roam.db
-/bookmarks
-/.dap-breakpoints
-/.last-package-update-day
-/.lsp-session-v1
-/.org-id-locations
-/.mc-lists.el
-/projects
-/flycheck_init.el
-/org-fc-reviews.tsv
-/history
-/nov-places
-/tree-sitter/
-
-### Emacs ###
-/tutorial
-
-### tramp ###
-/.tramp
-/tramp
-
-### dired ###
-/image-dired
-
-### logview ###
-/logview-cache.extmap
-
-### lsp-mode ###
-/lsp-cache/
-/lsp-ltex/
-
-### Magit ###
-/forge-database.sqlite
-
-### Ellama ###
-/ellama-sessions/
