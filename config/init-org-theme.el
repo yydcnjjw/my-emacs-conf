@@ -141,12 +141,13 @@
 
 (use-package svg-tag-mode
   :functions
-  (my/setup-org-svg-tags)
+  (my/setup-org-svg-tags org-agenda-show-svg)
   :config
   (require 'my-org-theme-svg)
   (my/setup-org-svg-tags)
   :hook
-  ((org-mode . svg-tag-mode)))
+  ((org-mode . svg-tag-mode)
+   (org-agenda-finalize . org-agenda-show-svg)))
 
 ;; Latex
 (use-package org-fragtog

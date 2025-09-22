@@ -30,7 +30,7 @@
 
 ;;; Code:
 
-(require 'svg-lib)
+(require 'svg-tag-mode)
 
 (defun svg-progress-percent (value)
   "SVG progress percent based on VALUE."
@@ -64,9 +64,9 @@
   (setopt svg-tag-tags
 	  `(
             ;; Task priority
-            ("\\[#[A-Z]\\]" . ( (lambda (tag)
-				  (svg-tag-make tag :face 'org-priority
-						:beg 2 :end -1 :margin 0))))
+            ("\\[#[A-Z]\\]" . ((lambda (tag)
+				 (svg-tag-make tag :face 'org-priority
+					       :beg 2 :end -1 :margin 0))))
 
             ;; Progress
             ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
@@ -110,6 +110,20 @@
 	    ;; 	(svg-tag-make tag :end -1 :inverse t
 	    ;; 		      :crop-left t :margin 0 :face 'org-date))))
 	    )))
+
+(defun org-agenda-show-svg ()
+  "Org agenda show svg."
+  (let* ((case-fold-search nil)
+         (keywords (mapcar #'svg-tag--build-keywords svg-tag--active-tags))
+         (keyword (car keywords)))
+    (while keyword
+      (save-excursion
+        (while (re-search-forward (nth 0 keyword) nil t)
+          (overlay-put (make-overlay
+                        (match-beginning 0) (match-end 0))
+                       'display  (nth 3 (eval (nth 2 keyword)))) ))
+      (pop keywords)
+      (setq keyword (car keywords)))))
 
 (provide 'my-org-theme-svg)
 
