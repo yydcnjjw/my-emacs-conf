@@ -30,13 +30,15 @@
 
 ;;; Code:
 
-(defmacro my/eval-if-graphic (action)
-  "Do specified ACTION if we're in a graphic regardless of daemon or not."
+(defmacro my/eval-if-graphic (action &optional depth)
+  "Do specified ACTION with DEPTH.
+
+if we're in a graphic regardless of daemon or not."
   (if (daemonp)
       `(add-hook 'after-make-frame-functions
                  #'(lambda (frame)
                      (when (display-graphic-p frame)
-                       (funcall ,action frame))))
+                       (funcall ,action frame))) ,depth)
     `(when (display-graphic-p)
        (funcall ,action (selected-frame)))))
 

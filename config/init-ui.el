@@ -37,16 +37,16 @@
    ;; setup font
    (let ((en-font-name "Hack")
          (zh-font-name "LXGW WenKai Mono")
-         (font-size (if (my/is-screen-2k)
+         (font-size (if (my/is-screen-2k frame)
                         11
                       10)))
      (set-frame-font (format "%s-%d" en-font-name font-size))
      (my/set-fontset-font 'han zh-font-name nil frame)
-     (my/set-fontset-font 'unicode zh-font-name nil nil)
+     (my/set-fontset-font 'unicode zh-font-name nil frame)
      (my/set-fontset-font 'emoji "Noto Color Emoji" nil frame)
 
-     (set-face-attribute 'fixed-pitch nil :family "Hack")
-     (set-face-attribute 'variable-pitch nil :family "LXGW WenKai"))
+     (set-face-attribute 'fixed-pitch frame :family "Hack")
+     (set-face-attribute 'variable-pitch frame :family "LXGW WenKai"))
 
    ;; setup frame position
    (my/center-frame frame)))
@@ -91,7 +91,7 @@
 (use-package spacemacs-theme
   :defer t
   :init
-  (my/eval-if-graphic #'init-theme))
+  (my/eval-if-graphic #'init-theme -100))
 
 (use-package dashboard
   :functions
