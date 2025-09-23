@@ -127,6 +127,7 @@
   :hook
   ((prog-mode text-mode markdown-mode) . smartparens-strict-mode)
   :config
+  (setopt sp-base-key-bindings 'sp)
   (require 'smartparens-config))
 
 (use-package popup
