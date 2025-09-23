@@ -68,6 +68,8 @@
         auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
 
+(delete-selection-mode t)
+
 ;; `which-key'
 (use-package which-key
   :defer t
