@@ -76,12 +76,6 @@
   :hook
   ((after-init . which-key-mode)))
 
-;; `expand-region'
-(use-package expand-region
-  :defer t
-  :bind
-  (("C-M-w" . er/expand-region)))
-
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
@@ -129,6 +123,13 @@
   :config
   (setopt sp-base-key-bindings 'sp)
   (require 'smartparens-config))
+
+;; `expand-region'
+(use-package expand-region
+  :defer t
+  :bind*
+  ;; override `sp-copy-sexp'
+  (("C-M-w" . er/expand-region)))
 
 (use-package popup
   :defer t)
