@@ -59,7 +59,9 @@
   (my/eval-if-graphic
    (lambda (frame)
      (when (my/is-screen-2k frame)
-       (set-face-attribute 'message-header-subject frame :height 1.2))))
+       (set-face-attribute 'message-header-subject frame :height 1.2)
+       (set-face-attribute 'shr-text frame :height 1.2)
+       )))
   )
 
 (use-package elfeed-org
