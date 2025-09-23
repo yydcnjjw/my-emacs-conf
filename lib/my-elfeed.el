@@ -43,11 +43,6 @@
   :type 'integer
   :group 'my)
 
-(defcustom my/elfeed-unjam-threshold (* 3 my/elfeed-update-interval)
-  "Elfeed elfeed unjam threshold if pending count > 3."
-  :type 'integer
-  :group 'my)
-
 ;; FIXME: workaround https://github.com/skeeto/elfeed/issues/258
 (defun my/elfeed-xml-parse-region (&optional beg end buffer parse-dtd _parse-ns)
   "Decode (if needed).
@@ -126,36 +121,36 @@ coding system from XML encoding declaration."
 (defun my/elfeed-update-feed-bg (url)
   "Elfeed update a specific feed with URL at background."
   (elfeed-with-fetch url
-                     (if (elfeed-is-status-error status use-curl)
-                         (let ((print-escape-newlines t))
-                           (elfeed-handle-http-error
-                            url (if use-curl elfeed-curl-error-message status)))
-                       (condition-case error
-                           (let ((feed (elfeed-db-get-feed url)))
-                             (unless use-curl
-                               (elfeed-move-to-first-empty-line)
-                               (set-buffer-multibyte t))
-                             (unless (eql elfeed-curl-status-code 304)
-                               ;; Update Last-Modified and Etag
-                               (setf (elfeed-meta feed :last-modified)
-                                     (cdr (assoc "last-modified" elfeed-curl-headers))
-                                     (elfeed-meta feed :etag)
-                                     (cdr (assoc "etag" elfeed-curl-headers)))
-                               (if (equal url elfeed-curl-location)
-                                   (setf (elfeed-meta feed :canonical-url) nil)
-                                 (setf (elfeed-meta feed :canonical-url) elfeed-curl-location))
-                               (let* ((xml (elfeed-xml-parse-region (point) (point-max)))
-                                      (entries (cl-case (elfeed-feed-type xml)
-                                                 (:atom (elfeed-entries-from-atom url xml))
-                                                 (:rss (elfeed-entries-from-rss url xml))
-                                                 (:rss1.0 (elfeed-entries-from-rss1.0 url xml))
-                                                 (otherwise
-                                                  (error (elfeed-handle-parse-error
-                                                          url "Unknown feed type."))))))
-                                 (elfeed-db-add entries))))
-                         (error (elfeed-handle-parse-error url error))))
-                     (unless use-curl
-                       (kill-buffer))))
+    (if (elfeed-is-status-error status use-curl)
+        (let ((print-escape-newlines t))
+          (elfeed-handle-http-error
+           url (if use-curl elfeed-curl-error-message status)))
+      (condition-case error
+          (let ((feed (elfeed-db-get-feed url)))
+            (unless use-curl
+              (elfeed-move-to-first-empty-line)
+              (set-buffer-multibyte t))
+            (unless (eql elfeed-curl-status-code 304)
+              ;; Update Last-Modified and Etag
+              (setf (elfeed-meta feed :last-modified)
+                    (cdr (assoc "last-modified" elfeed-curl-headers))
+                    (elfeed-meta feed :etag)
+                    (cdr (assoc "etag" elfeed-curl-headers)))
+              (if (equal url elfeed-curl-location)
+                  (setf (elfeed-meta feed :canonical-url) nil)
+                (setf (elfeed-meta feed :canonical-url) elfeed-curl-location))
+              (let* ((xml (elfeed-xml-parse-region (point) (point-max)))
+                     (entries (cl-case (elfeed-feed-type xml)
+                                (:atom (elfeed-entries-from-atom url xml))
+                                (:rss (elfeed-entries-from-rss url xml))
+                                (:rss1.0 (elfeed-entries-from-rss1.0 url xml))
+                                (otherwise
+                                 (error (elfeed-handle-parse-error
+                                         url "Unknown feed type."))))))
+                (elfeed-db-add entries))))
+        (error (elfeed-handle-parse-error url error))))
+    (unless use-curl
+      (kill-buffer))))
 
 (defun my/elfeed-update-bg ()
   "Update all the feeds in `elfeed-feeds' at background."
@@ -167,28 +162,31 @@ coding system from XML encoding declaration."
 (defun my/elfeed-async-update ()
   "Elfeed async update."
   (elfeed-log 'info "starting automatically update")
-  (unless my/elfeed-update-timer
-    (setq my/elfeed-unread-count (my/elfeed-query-count "+unread"))
-    (my/elfeed-update-bg)
-    (setq my/elfeed-update-timer
-          (run-with-timer
-           1 1
-           (lambda ()
-             (if (> (elfeed-queue-count-total) 0)
-                 (if (< my/elfeed-pending-count my/elfeed-unjam-threshold)
-                     (progn
-                       (setq my/elfeed-pending-count (+ my/elfeed-pending-count 1))
-                       (elfeed-log 'debug "%d jobs pending" (elfeed-queue-count-total)))
-                   (setq my/elfeed-pending-count 0)
-                   (elfeed-unjam)
-                   (my/elfeed-reset-update-timer))
-               (setq my/elfeed-pending-count 0)
-               (my/elfeed-reset-update-timer)
-               (elfeed-log 'info "Automatic update has been completed")
-               (my/elfeed-alert-update-unread)))))))
+  (my/elfeed-update-bg)
+  (elfeed-log 'info "Automatic update has been completed")
+  ;; (unless my/elfeed-update-timer
+  ;;   (setq my/elfeed-unread-count (my/elfeed-query-count "+unread"))
+    
+  ;;   (setq my/elfeed-update-timer
+  ;;         (run-with-timer
+  ;;          1 1
+  ;;          (lambda ()
+  ;;            (if (> (elfeed-queue-count-total) 0)
+  ;;                (if (< my/elfeed-pending-count my/elfeed-unjam-threshold)
+  ;;                    (progn
+  ;;                      (setq my/elfeed-pending-count (+ my/elfeed-pending-count 1))
+  ;;                      (elfeed-log 'debug "%d jobs pending" (elfeed-queue-count-total)))
+  ;;                  (setq my/elfeed-pending-count 0)
+  ;;                  (elfeed-unjam)
+  ;;                  (my/elfeed-reset-update-timer))
+  ;;              (setq my/elfeed-pending-count 0)
+  ;;              (my/elfeed-reset-update-timer)
+  ;;              (elfeed-log 'info "Automatic update has been completed")
+  ;;              (my/elfeed-alert-update-unread))))))
+  )
 
 (defun my/elfeed-auto-update ()
-  "Elfeed auto update."
+  "Elfeed auto update after TIME."
   (interactive)
   (setq my/elfeed-update-timer
         (run-at-time nil my/elfeed-update-interval #'my/elfeed-async-update)))

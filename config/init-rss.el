@@ -41,7 +41,8 @@
    (:map elfeed-search-mode-map
          ("B" . my/elfeed-search-webkit-browse-url)))
   :hook
-  ((elfeed-search-mode . olivetti-mode)
+  ((after-init . my/elfeed-auto-update)
+   (elfeed-search-mode . olivetti-mode)
    (elfeed-show-mode . olivetti-mode))
   :init
   (setopt shr-inhibit-images t)
@@ -54,18 +55,16 @@
 
   ;; FIXME: (void-function (setf (elfeed-meta)))
   ;; (eval-when-compile (require 'elfeed))
-  (my/elfeed-auto-update)
 
   (when (my/is-screen-2k)
     (set-face-attribute 'message-header-subject nil :height 1.2)))
 
-
 (use-package elfeed-org
   :after elfeed
-  :defines (my/elfeed-org-files)
-  :commands (elfeed-org)
-  :functions (rmh-elfeed-org-process)
-  :config
+  :defines my/elfeed-org-files
+  :commands elfeed-org
+  :functions rmh-elfeed-org-process
+  :init
   (setopt rmh-elfeed-org-files my/elfeed-org-files)
   (elfeed-org)
   ;; update elfeed list after loading
