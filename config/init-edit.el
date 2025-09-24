@@ -139,10 +139,13 @@
 
 (use-package rime
   :defer t
+  :defines my/rime-user-data-dir
+  :config
+  (require 'my-rime)
+  (setopt rime-user-data-dir my/rime-user-data-dir)
   :init
   (setopt default-input-method "rime"
-          rime-show-candidate 'posframe
-          rime-user-data-dir (expand-file-name "rime" my/emacs-cache-dir)))
+          rime-show-candidate 'posframe))
 
 (use-package separedit
   :defer t
