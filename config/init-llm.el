@@ -63,8 +63,6 @@
   (magit-gptcommit-status-buffer-setup))
 
 (use-package ellama
-  :ensure t
-  :after llm
   :bind ("C-c o" . ellama)
   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
   :defines
