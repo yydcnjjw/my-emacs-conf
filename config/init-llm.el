@@ -65,8 +65,8 @@
 (use-package ellama
   :bind ("C-c o" . ellama)
   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
-  :defines
-  (my/gemini-llm-provider)
+  :commands ellama-session-mode-line-global-mode
+  :defines my/gemini-llm-provider
   :config
   (require 'my-llm)
   (setopt ellama-auto-scroll t
