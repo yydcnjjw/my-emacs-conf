@@ -117,12 +117,14 @@
   :init
   (setopt avy-background t))
 
-(use-package smartparens
+(use-package fingertip
+  :straight (:host github :repo "manateelazycat/fingertip"
+                   :branch "master")
   :hook
-  ((prog-mode text-mode markdown-mode) . smartparens-strict-mode)
+  ((prog-mode text-mode) . fingertip-mode)
   :config
-  (setopt sp-base-key-bindings 'sp)
-  (require 'smartparens-config))
+  (require 'my-fingertip)
+  (my/setup-fingertip-default-bindings))
 
 ;; `expand-region'
 (use-package expand-region
