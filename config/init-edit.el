@@ -126,6 +126,14 @@
   (require 'my-fingertip)
   (my/setup-fingertip-default-bindings))
 
+(use-package thing-edit
+  :straight (:host github :repo "manateelazycat/thing-edit"
+                   :branch "master")
+  :defer t
+  :init
+  (autoload 'my/thing-edit-main-menu "my-thing-edit" nil t)
+  (bind-key "M-s t" 'my/thing-edit-main-menu))
+
 ;; `expand-region'
 (use-package expand-region
   :defer t
