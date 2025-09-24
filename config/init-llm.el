@@ -68,10 +68,11 @@
   :defines
   (my/gemini-llm-provider)
   :config
+  (require 'my-llm)
   (setopt ellama-auto-scroll t
           ellama-language "中文"
           ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
-          ellama-provider my/gemini-llm-provider
+          ellama-provider (funcall my/gemini-llm-provider)
           ellama-define-word-prompt-template "定义 %s")
   (ellama-session-mode-line-global-mode))
 
