@@ -52,6 +52,9 @@
           org-special-ctrl-a/e t
           org-insert-heading-respect-content t)
 
+  (setopt org-startup-with-inline-images t
+          org-image-align 'center)
+
   (setopt org-priority-lowest ?F
           org-priority-default ?E)
 
