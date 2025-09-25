@@ -83,15 +83,21 @@
   :hook
   (prog-mode . hl-line-mode))
 
-(defun init-theme (frame)
+(defun my/init-theme ()
   "Init theme for FRAME."
-  (select-frame frame)
   (load-theme 'spacemacs-dark t nil))
 
 (use-package spacemacs-theme
   :defer t
   :init
-  (my/eval-if-graphic #'init-theme -100))
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                #'(lambda (frame)
+                    (select-frame frame)
+                    (with-selected-frame frame
+                      (my/init-theme)))
+                -100)
+    (my/init-theme)))
 
 (use-package dashboard
   :functions
