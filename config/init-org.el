@@ -61,6 +61,14 @@
 (use-package htmlize
   :defer t)
 
+;; image
+(use-package org-download
+  :after org
+  :functions my/setup-org-download-screenshot-method
+  :config
+  (require 'my-org-download)
+  (my/setup-org-download-screenshot-method))
+
 ;; TODO for cite
 ;; (use-package citar
 ;;   :no-require

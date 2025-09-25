@@ -188,15 +188,6 @@
 ;;   :bind
 ;;   (("<f12>" . org-transclusion-mode)))
 
-;; (use-package org-download
-;;   :defer t
-;;   :after org
-;;   :commands (org-download-clipboard)
-;;   :config
-;;   (setq org-download-image-dir "./image"
-;;         org-download-heading-lvl 1
-;;         ))
-
 (provide 'init-im)
 
 ;;; init-im.el ends here
