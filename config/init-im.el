@@ -183,6 +183,12 @@
   :defer t
   :after ox)
 
+(use-package nov
+  :defer t
+  :init
+  (setopt nov-save-place-file (expand-file-name "nov-places" my/emacs-cache-dir))
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+
 ;; TODO
 ;; (use-package org-transclusion
 ;;   :after org
