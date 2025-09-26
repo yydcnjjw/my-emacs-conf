@@ -52,7 +52,7 @@
           org-log-reschedule 'time
           org-log-repeat 'time
           org-log-done 'time
-          org-agenda-hide-tags-regexp "todo\\|habit"
+          org-agenda-hide-tags-regexp "todo\\|habit\\|inbox"
           org-habit-show-all-today t
           org-archive-location ".org_archive::* From %s"
           org-agenda-custom-commands
@@ -68,9 +68,12 @@
             ("i" "inbox view"
              ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
             ("p" "project group view"
-             ((alltodo "" ((org-agenda-files (my/agenda-project-files))
+             ((alltodo "" ((org-agenda-files (append (list my/agenda-inbox-file) (my/agenda-project-files)))
                            (org-super-agenda-groups
-                            '((:auto-category)))))))))
+                            '((:name "Inbox"
+                                     :tag "inbox"
+                                     :order 1)
+                              (:order-multi (2 (:auto-category t)))))))))))
   :config
   (require 'my-org-theme)
   (require 'my-im)
