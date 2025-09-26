@@ -87,8 +87,12 @@
     (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
   (setopt org-refile-targets '((my/agenda-project-files . (:maxlevel . 3)))
           org-refile-target-verify-function 'my/org-refile-target-verify-function)
+
+  (defun my/init-when-org-agenda-finalize()
+    (setq-local olivetti-body-width 120)
+    (olivetti-mode))
   :hook
-  ((org-agenda-mode . my/setup-prettify-symbols)
+  ((org-agenda-finalize . my/init-when-org-agenda-finalize)
    (after-save . my/agenda-sync-after-save-hook-func)))
 
 (use-package org-ql
