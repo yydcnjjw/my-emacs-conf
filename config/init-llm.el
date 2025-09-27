@@ -35,7 +35,7 @@
 (use-package llm
   :ensure separedit
   :bind
-  (("C-c t" . my/translate-dwim))
+  (("C-c t" . my/translate-main-menu))
   :init
   (setopt llm-warn-on-nonfree nil)
   :config
