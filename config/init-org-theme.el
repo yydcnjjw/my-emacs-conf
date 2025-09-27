@@ -102,6 +102,7 @@
 
     (variable-pitch-mode)
     (visual-line-mode)
+    (pixel-scroll-precision-mode)
 
     (setq-local olivetti-body-width 120)
 
