@@ -73,7 +73,10 @@
                             '((:name "Inbox"
                                      :tag "inbox"
                                      :order 1)
-                              (:order-multi (2 (:auto-category t)))))))))))
+                              (:name "Working"
+                                     :tag "working"
+                                     :order 2)
+                              (:order-multi (3 (:auto-category t)))))))))))
   :config
   (require 'my-org-theme)
   (require 'my-im)
