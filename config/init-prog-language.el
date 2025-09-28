@@ -108,7 +108,10 @@
   (my/treesit-register
    '(:lang go
            :source ("https://github.com/tree-sitter/tree-sitter-go")
-           :mode (go-ts-mode go-mod-ts-mode))))
+           :mode (go-ts-mode))
+   '(:lang gomod
+           :source ("https://github.com/camdencheek/tree-sitter-go-mod")
+           :mode (go-mod-ts-mode))))
 
 (use-package php-mode
   :defer t
