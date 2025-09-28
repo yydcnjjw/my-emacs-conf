@@ -62,6 +62,16 @@
      (set-face-attribute 'shr-text frame :height 1.2)))
   )
 
+(use-package emacs
+  :after org-capture
+  :defines org-capture-templates
+  :init
+  (add-to-list 'org-capture-templates
+               '("e" "Elfeed"
+                 entry (file my/agenda-inbox-file)
+                 (function my/gtd-capture-elfeed-template)
+                 :kill-buffer t)))
+
 (use-package elfeed-org
   :after elfeed
   :defines my/elfeed-org-files

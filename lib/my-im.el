@@ -33,7 +33,6 @@
 (require 'org-agenda)
 (require 'org-capture)
 (require 'org-ql)
-(require 'elfeed-db)
 
 (defcustom my/im-dir "~/workspace/my-im"
   "IM directory."
@@ -172,15 +171,6 @@
          (path (plist-get todo-heading-prop ':path)))
     (set-buffer (org-capture-target-buffer path))
     (goto-char point)))
-
-(defun my/gtd-capture-elfeed-template ()
-  "GTD capture elfeed template."
-  ;; TODO: warn
-  (let* ((entry elfeed-show-entry)
-         (title (elfeed-entry-title entry))
-         (link (elfeed-entry-link entry)))
-    (format "* TODO [[%s][%s]] :reading:" link title))
-  )
 
 (provide 'my-im)
 

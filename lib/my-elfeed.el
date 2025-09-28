@@ -32,6 +32,7 @@
 
 (require 'xml)
 (require 'elfeed-search)
+(require 'elfeed-show)
 
 (defcustom my/elfeed-org-files (list (locate-user-emacs-file "elfeed.org"))
   "Elfeed org files."
@@ -85,10 +86,10 @@ coding system from XML encoding declaration."
          (filter (elfeed-search-parse-filter query))
          (func (byte-compile (elfeed-search-compile-filter filter))))
     (with-elfeed-db-visit (entry feed)
-                          (when (funcall func entry feed count)
-                            (when (null first-entry)
-                              (setq first-entry entry))
-                            (setf count (1+ count))))
+      (when (funcall func entry feed count)
+        (when (null first-entry)
+          (setq first-entry entry))
+        (setf count (1+ count))))
     (cons count first-entry)))
 
 (defun my/elfeed-query-count (query)
@@ -112,10 +113,10 @@ coding system from XML encoding declaration."
          (entry (cdr count-and-first-entry)))
     (when (> newcnt my/elfeed-unread-count)
       (elfeed-log 'info (format "alert %s" (elfeed-entry-title entry)))
-      (when (featurep 'alert)
-        ;; TODO: warn
-        (alert (elfeed-entry-title entry)
-               :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))))
+      ;; (when (featurep 'alert)
+      ;;   ;; TODO: alert
+      ;;   (alert (elfeed-entry-title entry)
+      ;;          :title (format "elfeed updated %d" (- newcnt my/elfeed-unread-count))))
       )))
 
 (defun my/elfeed-update-feed-bg (url)
@@ -166,7 +167,7 @@ coding system from XML encoding declaration."
   (elfeed-log 'info "Automatic update has been completed")
   ;; (unless my/elfeed-update-timer
   ;;   (setq my/elfeed-unread-count (my/elfeed-query-count "+unread"))
-    
+
   ;;   (setq my/elfeed-update-timer
   ;;         (run-with-timer
   ;;          1 1
@@ -190,6 +191,14 @@ coding system from XML encoding declaration."
   (interactive)
   (setq my/elfeed-update-timer
         (run-at-time nil my/elfeed-update-interval #'my/elfeed-async-update)))
+
+(defun my/gtd-capture-elfeed-template ()
+  "GTD capture elfeed template."
+  ;; TODO: warn
+  (let* ((entry elfeed-show-entry)
+         (title (elfeed-entry-title entry))
+         (link (elfeed-entry-link entry)))
+    (format "* TODO [[%s][%s]] :reading:" link title)))
 
 (provide 'my-elfeed)
 

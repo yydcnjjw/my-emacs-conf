@@ -105,24 +105,18 @@
   :defer t
   :after org)
 
-(use-package org-capture
-  :straight nil
-  :defer t
-  :after org-agenda
+(use-package emacs
+  :after org-capture
+  :defines org-capture-templates
   :config
-  (setq org-capture-templates
-        `(("t" "Todo heading"
-           entry (function my/gtd-capture-todo-heading-function)
-           "* TODO %:description%?\n%U\n\n  %i"
-           :kill-buffer t)
-          ("i" "Inbox"
-           entry (file my/agenda-inbox-file)
-           "* TODO %:description%?\n%U\n\n  %i"
-           :kill-buffer t)
-          ("e" "Elfeed"
-           entry (file my/agenda-inbox-file)
-           (function my/gtd-capture-elfeed-template)
-           :kill-buffer t))))
+  (add-to-list 'org-capture-templates '("t" "Todo heading"
+                                        entry (function my/gtd-capture-todo-heading-function)
+                                        "* TODO %:description%?\n%U\n\n  %i"
+                                        :kill-buffer t))
+  (add-to-list 'org-capture-templates '("i" "Inbox"
+                                        entry (file my/agenda-inbox-file)
+                                        "* TODO %:description%?\n%U\n\n  %i"
+                                        :kill-buffer t)))
 
 (use-package org-super-agenda
   :defer t
