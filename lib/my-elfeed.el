@@ -194,7 +194,6 @@ coding system from XML encoding declaration."
 
 (defun my/gtd-capture-elfeed-template ()
   "GTD capture elfeed template."
-  ;; TODO: warn
   (let* ((entry elfeed-show-entry)
          (title (elfeed-entry-title entry))
          (link (elfeed-entry-link entry)))

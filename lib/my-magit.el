@@ -1,4 +1,4 @@
-;;; init-vc.el --- vc -*- lexical-binding: t -*-
+;;; my-magit.el --- magit -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
@@ -30,33 +30,15 @@
 
 ;;; Code:
 
-(require 'my-path)
+(require 'forge)
 
-(use-package magit
-  :defer t
-  :config
-  (require 'my-magit))
+(defun my/gtd-capture-forge-topic-template ()
+  "GTD capture topic template."
+  (let* ((topic (forge-current-topic))
+         (title (oref topic title))
+         (link (forge-get-url topic)))
+    (format "* TODO [[%s][%s]]" link title)))
 
-(use-package forge
-  :defer t
-  :after magit
-  :init
-  (setopt forge-database-file
-          (expand-file-name "forge-database.sqlite" my/emacs-cache-dir)))
+(provide 'my-magit)
 
-(use-package emacs
-  :after org-capture
-  :defines org-capture-templates
-  :init
-  (add-to-list 'org-capture-templates
-               '("f" "Forge"
-                 entry (file my/agenda-inbox-file)
-                 (function my/gtd-capture-forge-topic-template)
-                 :kill-buffer t)))
-
-(use-package vc-msg
-  :defer t)
-
-(provide 'init-vc)
-
-;;; init-vc.el ends here
+;;; my-magit.el ends here
