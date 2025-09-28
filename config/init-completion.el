@@ -65,6 +65,7 @@
   :ensure t
   :after corfu
   :config
+  (setopt corfu-left-margin-width 5.0)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (provide 'init-completion)
