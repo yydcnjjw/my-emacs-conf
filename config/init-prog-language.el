@@ -129,7 +129,7 @@
 ;; YAML
 (use-package yaml-pro
   :after treesit
-  :hook (yaml-mode . yaml-pro-ts-mode)
+  :hook (yaml-ts-mode . yaml-pro-ts-mode)
   :mode ("\\.ya?ml\\'" . yaml-ts-mode)
   :init
   (my/treesit-register
