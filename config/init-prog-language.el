@@ -42,8 +42,14 @@
     (dolist (mode modes)
       (add-hook 'hack-local-variables-hook
                 #'(lambda ()
-                    (when (derived-mode-p mode) (lsp)))))
-    ))
+                    (when (derived-mode-p mode) (lsp)))))))
+
+(use-package emacs
+  :after treesit
+  :functions (my/treesit-setup my/treesit-register)
+  :init
+  (require 'my-treesit)
+  (my/treesit-setup))
 
 (my/require-modules
  init-rust
@@ -68,14 +74,41 @@
             "--malloc-trim"))
   :mode
   (("\\.ipp\\'" . c++-mode)
-   ("\\.mm\\'" . objc-mode)
-   ("\\.cmake\\'" . cmake-ts-mode)))
+   ("\\.mm\\'" . objc-mode)))
 
-(use-package go-mode
-  :defer t
+(use-package emacs
+  :after treesit
+  :mode (("\\.cmake\\'" . cmake-ts-mode))
   :init
-  (my/lsp-register-major-mode 'go-mode)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist
+               '(c-or-c++-mode . c-or-c++-ts-mode))
+  (my/treesit-register
+   '(:lang cpp
+           :source ("https://github.com/tree-sitter/tree-sitter-cpp")
+           :mode (c++-mode c++-ts-mode))
+   '(:lang c
+           :source ("https://github.com/tree-sitter/tree-sitter-c")
+           :mode (c-mode c-ts-mode))
+   '(:lang cmake
+           :source ("https://github.com/uyha/tree-sitter-cmake")
+           :mode (cmake-ts-mode))))
+;; go
+(use-package emacs
+  :mode (("\\.go\\'" . go-ts-mode)
+         ("/go\\.mod\\'" . go-mod-ts-mode))
+  :init
+  (my/lsp-register-major-mode 'go-ts-mode 'go-mod-ts-mode)
   (setopt go-ts-mode-indent-offset 4))
+
+(use-package emacs
+  :after treesit
+  :init
+  (my/treesit-register
+   '(:lang go
+           :source ("https://github.com/tree-sitter/tree-sitter-go")
+           :mode (go-ts-mode go-mod-ts-mode))))
 
 (use-package php-mode
   :defer t
@@ -93,9 +126,16 @@
 (use-package json-mode
   :defer t)
 
+;; YAML
 (use-package yaml-pro
-  :defer t
-  :hook (yaml-mode . yaml-pro-ts-mode))
+  :after treesit
+  :hook (yaml-mode . yaml-pro-ts-mode)
+  :mode ("\\.ya?ml\\'" . yaml-ts-mode)
+  :init
+  (my/treesit-register
+   '(:lang yaml
+           :source ("https://github.com/tree-sitter-grammars/tree-sitter-yaml")
+           :mode (yaml-ts-mode))))
 
 (use-package markdown-mode
   :defer t

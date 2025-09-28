@@ -30,7 +30,8 @@
 
 ;;; Code:
 
-(use-package rust-mode
+(use-package emacs
+  :mode (("\\.rs\\'" . rust-ts-mode))
   :init
   (setopt rust-indent-offset 4
           lsp-rust-analyzer-diagnostics-enable-experimental t
@@ -40,7 +41,7 @@
   :commands
   (my/lsp-rust-analyzer-set-target)
   :init
-  (my/lsp-register-major-mode 'rust-mode)
+  (my/lsp-register-major-mode 'rust-ts-mode)
   :config
   (require 'my-rust)
   ;; (with-eval-after-load 'lsp
@@ -48,6 +49,15 @@
   ;;     (setf (lsp--client-major-modes client) '(rust-mode rust-ts-mode)))
   ;;   (add-to-list 'lsp-language-id-configuration '(rust-ts-mode . "rust")))
   )
+
+(use-package emacs
+  :after treesit
+  :functions my/treesit-register
+  :init
+  (my/treesit-register
+   '(:lang rust
+           :source ("https://github.com/tree-sitter/tree-sitter-rust")
+           :mode (rust-ts-mode))))
 
 (provide 'init-rust)
 
