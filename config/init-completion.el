@@ -30,6 +30,8 @@
 
 ;;; Code:
 
+(require 'my-frame)
+
 (use-package corfu
   :commands
   (global-corfu-mode
@@ -49,6 +51,11 @@
   :init
   (setopt tab-always-indent 'complete
           text-mode-ispell-word-completion nil))
+
+(use-package corfu-terminal
+  :commands corfu-terminal-mode
+  :init
+  (my/eval-if-terminal (lambda (_) (corfu-terminal-mode))))
 
 (use-package dabbrev
   :defer t

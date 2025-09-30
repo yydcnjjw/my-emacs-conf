@@ -42,6 +42,18 @@ if we're in a graphic regardless of daemon or not."
     `(when (display-graphic-p)
        (funcall ,action (selected-frame)))))
 
+(defmacro my/eval-if-terminal (action &optional depth)
+  "Do specified ACTION with DEPTH.
+
+if we're in a graphic regardless of daemon or not."
+  (if (daemonp)
+      `(add-hook 'after-make-frame-functions
+                 #'(lambda (frame)
+                     (unless (display-graphic-p frame)
+                       (funcall ,action frame))) ,depth)
+    `(unless (display-graphic-p)
+       (funcall ,action (selected-frame)))))
+
 (defun my/is-screen-2k (&optional frame)
   "Is screen 2k with FRAME."
   (> (display-pixel-width frame) 1920))
