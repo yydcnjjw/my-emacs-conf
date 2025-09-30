@@ -121,7 +121,7 @@
   :straight (:host github :repo "manateelazycat/fingertip"
                    :branch "master")
   :hook
-  ((prog-mode text-mode) . fingertip-mode)
+  ((prog-mode org-mode markdown-mode) . fingertip-mode)
   :config
   (require 'my-fingertip)
   (my/setup-fingertip-default-bindings))
