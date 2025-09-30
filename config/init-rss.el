@@ -72,16 +72,22 @@
                  (function my/gtd-capture-elfeed-template)
                  :kill-buffer t)))
 
-(use-package elfeed-org
+;; (use-package elfeed-org
+;;   :after elfeed
+;;   :defines my/elfeed-org-files
+;;   :commands elfeed-org
+;;   :functions rmh-elfeed-org-process
+;;   :init
+;;   (setopt rmh-elfeed-org-files my/elfeed-org-files)
+;;   (elfeed-org)
+;;   ;; update elfeed list after loading
+;;   (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
+
+(use-package elfeed-protocol
   :after elfeed
-  :defines my/elfeed-org-files
-  :commands elfeed-org
-  :functions rmh-elfeed-org-process
+  :commands elfeed-protocol-enable
   :init
-  (setopt rmh-elfeed-org-files my/elfeed-org-files)
-  (elfeed-org)
-  ;; update elfeed list after loading
-  (rmh-elfeed-org-process rmh-elfeed-org-files rmh-elfeed-org-tree-id))
+  (elfeed-protocol-enable))
 
 ;; (use-package elfeed-webkit
 ;;   :ensure
