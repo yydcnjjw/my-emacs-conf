@@ -173,11 +173,11 @@
   :if (daemonp)
   :commands
   (org-wild-notifier-mode)
+  :hook
+  ((after-init . org-wild-notifier-mode))
   :init
   (setopt org-wild-notifier-alert-time '(10 1)
-          org-wild-notifier-keyword-whitelist '("TODO" "NEXT"))
-  :config
-  (org-wild-notifier-mode))
+          org-wild-notifier-keyword-whitelist '("TODO" "NEXT")))
 
 (use-package ox-hugo
   :defer t
