@@ -1,9 +1,9 @@
-;;; init-config.el --- config -*- lexical-binding: t -*-
+;;; init-tm.el --- time management -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
 ;; Version: version
-;; Package-Requires: ()
+;; Package-Requires: (dependencies)
 ;; Homepage: homepage
 ;; Keywords: keywords
 
@@ -30,37 +30,16 @@
 
 ;;; Code:
 
-(require 'my-loading)
+(require 'my-path)
 
-(let (;; 加载的时候临时增大 `gc-cons-threshold' 以加速启动速度。
-      (gc-cons-threshold most-positive-fixnum)
-      (gc-cons-percentage 0.6))
+(use-package org-clock
+  :straight nil
+  :after org-agenda
+  :config
+  (setopt org-clock-idle-time 3
+          org-clock-auto-clockout-timer (* 3 60))
+  (org-clock-auto-clockout-insinuate))
 
-  (my/require-modules
-   init-package
-   ;; init-bench
-   init-os
-   init-ui
-   init-generic
-   init-edit
-   init-project
-   init-vc
-   init-completing-read
-   init-completion
-   init-language-completion
-   init-prog-language
-   init-syntax-check
-   init-org
-   init-im
-   init-tm
-   init-rss
-   init-llm
-   init-email
-   init-term
-   )
-  )
+(provide 'init-tm)
 
-
-(provide 'init-config)
-
-;;; init-config.el ends here
+;;; init-tm.el ends here
