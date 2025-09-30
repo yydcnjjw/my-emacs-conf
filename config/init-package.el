@@ -30,8 +30,7 @@
 
 ;;; Code:
 
-(setopt package-enable-at-startup nil
-        native-comp-async-report-warnings-errors nil
+(setopt native-comp-async-report-warnings-errors nil
         straight-log t)
 
 (defvar bootstrap-version)
