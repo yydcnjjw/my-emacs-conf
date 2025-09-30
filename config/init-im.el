@@ -183,6 +183,18 @@
   :defer t
   :after ox)
 
+(use-package pdf-tools
+  :defer t
+  :commands (pdf-loader-install pdf-tools-install)
+  :init
+  (defun my/pdf-tools-setup ()
+    (if (daemonp)
+        (pdf-loader-install)
+      (pdf-tools-install)))
+  :hook
+  ((after-init . my/pdf-tools-setup)
+   (pdf-view-mode . pdf-view-midnight-minor-mode)))
+
 (use-package nov
   :defer t
   :init
