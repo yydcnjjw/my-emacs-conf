@@ -123,27 +123,7 @@ coding system from XML encoding declaration."
   "Elfeed async update."
   (elfeed-log 'info "starting automatically update")
   (elfeed-update)
-  (elfeed-log 'info "Automatic update has been completed")
-  ;; (unless my/elfeed-update-timer
-  ;;   (setq my/elfeed-unread-count (my/elfeed-query-count "+unread"))
-
-  ;;   (setq my/elfeed-update-timer
-  ;;         (run-with-timer
-  ;;          1 1
-  ;;          (lambda ()
-  ;;            (if (> (elfeed-queue-count-total) 0)
-  ;;                (if (< my/elfeed-pending-count my/elfeed-unjam-threshold)
-  ;;                    (progn
-  ;;                      (setq my/elfeed-pending-count (+ my/elfeed-pending-count 1))
-  ;;                      (elfeed-log 'debug "%d jobs pending" (elfeed-queue-count-total)))
-  ;;                  (setq my/elfeed-pending-count 0)
-  ;;                  (elfeed-unjam)
-  ;;                  (my/elfeed-reset-update-timer))
-  ;;              (setq my/elfeed-pending-count 0)
-  ;;              (my/elfeed-reset-update-timer)
-  ;;              (elfeed-log 'info "Automatic update has been completed")
-  ;;              (my/elfeed-alert-update-unread))))))
-  )
+  (elfeed-log 'info "Automatic update has been completed"))
 
 (defun my/elfeed-auto-update ()
   "Elfeed auto update after TIME."
