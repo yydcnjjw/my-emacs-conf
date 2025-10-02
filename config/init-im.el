@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'my-path)
+(require 'my-rclone)
 
 (use-package org
   :defer t
@@ -40,10 +41,11 @@
   :init
   (setopt org-id-locations-file (expand-file-name ".org-id-locations" my/emacs-cache-dir)))
 
+(use-package org-ql
+  :defer t)
+
 (use-package org-agenda
   :straight nil
-  :defer t
-  :after org
   :init
   (setopt org-agenda-tags-column -100
           org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)"))
@@ -78,19 +80,18 @@
                                      :order 2)
                               (:order-multi (3 (:auto-category t)))))))))))
   :config
-  (require 'my-org-theme)
   (require 'my-im)
   (setopt org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'ol-man)
-
   :init
-  (when (daemonp)
-    (require 'my-im)
-    (my/async-agenda-sync-remote))
+  (defun my/start-im-sync ()
+    (when (daemonp)
+      (my/rclone-server-start "*im-sync*" "gtd:gtd" my/gtd-dir)))
 
   (defun my/org-refile-target-verify-function ()
     (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
+
   (setopt org-refile-targets '((my/agenda-project-files . (:maxlevel . 3)))
           org-refile-target-verify-function 'my/org-refile-target-verify-function)
 
@@ -98,12 +99,9 @@
     (setq-local olivetti-body-width 120)
     (olivetti-mode))
   :hook
-  ((org-agenda-finalize . my/init-when-org-agenda-finalize)
-   (after-save . my/agenda-sync-after-save-hook-func)))
-
-(use-package org-ql
-  :defer t
-  :after org)
+  (
+   ;; (after-init . my/start-im-sync)
+   (org-agenda-finalize . my/init-when-org-agenda-finalize)))
 
 (use-package emacs
   :after org-capture
