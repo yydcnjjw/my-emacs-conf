@@ -42,12 +42,15 @@
          ("B" . my/elfeed-search-webkit-browse-url)))
   :hook
   ((after-init . my/elfeed-auto-update)
-   (elfeed-search-mode . olivetti-mode)
-   (elfeed-show-mode . olivetti-mode))
+   (elfeed-search-mode . my/elfeed-init-mode)
+   (elfeed-show-mode . my/elfeed-init-mode))
   :init
   (setopt shr-inhibit-images t)
+  (defun my/elfeed-init-mode ()
+    (setq-local olivetti-body-width 120)
+    (olivetti-mode))
   :functions
-  (my/elfeed-auto-update)
+  (my/elfeed-auto-update olivetti-mode)
   :config
   (require 'my-elfeed)
 
