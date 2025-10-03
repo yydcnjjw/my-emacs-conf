@@ -41,7 +41,7 @@
   :group 'my
   :type 'string)
 
-(defcustom my/gemini-default-chat-model "gemini-2.5-flash-lite"
+(defcustom my/gemini-default-chat-model "gemini-flash-latest"
   "Gemini default chat model."
   :group 'my
   :type 'string)
