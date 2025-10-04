@@ -31,7 +31,6 @@
 ;;; Code:
 
 (require 'my-path)
-(require 'my-rclone)
 
 (use-package org
   :defer t
@@ -85,10 +84,6 @@
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'ol-man)
   :init
-  (defun my/start-im-sync ()
-    (when (daemonp)
-      (my/rclone-server-start "*im-sync*" "gtd:gtd" my/gtd-dir)))
-
   (defun my/org-refile-target-verify-function ()
     (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
 
@@ -99,9 +94,7 @@
     (setq-local olivetti-body-width 120)
     (olivetti-mode))
   :hook
-  (
-   ;; (after-init . my/start-im-sync)
-   (org-agenda-finalize . my/init-when-org-agenda-finalize)))
+  ((org-agenda-finalize . my/init-when-org-agenda-finalize)))
 
 (use-package emacs
   :after org-capture
