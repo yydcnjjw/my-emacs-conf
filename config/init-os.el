@@ -43,8 +43,14 @@
   (exec-path-from-shell-initialize)
   (setenv "LANG" "en_US.UTF-8"))
 
+(use-package browse-url
+  :straight nil
+  :if my/wsl-p
+  :defer t
+  :config
+  (setopt browse-url-browser-function 'my/browse-url-wsl-open))
+
 (when my/wsl-p
-  (setopt browse-url-browser-function 'my/browse-url-wsl-open)
   ;; https://www.lukas-barth.net/blog/emacs-wsl-copy-clipboard/
   (setq-default select-active-regions nil))
 
