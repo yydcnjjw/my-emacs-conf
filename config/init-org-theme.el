@@ -128,7 +128,7 @@
   (setopt org-hide-emphasis-markers t)
   (setopt org-appear-autoemphasis t
           org-appear-autolinks t
-          org-appear-autosubmarkers t))
+          org-pretty-entities-include-sub-superscripts nil))
 
 
 (use-package org-superstar
