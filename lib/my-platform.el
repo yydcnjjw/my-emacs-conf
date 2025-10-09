@@ -41,10 +41,10 @@
 
 (defconst my/windows-p (eq system-type 'windows-nt))
 
-(defun my/browse-url-wsl-open (url &optional _ignored)
+(defun my/browse-url-wsl-open (url &rest _args)
   "Pass the specified URL to the \"wsl-open\" command.
 wsl-open is a desktop utility that calls your preferred web browser.
-The optional argument IGNORED is not used."
+The optional argument ARGS is not used."
   (interactive (browse-url-interactive-arg "URL: "))
   (call-process "wsl-open" nil 0 nil url))
 
