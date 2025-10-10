@@ -53,7 +53,7 @@
           text-mode-ispell-word-completion nil))
 
 (use-package corfu-terminal
-  :commands corfu-terminal-mode
+  :straight (:repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :init
   (my/eval-if-terminal (lambda (_) (corfu-terminal-mode))))
 
