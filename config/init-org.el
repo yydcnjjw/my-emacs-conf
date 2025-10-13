@@ -45,6 +45,8 @@
   (my/setup-org-latex-preview)
   (my/setup-ruby-org-link)
 
+  (require 'org-tempo)
+
   ;; `org-babel'
   ;; ditaa
   ;; (my/push-load-org-babel-language 'ditaa)
