@@ -61,7 +61,7 @@
 ;; C/C++
 (use-package emacs
   :init
-  (my/lsp-register-major-mode 'c-mode 'c++-mode 'objc-mode)
+  (my/lsp-register-major-mode 'c-mode 'c++-mode 'objc-mode 'cmake-ts-mode)
   (setopt lsp-clients-clangd-args
           '("--header-insertion-decorators=0"
             "--header-insertion=never"
@@ -78,7 +78,7 @@
 
 (use-package emacs
   :after treesit
-  :mode (("\\.cmake\\'" . cmake-ts-mode))
+  :mode (("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
   :init
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
