@@ -43,14 +43,16 @@
       (dolist (mode modes)
         (puthash mode `(,lang . ,source) my/treesit-mode-table)))))
 
+(defun my/set-auto-mode-0-before (mode &rest _)
+  "My `advice-add' `set-auto-mode-0' MODE :before."
+  (let ((lang (car (gethash mode my/treesit-mode-table))))
+    (when lang
+      (unless (treesit-language-available-p lang)
+        (treesit-install-language-grammar lang)))))
+
 (defun my/treesit-setup ()
   "Setup treesit."
-  (advice-add 'set-auto-mode-0 :before
-              #'(lambda (mode &rest _)
-                  (let ((lang (car (gethash mode my/treesit-mode-table))))
-                    (when lang
-                      (unless (treesit-language-available-p lang)
-                        (treesit-install-language-grammar lang)))))))
+  (advice-add 'set-auto-mode-0 :before #'my/set-auto-mode-0-before))
 
 (provide 'my-treesit)
 
