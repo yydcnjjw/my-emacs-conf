@@ -46,7 +46,7 @@
 (use-package org-agenda
   :straight nil
   :init
-  (setopt org-agenda-tags-column -100
+  (setopt org-agenda-tags-column 0
           org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)"))
           org-log-into-drawer t
           org-log-redeadline 'time
@@ -88,6 +88,18 @@
   (setopt org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'ol-man)
+
+  (defun my/remove-tags-if-habit (&rest args)
+    (apply
+     #'(lambda (extra txt &optional with-level with-category tags dotime
+				      remove-re habitp)
+         (when habitp
+           (setq tags '()))
+         (list extra txt with-level with-category tags dotime
+		       remove-re habitp))
+     (car args)))
+  (advice-add 'org-agenda-format-item :filter-args #'my/remove-tags-if-habit)
+
   :init
   (defun my/org-refile-target-verify-function ()
     (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
