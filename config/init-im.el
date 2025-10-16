@@ -55,9 +55,10 @@
           org-log-done 'time
           org-agenda-hide-tags-regexp "todo\\|habit\\|inbox"
           org-habit-show-all-today t
+          org-habit-graph-column 60
           org-archive-location ".org_archive::* From %s"
           org-agenda-custom-commands
-          '(("d" "today view"
+          '(("d" "Today view"
              ((agenda "" ((org-agenda-span 'day)
                           (org-agenda-show-log t)
                           (org-agenda-log-mode-add-notes nil)
@@ -66,9 +67,13 @@
                            '((:name "Today"
                                     :time-grid t
                                     :habit t)))))))
-            ("i" "inbox view"
+            ("i" "Inbox view"
              ((alltodo "" ((org-agenda-files (list my/agenda-inbox-file))))))
-            ("p" "project group view"
+            ("D" "Done or canceled view"
+             ((todo "DONE|CANCELED" ((org-agenda-files
+                                      (append (list my/agenda-inbox-file)
+                                              (my/agenda-project-files)))))))
+            ("p" "Project group view"
              ((alltodo "" ((org-agenda-files (append (list my/agenda-inbox-file) (my/agenda-project-files)))
                            (org-super-agenda-groups
                             '((:name "Inbox"
