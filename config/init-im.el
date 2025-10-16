@@ -47,6 +47,7 @@
   :straight nil
   :init
   (setopt org-agenda-tags-column 0
+          org-agenda-show-inherited-tags nil
           org-todo-keywords '((sequence "NEXT(n)" "TODO(t)" "|" "DONE(d)" "CANCELED(c@)"))
           org-log-into-drawer t
           org-log-redeadline 'time
