@@ -78,10 +78,10 @@
              ((alltodo "" ((org-agenda-files (append (list my/agenda-inbox-file) (my/agenda-project-files)))
                            (org-super-agenda-groups
                             '((:name "Inbox"
-                                     :tag "inbox"
+                                     :file-path "inbox"
                                      :order 1)
                               (:name "Working"
-                                     :tag "working"
+                                     :file-path "working"
                                      :order 2)
                               (:order-multi (3 (:auto-category t)))))))))))
   :config
