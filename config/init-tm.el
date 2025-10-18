@@ -32,13 +32,13 @@
 
 (require 'my-path)
 
-(use-package org-clock
-  :straight nil
-  :after org-agenda
-  :config
-  (setopt org-clock-idle-time 3
-          org-clock-auto-clockout-timer (* 3 60))
-  (org-clock-auto-clockout-insinuate))
+;; (use-package org-clock
+;;   :straight nil
+;;   :after org-agenda
+;;   :config
+;;   (setopt org-clock-idle-time 3
+;;           org-clock-auto-clockout-timer (* 3 60))
+;;   (org-clock-auto-clockout-insinuate))
 
 (provide 'init-tm)
 
