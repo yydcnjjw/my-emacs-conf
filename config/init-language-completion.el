@@ -49,7 +49,8 @@
           lsp-completion-provider :none
           lsp-auto-execute-action nil
           lsp-keep-workspace-alive nil
-          lsp-session-file (expand-file-name ".lsp-session-v1" my/emacs-cache-dir))
+          lsp-session-file (expand-file-name ".lsp-session-v1" my/emacs-cache-dir)
+          read-process-output-max (* 1024 1024 5))
   :hook
   ((lsp-completion-mode . my/lsp-completion-mode))
   :config
