@@ -1,9 +1,9 @@
-;;; init-config.el --- config -*- lexical-binding: t -*-
+;;; init-mtool.el --- mtool -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
 ;; Version: version
-;; Package-Requires: ()
+;; Package-Requires: (dependencies)
 ;; Homepage: homepage
 ;; Keywords: keywords
 
@@ -28,40 +28,18 @@
 
 ;; commentary
 
+
 ;;; Code:
 
-(require 'my-loading)
+(require 'my-mtool)
 
-(let (;; 加载的时候临时增大 `gc-cons-threshold' 以加速启动速度。
-      (gc-cons-threshold most-positive-fixnum)
-      (gc-cons-percentage 0.6))
+(use-package emacs
+  :hook
+  (after-init . my/mtool-run)
+  :init
+  (eval-after-load 'org-clock
+    (advice-add 'org-user-idle-seconds :override 'my/mtool-user-idle)))
 
-  (my/require-modules
-   init-package
-   ;; init-bench
-   init-os
-   init-ui
-   init-generic
-   init-edit
-   init-project
-   init-vc
-   init-completing-read
-   init-completion
-   init-language-completion
-   init-prog-language
-   init-syntax-check
-   init-org
-   init-im
-   init-tm
-   init-rss
-   init-llm
-   init-email
-   init-term
-   init-mtool
-   )
-  )
+(provide 'init-mtool)
 
-
-(provide 'init-config)
-
-;;; init-config.el ends here
+;;; init-mtool.el ends here
