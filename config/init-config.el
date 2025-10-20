@@ -32,7 +32,8 @@
 
 (require 'my-loading)
 
-(let (;; 加载的时候临时增大 `gc-cons-threshold' 以加速启动速度。
+(let (;; Loading temporarily increase `gc-cons-threshold' to
+      ;; accelerate startup speed.
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.6))
 
