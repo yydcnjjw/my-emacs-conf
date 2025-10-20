@@ -47,6 +47,7 @@
 
 (declare-function mtool-entry-start "mtool")
 (declare-function mtool-user-idle "mtool")
+(declare-function mtool-alert "mtool")
 
 (defvar my/mtool-emacs-context nil)
 
@@ -59,10 +60,6 @@
      (message "%s" err)
      nil)))
 
-(defun my/mtool-user-idle ()
-  "Mtool user idle."
-  (mtool-user-idle my/mtool-emacs-context))
-
 (defun my/mtool-run ()
   "Mtool run."
   (unless (featurep 'mtool)
@@ -70,6 +67,19 @@
       (add-to-list 'load-path my/mtool-module-load-path)
       (require my/mtool-module-name)
       (my/mtool-entry-start))))
+
+(defun my/mtool-user-idle ()
+  "Mtool user idle."
+  (mtool-user-idle my/mtool-emacs-context))
+
+(defun my/mtool-alert (info)
+  "Mtool alert with INFO."
+  (let ((message (plist-get info :message))
+        (title (plist-get info :title))
+        (category (symbol-name (plist-get info :category)))
+        (id (symbol-name (plist-get info :id)))
+        (icon (plist-get info :icon)))
+    (mtool-alert my/mtool-emacs-context message title category id icon)))
 
 (provide 'my-mtool)
 

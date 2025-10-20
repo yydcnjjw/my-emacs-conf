@@ -35,10 +35,20 @@
 
 (use-package emacs
   :hook
-  (after-init . my/mtool-run)
+  (after-init . my/mtool-run))
+
+(use-package emacs
+  :after org-clock
   :init
-  (eval-after-load 'org-clock
-    (advice-add 'org-user-idle-seconds :override 'my/mtool-user-idle)))
+  (advice-add 'org-user-idle-seconds :override 'my/mtool-user-idle))
+
+(use-package emacs
+  :after alert
+  :functions alert-define-style
+  :init
+  (alert-define-style 'mtool :title "Mtool"
+                      :notifier #'my/mtool-alert)
+  (setopt alert-default-style 'mtool))
 
 (provide 'init-mtool)
 

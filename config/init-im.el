@@ -178,15 +178,14 @@
   :config
   (org-roam-ui-mode))
 
-(use-package org-wild-notifier
+(use-package org-alert
   :if (daemonp)
-  :commands
-  (org-wild-notifier-mode)
   :hook
-  ((after-init . org-wild-notifier-mode))
+  ((after-init . org-alert-enable))
   :init
-  (setopt org-wild-notifier-alert-time '(10 1)
-          org-wild-notifier-keyword-whitelist '("TODO" "NEXT")))
+  (setopt org-alert-interval 300
+          org-alert-notify-cutoff 10
+          org-alert-notify-after-event-cutoff 10))
 
 (use-package ox-hugo
   :defer t
