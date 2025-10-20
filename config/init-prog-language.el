@@ -69,9 +69,7 @@
             "--clang-tidy-checks=performance-*,bugprone-*"
             "--background-index"
             "--all-scopes-completion"
-            "--pch-storage=memory"
-            "-j=4"
-            "--malloc-trim"))
+            "--pch-storage=memory"))
   :mode
   (("\\.ipp\\'" . c++-mode)
    ("\\.mm\\'" . objc-mode)))
