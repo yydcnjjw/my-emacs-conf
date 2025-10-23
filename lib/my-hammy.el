@@ -1,4 +1,4 @@
-;;; init-tm.el --- time management -*- lexical-binding: t -*-
+;;; my-hammy.el --- hammy -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
@@ -30,22 +30,26 @@
 
 ;;; Code:
 
-(require 'my-path)
+(require 'hammy)
+(require 'alert)
 
-(use-package org-clock
-  :straight nil
-  :after org-agenda
-  :init
-  (setopt org-clock-auto-clockout-timer (* 3 60))
-  (org-clock-auto-clockout-insinuate))
+(hammy-define "Waiting"
+  :documentation "Single-use timer that prompts for name and duration."
+  :complete-p (do (> cycles 0))
+  :before
+  (lambda (hammy)
+    (hammy-reset hammy)
+    (setf (hammy-intervals hammy)
+          (ring-convert-sequence-to-ring
+           (list (interval
+                  :name "Waiting"
+                  :duration (read-string "Duration: ")
+                  :advance 'auto)))))
+  :after
+  (lambda (_)
+    (message "Waiting is over!")
+    (alert "Waiting is over!")))
 
-(use-package hammy
-  :defer t
-  :commands hammy-mode
-  :config
-  (require 'my-hammy)
-  (hammy-mode))
+(provide 'my-hammy)
 
-(provide 'init-tm)
-
-;;; init-tm.el ends here
+;;; my-hammy.el ends here
