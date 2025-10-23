@@ -185,7 +185,8 @@
   :init
   (setopt org-alert-interval 300
           org-alert-notify-cutoff 10
-          org-alert-notify-after-event-cutoff 10))
+          org-alert-notify-after-event-cutoff 10
+          org-alert-notification-category 'agenda))
 
 (use-package ox-hugo
   :defer t
