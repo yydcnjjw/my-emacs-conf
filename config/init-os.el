@@ -65,6 +65,16 @@
 ;; url
 (setopt url-configuration-directory (expand-file-name "url" my/emacs-cache-dir))
 
+(use-package dirvish
+  :defer t
+  :hook
+  ((after-init . dirvish-override-dired-mode))
+  :init
+  (setopt dirvish-attributes  (append
+                               '(vc-state subtree-state nerd-icons collapse)
+                               '(git-msg file-modes file-time file-size))
+          dirvish-cache-dir (expand-file-name "dirvish/" my/emacs-cache-dir)))
+
 (provide 'init-os)
 
 ;;; init-os.el ends here
