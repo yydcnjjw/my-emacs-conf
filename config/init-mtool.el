@@ -45,10 +45,11 @@
 (use-package emacs
   :after alert
   :functions alert-define-style
+  :defines alert-default-style
   :init
   (alert-define-style 'mtool :title "Mtool"
                       :notifier #'my/mtool-alert)
-  (setopt alert-default-style 'mtool))
+  (setq alert-default-style 'mtool))
 
 (provide 'init-mtool)
 
