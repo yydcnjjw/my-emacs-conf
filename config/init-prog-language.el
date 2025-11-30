@@ -152,13 +152,13 @@
                    :repo "emacsmirror/protobuf-mode")
   :mode (("\\.proto\\'" . protobuf-mode)))
 
-;; TODO
-;; (use-package d2-mode
-;;   :defer t
-;;   :ensure-system-package d2
-;;   ;; :config
-;;   ;; (my/push-load-org-babel-language 'd2)
-;;   )
+(use-package d2-mode
+  :defer t
+  :ensure-system-package d2
+  :defines org-babel-load-languages
+  :init
+  (with-eval-after-load 'org
+    (add-to-list 'org-babel-load-languages '(d2 . t))))
 
 ;; TODO
 ;; (use-package plantuml-mode
