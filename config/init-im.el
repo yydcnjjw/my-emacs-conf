@@ -86,9 +86,13 @@
                               (:order-multi (3 (:auto-category t)))))))))))
   :config
   (require 'my-im)
-  (setopt org-agenda-files (append (list my/gtd-dir) (my/agenda-project-files)))
+  (setopt org-agenda-files (append
+                            (list my/gtd-dir)
+                            (my/agenda-project-files)))
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'ol-man)
+
+  (add-hook 'org-property-allowed-value-functions 'my/org-property-habit-get-allowed-values)
 
   (defun my/remove-tags-if-habit (&rest args)
     (apply
@@ -159,6 +163,8 @@
                   (propertize "${tags:40}" 'face 'org-tag))
           org-roam-mode-sections
           '(my/org-roam-backlinks-section org-roam-reflinks-section))
+
+  (add-to-list 'org-agenda-files (my/org-dailies-today-file))
   (org-roam-db-autosync-mode))
 
 (use-package org-roam-ui

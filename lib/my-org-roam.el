@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'org-roam)
+(require 'org-roam-dailies)
 
 (defun my/org-roam-backlinks-groupby (backlink)
   "Org roam backlinks groupby with BACKLINK."
@@ -59,6 +60,11 @@ When UNIQUE is t, limit to unique sources."
                              :point (org-roam-backlink-point backlink)
                              :properties (org-roam-backlink-properties backlink)))
                           (insert ?\n))))
+
+
+(defun my/org-dailies-today-file ()
+  "Org roam dailies today file."
+  (expand-file-name (format-time-string "%Y-%m-%d.org") org-roam-dailies-directory))
 
 (provide 'my-org-roam)
 
