@@ -72,6 +72,7 @@
   (setopt ellama-auto-scroll t
           ellama-language "中文"
           ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
+          ellama-community-prompts-file (expand-file-name "ellama" my/emacs-cache-dir)
           ellama-provider (funcall my/gemini-llm-provider)
           ellama-define-word-prompt-template "定义 %s")
   (ellama-session-mode-line-global-mode))
