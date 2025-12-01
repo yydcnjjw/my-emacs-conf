@@ -162,7 +162,11 @@
 ;; table align
 (use-package valign
   :defer t
-  :hook (org-mode . valign-mode))
+  :init
+  (defun my/valign-mode()
+    (when (display-graphic-p)
+      (valign-mode)))
+  :hook (org-mode . my/valign-mode))
 
 (provide 'init-org-theme)
 
