@@ -165,6 +165,11 @@
           '(my/org-roam-backlinks-section org-roam-reflinks-section))
 
   (add-to-list 'org-agenda-files (my/org-dailies-today-file))
+  (add-to-list 'org-capture-templates `("d" "Daily agenda"
+                                        entry (file+headline ,(my/org-dailies-today-file) "Agenda")
+                                        "* %:description%?\n:PROPERTIES:\nCLOCK: %^U--%U\n:END:\n%U\n\n  %i"
+                                        :prepend t
+                                        :jump-to-captured t))
   (org-roam-db-autosync-mode))
 
 (use-package org-roam-ui
