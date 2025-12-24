@@ -41,6 +41,7 @@
   (setopt corfu-auto t
           corfu-auto-prefix 1
           corfu-quit-at-boundary t
+          corfu-quit-no-match t
           corfu-on-exact-match 'show
           corfu-cycle t)
   (global-corfu-mode)
