@@ -34,6 +34,9 @@
   :defer t
   :commands
   (vterm)
+  :bind
+  (:map vterm-mode-map
+        ("C-\\" . toggle-input-method))
   :config
   (set-face-background 'vterm-color-black "#b2b2b2"))
 
