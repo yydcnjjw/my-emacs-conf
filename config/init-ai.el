@@ -1,4 +1,4 @@
-;;; init-config.el --- config -*- lexical-binding: t -*-
+;;; init-ai.el --- ai -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
@@ -30,39 +30,25 @@
 
 ;;; Code:
 
-(require 'my-loading)
+(use-package claude-code
+  :straight (:type git :host github
+                   :repo "stevemolitor/claude-code.el"
+                   :branch "main"
+                   :files ("*.el" (:exclude "images/*")))
+  :bind-keymap
+  ("C-c l" . claude-code-command-map) ;; or your preferred key
+  ;; Optionally define a repeat map so that "M" will cycle thru Claude auto-accept/plan/confirm modes after invoking claude-code-cycle-mode / C-c M.
+  ;; :bind
+  ;; (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode))
+  :init
+  (setopt claude-code-terminal-backend 'vterm)
+  :config
+  ;; optional IDE integration with Monet
+  ;; (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
+  ;; (monet-mode 1)
 
-(let (;; Loading temporarily increase `gc-cons-threshold' to
-      ;; accelerate startup speed.
-      (gc-cons-threshold most-positive-fixnum)
-      (gc-cons-percentage 0.6))
+  (claude-code-mode))
 
-  (my/require-modules
-   init-package
-   ;; init-bench
-   init-os
-   init-ui
-   init-generic
-   init-edit
-   init-project
-   init-vc
-   init-completing-read
-   init-completion
-   init-language-completion
-   init-prog-language
-   init-syntax-check
-   init-org
-   init-im
-   init-tm
-   init-rss
-   init-llm
-   init-email
-   init-term
-   init-ai
-   init-mtool
-   ))
+(provide 'init-ai)
 
-
-(provide 'init-config)
-
-;;; init-config.el ends here
+;;; init-ai.el ends here
