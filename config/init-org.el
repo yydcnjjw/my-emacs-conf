@@ -46,13 +46,8 @@
   (my/setup-ruby-org-link)
 
   (require 'org-tempo)
-
-  ;; `org-babel'
-  ;; ditaa
-  ;; (my/push-load-org-babel-language 'ditaa)
-  ;; dot
-  ;; (my/push-load-org-babel-language 'dot)
-  )
+  :init
+  (setopt org-confirm-babel-evaluate nil))
 
 (use-package org-contrib
   :defer t
