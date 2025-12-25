@@ -47,7 +47,9 @@
 
   (require 'org-tempo)
   :init
-  (setopt org-confirm-babel-evaluate nil))
+  (setopt org-confirm-babel-evaluate nil)
+  :hook
+  ((org-babel-after-execute . org-redisplay-inline-images)))
 
 (use-package org-contrib
   :defer t
