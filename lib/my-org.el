@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'org)
+(require 'ox)
 
 (defface org-ruby-face
   `((t (:inherit underline)))
@@ -111,6 +112,47 @@
   "Insert zero width space."
   (interactive)
   (insert-char #x200b))
+
+(defun my/ox-link-path (link _ info)
+  "Custom ox-link-path with LINK and INFO."
+  (let* ((raw-path (org-element-property :path link)))
+    (setq raw-path
+          (org-export-file-uri
+           (org-publish-file-relative-name raw-path info)))
+    ;; Possibly append `:html-link-home' to relative file
+    ;; name.
+    (let ((home (and (plist-get info :html-link-home)
+                     (org-trim (plist-get info :html-link-home)))))
+      (when (and home
+                 (plist-get info :html-link-use-abs-url)
+                 (not (file-name-absolute-p raw-path)))
+        (setq raw-path (concat (file-name-as-directory home) raw-path))))
+    raw-path))
+
+(defun my/org-html-link (link desc info)
+  "Custom org-html-link export with LINK DESC INFO."
+  (if (and
+       (string= (org-element-property :type link) "file")
+       (not (plist-get (org-export-read-attribute :attr_html (org-element-parent-element link))
+                       :data-link))
+       (org-export-inline-image-p link (plist-get info :html-inline-image-rules)))
+      (let ((path (org-element-property :path link))
+            (attr (org-export-read-attribute :attr_html (org-element-parent-element link))))
+        (if (string= (file-name-extension path) "svg")
+            (with-temp-buffer
+              (insert-file-contents-literally path)
+              (if attr
+                  (replace-regexp-in-string
+                   "<svg "
+                   (concat
+                    "<svg "
+                    (org-html--make-attribute-string attr)
+                    " ")
+                   (buffer-string))
+                (buffer-string)))
+          (org-html-link link desc info)))
+    (org-html-link link desc info)))
+
 
 (provide 'my-org)
 

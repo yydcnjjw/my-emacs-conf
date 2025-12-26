@@ -40,6 +40,8 @@
    (latexmk . texlive))
   :bind (:map org-mode-map
               ("C-x 8 0" . my/insert-zero-width-space))
+  :hook
+  ((org-babel-after-execute . org-redisplay-inline-images))
   :config
   (require 'my-org)
   (my/setup-org-latex-preview)
@@ -48,8 +50,11 @@
   (require 'org-tempo)
   :init
   (setopt org-confirm-babel-evaluate nil)
-  :hook
-  ((org-babel-after-execute . org-redisplay-inline-images)))
+  ;; export HTML with inline SVG
+  (with-eval-after-load 'ox-html
+    (setf
+     (alist-get 'link (org-export-backend-transcoders (org-export-get-backend 'html)))
+     'my/org-html-link)))
 
 (use-package org-contrib
   :defer t
