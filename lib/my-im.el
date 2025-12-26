@@ -103,6 +103,17 @@
     (set-buffer (org-capture-target-buffer path))
     (goto-char point)))
 
+(defun my/org-property-habit-get-allowed-values (property)
+  "The `habit' PROPERTY get allowed values."
+  (when (string-equal-ignore-case property "HABIT")
+    (org-ql-select (my/agenda-project-files)
+      '(and (habit) (property "ID"))
+      :action #'(lambda ()
+                  (propertize
+                   (org-id-get)
+                   'display
+                   (substring-no-properties (org-get-heading t t t t)))))))
+
 (provide 'my-im)
 
 ;;; my-im.el ends here
