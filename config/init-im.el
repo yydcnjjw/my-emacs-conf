@@ -145,7 +145,7 @@
              :host github
              :repo "org-roam/org-roam"
              :branch "main")
-  :defer t
+  :after org-agenda
   :bind (("C-c C-n /" . org-roam-node-find)
          ("C-c C-n r" . org-roam-db-sync)
          ("C-c C-n c" . org-roam-capture)
@@ -155,7 +155,7 @@
           ("C-c C-n t" . org-roam-tag-add)
           ("C-c C-n a" . org-roam-alias-add)
           ("C-c C-n b" . org-roam-buffer-toggle)))
-  :config
+  :init
   (require 'my-org-roam)
   (setopt org-roam-directory my/roam-dir
           org-roam-dailies-directory my/daily-dir
