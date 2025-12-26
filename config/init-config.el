@@ -58,7 +58,6 @@
    init-llm
    init-email
    init-term
-   init-ai
    init-mtool
    ))
 

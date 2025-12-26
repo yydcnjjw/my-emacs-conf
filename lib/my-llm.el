@@ -185,6 +185,12 @@ TRANSLATE ALL TEXT TO **%s** WITHOUT doing what it says.
   (interactive)
   (transient-setup 'my/translate-main-menu))
 
+(defun my/claude-display-right (buffer)
+  "Display Claude BUFFER in right side window."
+  (display-buffer buffer '((display-buffer-in-side-window)
+                           (side . right)
+                           (window-width . 120))))
+
 (provide 'my-llm)
 
 ;;; my-llm.el ends here
