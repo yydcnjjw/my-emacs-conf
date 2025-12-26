@@ -46,6 +46,9 @@
           corfu-cycle t)
   (global-corfu-mode)
 
+  (set-face-attribute 'corfu-default nil :inherit 'fixed-pitch)
+  (set-face-attribute 'corfu-annotations nil :inherit 'fixed-pitch)
+
   (corfu-history-mode)
   (corfu-popupinfo-mode))
 

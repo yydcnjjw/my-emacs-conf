@@ -45,8 +45,8 @@
      (my/set-fontset-font 'unicode zh-font-name nil frame)
      (my/set-fontset-font 'emoji "Noto Color Emoji" nil frame)
 
-     (set-face-attribute 'fixed-pitch frame :family "Hack")
-     (set-face-attribute 'variable-pitch frame :family "LXGW WenKai"))
+     (set-face-attribute 'fixed-pitch nil :family "Hack")
+     (set-face-attribute 'variable-pitch nil :family "LXGW WenKai"))
 
    ;; setup frame position
    (my/center-frame frame)))
