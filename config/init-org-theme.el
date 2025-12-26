@@ -98,8 +98,8 @@
      (set-face-attribute 'org-checkbox frame :inherit '(bold fixed-pitch))))
 
   (defun my/org-theme-init-mode ()
-    (face-remap-add-relative 'default :height 1.25)
-
+    (face-remap-add-relative 'default :height (if (my/is-screen-2k)
+                                                  1.25 1.1))
     (variable-pitch-mode)
     (visual-line-mode)
     (pixel-scroll-precision-mode)
