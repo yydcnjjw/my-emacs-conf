@@ -158,8 +158,6 @@
   :defines org-babel-load-languages
   :init
   (setopt d2-flags '("--theme=200" "--pad=0" "--center" "--sketch"))
-  (with-eval-after-load 'org
-    (add-to-list 'org-babel-load-languages '(d2 . t)))
   :config
   (require 'my-d2)
   (advice-add 'org-babel-execute:d2 :override 'my/org-babel-execute:d2))
