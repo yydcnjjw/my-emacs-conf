@@ -37,7 +37,7 @@
   (push '("[X]" . "") prettify-symbols-alist)
   (push '("[-]" . "" ) prettify-symbols-alist)
 
-  ;; org-abel
+  ;; babel
   (push '("#+BEGIN_SRC" . ?≫) prettify-symbols-alist)
   (push '("#+END_SRC" . ?≫) prettify-symbols-alist)
   (push '("#+begin_src" . ?≫) prettify-symbols-alist)
