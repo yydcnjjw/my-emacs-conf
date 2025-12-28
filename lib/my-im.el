@@ -64,7 +64,7 @@
   :type 'directory
   :group 'my)
 
-(defcustom my/daily-dir (expand-file-name "daily" my/im-dir)
+(defcustom my/daily-dir (expand-file-name "daily" my/roam-dir)
   "GTD directory."
   :type 'directory
   :group 'my)
