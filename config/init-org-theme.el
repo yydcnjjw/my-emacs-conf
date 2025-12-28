@@ -95,7 +95,9 @@
      (set-face-attribute 'org-tag frame :inherit 'fixed-pitch :height 0.85)
      (set-face-attribute 'org-document-info-keyword frame :inherit '(shadow fixed-pitch))
      (set-face-attribute 'org-meta-line frame :inherit '(font-lock-comment-face fixed-pitch))
-     (set-face-attribute 'org-checkbox frame :inherit '(bold fixed-pitch))))
+     (set-face-attribute 'org-checkbox frame :inherit '(bold fixed-pitch)))
+     (set-face-attribute 'org-sexp-date frame :inherit '(fixed-pitch))
+   )
 
   (defun my/org-theme-init-mode ()
     (face-remap-add-relative 'default :height (if (my/is-screen-2k)
