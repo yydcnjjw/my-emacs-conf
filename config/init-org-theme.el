@@ -65,8 +65,7 @@
           (68 . "#81A1C1")
           (69 . "#5E81AC")
           (70 . "#4C566A")))
-  :config
-  (require 'my-org-theme)
+
   (my/eval-if-graphic
    (lambda (frame)
      (dolist (face '((org-level-1 . 1.4)
@@ -79,7 +78,6 @@
                      (org-level-8 . 1.1)))
        (set-face-attribute (car face) frame :height (cdr face)))
 
-     (require 'org-indent)
      (set-face-attribute 'org-indent frame :inherit '(org-hide fixed-pitch))
 
      (set-face-attribute 'org-block frame :inherit 'fixed-pitch :height 0.85)
@@ -95,9 +93,8 @@
      (set-face-attribute 'org-tag frame :inherit 'fixed-pitch :height 0.85)
      (set-face-attribute 'org-document-info-keyword frame :inherit '(shadow fixed-pitch))
      (set-face-attribute 'org-meta-line frame :inherit '(font-lock-comment-face fixed-pitch))
-     (set-face-attribute 'org-checkbox frame :inherit '(bold fixed-pitch)))
-     (set-face-attribute 'org-sexp-date frame :inherit 'fixed-pitch :height 0.85)
-   )
+     (set-face-attribute 'org-checkbox frame :inherit '(bold fixed-pitch))
+     (set-face-attribute 'org-sexp-date frame :inherit 'fixed-pitch :height 0.85)))
 
   (defun my/org-theme-init-mode ()
     (face-remap-add-relative 'default :height (if (my/is-screen-2k)
@@ -110,7 +107,10 @@
 
     (olivetti-mode)
 
+    (require 'org-indent)
     (org-indent-mode)
+
+    (require 'my-org-theme)
     (my/setup-prettify-symbols))
 
   :hook
