@@ -77,26 +77,37 @@
           ellama-define-word-prompt-template "定义 %s")
   (ellama-session-mode-line-global-mode))
 
+(use-package ai-code
+  :straight (:type git :host github
+                   :repo "tninja/ai-code-interface.el"
+                   :files ("*.el" "snippets"))
+  :bind
+  ("C-c l" . ai-code-menu)
+  :config
+  (ai-code-set-backend 'claude-code)
+
+  (with-eval-after-load 'magit
+    (ai-code-magit-setup-transients)))
+
+(use-package gemini-cli
+  :straight (:type git :host github
+                   :repo "linchen2chris/gemini-cli.el"
+                   :branch "main"
+                   :files ("*.el" (:exclude "demo.gif")))
+  :defer t
+  :config
+  (setopt gemini-cli-terminal-backend 'vterm))
+
 (use-package claude-code
   :straight (:type git :host github
                    :repo "stevemolitor/claude-code.el"
                    :branch "main"
                    :files ("*.el" (:exclude "images/*")))
   :defer t
-  :bind-keymap
-  ("C-c l" . claude-code-command-map) ;; or your preferred key
-  ;; Optionally define a repeat map so that "M" will cycle thru Claude auto-accept/plan/confirm modes after invoking claude-code-cycle-mode / C-c M.
-  ;; :bind
-  ;; (:repeat-map my-claude-code-map ("M" . claude-code-cycle-mode))
   :config
   (require 'my-llm)
   (setopt claude-code-terminal-backend 'vterm
-          claude-code-display-window-fn #'my/claude-display-right)
-  ;; optional IDE integration with Monet
-  ;; (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
-  ;; (monet-mode 1)
-
-  (claude-code-mode))
+          claude-code-display-window-fn #'my/claude-display-right))
 
 (provide 'init-llm)
 
