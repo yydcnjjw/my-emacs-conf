@@ -1,9 +1,9 @@
-;;; init-config.el --- config -*- lexical-binding: t -*-
+;;; init-chat.el --- chat -*- lexical-binding: t -*-
 
 ;; Author: yydcnjjw
 ;; Maintainer: yydcnjjw
 ;; Version: version
-;; Package-Requires: ()
+;; Package-Requires: (dependencies)
 ;; Homepage: homepage
 ;; Keywords: keywords
 
@@ -30,39 +30,31 @@
 
 ;;; Code:
 
-(require 'my-loading)
+(use-package telega
+  :commands (telega)
+  :defer t
+  :bind-keymap
+  ("C-c r" . telega-prefix-map)
+  :commands
+  (telega-mode-line-mode telega-transient-mode)
+  :init
+  (setopt telega-server-libs-prefix "/usr"
+          telega-proxies
+          (list
+           '(:server "127.0.0.1" :port 9888 :enable t
+                     :type (:@type "proxyTypeSocks5"))))
+  
+  (defun my/telega-load ()
+    (telega-mode-line-mode)
+    (require 'telega-transient)
+    (telega-transient-mode))
+  :hook
+  ((telega-load-hook . my/telega-load)))
 
-(let (;; Loading temporarily increase `gc-cons-threshold' to
-      ;; accelerate startup speed.
-      (gc-cons-threshold most-positive-fixnum)
-      (gc-cons-percentage 0.6))
+(use-package ement
+  :straight (:host github :repo "alphapapa/ement.el")
+  :defer t)
 
-  (my/require-modules
-   init-package
-   ;; init-bench
-   init-os
-   init-ui
-   init-generic
-   init-edit
-   init-project
-   init-vc
-   init-completing-read
-   init-completion
-   init-language-completion
-   init-prog-language
-   init-syntax-check
-   init-org
-   init-im
-   init-tm
-   init-rss
-   init-llm
-   init-email
-   init-term
-   init-chat
-   init-mtool
-   ))
+(provide 'init-chat)
 
-
-(provide 'init-config)
-
-;;; init-config.el ends here
+;;; init-chat.el ends here
