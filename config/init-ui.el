@@ -46,6 +46,7 @@
      (my/set-fontset-font 'emoji "Noto Color Emoji" nil frame)
 
      (set-face-attribute 'fixed-pitch nil :family "Hack")
+     (set-face-attribute 'fixed-pitch-serif nil :family "Hack")
      (set-face-attribute 'variable-pitch nil :family "LXGW WenKai"))
 
    ;; setup frame position
