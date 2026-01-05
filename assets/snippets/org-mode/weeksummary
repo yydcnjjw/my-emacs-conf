@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: week_summary
+# key: weeksummary
+# --
+* Week summary
+
++ 最主要的三件事情
+  1. $0
+
++ 学习
+
++ 感悟
+
++ 计划
