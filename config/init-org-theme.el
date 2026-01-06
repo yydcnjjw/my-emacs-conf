@@ -33,39 +33,7 @@
 (require 'my-frame)
 
 (use-package org
-  :defer t
   :init
-  (setopt org-adapt-indentation t
-          org-hide-leading-stars t
-          org-pretty-entities t
-          org-ellipsis " ..."
-          org-startup-folded 'nofold
-          org-hide-drawer-startup t)
-
-  (setopt org-src-fontify-natively t
-          org-src-tab-acts-natively t
-          org-edit-src-content-indentation 0)
-
-  (setopt org-auto-align-tags t
-          org-tags-column -80
-          org-fold-catch-invisible-edits 'show-and-error
-          org-special-ctrl-a/e t
-          org-insert-heading-respect-content t)
-
-  (setopt org-startup-with-inline-images t
-          org-image-align 'center)
-
-  (setopt org-priority-lowest ?F
-          org-priority-default ?E)
-
-  (setq org-priority-faces
-        '((65 . "#BF616A")
-          (66 . "#EBCB8B")
-          (67 . "#B48EAD")
-          (68 . "#81A1C1")
-          (69 . "#5E81AC")
-          (70 . "#4C566A")))
-
   (my/eval-if-graphic
    (lambda (frame)
      (dolist (face '((org-level-1 . 1.4)
@@ -112,7 +80,38 @@
 
     (require 'my-org-theme)
     (my/setup-prettify-symbols))
+  :config
+  (setopt org-adapt-indentation t
+          org-hide-leading-stars t
+          org-pretty-entities t
+          org-ellipsis " ..."
+          org-startup-folded 'nofold
+          org-hide-drawer-startup t)
 
+  (setopt org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 0)
+
+  (setopt org-auto-align-tags t
+          org-tags-column -80
+          org-fold-catch-invisible-edits 'show-and-error
+          org-special-ctrl-a/e t
+          org-insert-heading-respect-content t)
+
+  (setopt org-startup-with-inline-images t
+          org-image-align 'center)
+
+  (setopt org-priority-lowest ?F
+          org-priority-default ?E)
+
+  (setq org-priority-faces
+        '((65 . "#BF616A")
+          (66 . "#EBCB8B")
+          (67 . "#B48EAD")
+          (68 . "#81A1C1")
+          (69 . "#5E81AC")
+          (70 . "#4C566A")))
+  
   :hook
   ((org-mode . my/org-theme-init-mode))
   :commands
@@ -127,8 +126,8 @@
   :hook
   (org-mode . org-appear-mode)
   :config
-  (setopt org-hide-emphasis-markers t)
-  (setopt org-appear-autoemphasis t
+  (setopt org-hide-emphasis-markers t
+          org-appear-autoemphasis t
           org-appear-autolinks t
           org-pretty-entities-include-sub-superscripts nil))
 
@@ -163,7 +162,6 @@
 
 ;; table align
 (use-package valign
-  :defer t
   :init
   (defun my/valign-mode()
     (when (display-graphic-p)

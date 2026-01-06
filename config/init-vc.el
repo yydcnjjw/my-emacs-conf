@@ -38,7 +38,6 @@
   (require 'my-magit))
 
 (use-package forge
-  :defer t
   :after magit
   :init
   (setopt forge-database-file

@@ -47,7 +47,6 @@
 
 (use-package lsp-pyright
   :defer t
-  :after lsp
   :functions my/lsp-register-major-mode
   :init
   (setopt lsp-pyright-langserver-command "pyright")

@@ -33,11 +33,10 @@
 (require 'my-path)
 
 (use-package org
-  :defer t
   :bind
   (("C-c c" . org-capture)
    ("C-c a" . org-agenda))
-  :init
+  :config
   (setopt org-id-locations-file (expand-file-name ".org-id-locations" my/emacs-cache-dir)))
 
 (use-package org-ql
@@ -45,7 +44,7 @@
 
 (use-package org-agenda
   :straight nil
-  :init
+  :config
   (setopt org-agenda-tags-column 0
           org-agenda-skip-unavailable-files t
           org-agenda-show-inherited-tags nil
@@ -87,8 +86,10 @@
                               (:name "Working"
                                      :file-path "working"
                                      :order 2)
-                              (:order-multi (3 (:auto-category t)))))))))))
-  :config
+                              (:order-multi (3 (:auto-category t))))))))))
+          org-refile-targets '((my/agenda-project-files . (:maxlevel . 3)))
+          org-refile-target-verify-function 'my/org-refile-target-verify-function)
+  
   (require 'my-im)
   (setopt org-agenda-files (append
                             (list my/gtd-dir)
@@ -113,9 +114,6 @@
   (defun my/org-refile-target-verify-function ()
     (and (member "todo" (org-get-tags)) (not (org-get-todo-state))))
 
-  (setopt org-refile-targets '((my/agenda-project-files . (:maxlevel . 3)))
-          org-refile-target-verify-function 'my/org-refile-target-verify-function)
-
   (defun my/init-when-org-agenda-finalize()
     (setq-local olivetti-body-width 120)
     (olivetti-mode))
@@ -125,7 +123,7 @@
 (use-package emacs
   :after org-capture
   :defines org-capture-templates
-  :config
+  :init
   (add-to-list 'org-capture-templates '("t" "Todo heading"
                                         entry (function my/gtd-capture-todo-heading-function)
                                         "* TODO %:description%?\n%U\n\n  %i"
@@ -136,8 +134,6 @@
                                         :kill-buffer t)))
 
 (use-package org-super-agenda
-  :defer t
-  :after org
   :hook
   (org-agenda-mode . org-super-agenda-mode))
 
@@ -176,12 +172,10 @@
   (org-roam-db-autosync-mode))
 
 (use-package org-roam-ui
-  :straight
-  (
-   :host github
-   :repo "org-roam/org-roam-ui"
-   :branch "main"
-   :files ("*.el" "out"))
+  :straight (:host github
+                   :repo "org-roam/org-roam-ui"
+                   :branch "main"
+                   :files ("*.el" "out"))
   :after org-roam
   :if (daemonp)
   :init
@@ -189,21 +183,19 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start nil)
-  :config
   (org-roam-ui-mode))
 
 (use-package org-alert
   :if (daemonp)
   :hook
   ((after-init . org-alert-enable))
-  :init
+  :config
   (setopt org-alert-interval 300
           org-alert-notify-cutoff 10
           org-alert-notify-after-event-cutoff 1
           org-alert-notification-category 'agenda))
 
 (use-package ox-hugo
-  :defer t
   :after ox)
 
 (use-package pdf-tools
@@ -220,7 +212,7 @@
 
 (use-package nov
   :defer t
-  :init
+  :config
   (setopt nov-save-place-file (expand-file-name "nov-places" my/emacs-cache-dir))
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 

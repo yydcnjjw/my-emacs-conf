@@ -31,27 +31,23 @@
 ;;; Code:
 
 (use-package flycheck
-  :defer t
-  :init
+  :config
   (setopt flycheck-emacs-lisp-load-path 'inherit)
   :hook
   ((emacs-lisp-mode . flycheck-mode)))
 
 (use-package consult-flycheck
-  :defer t
-  :after consult
   :bind
   (("M-g f" . consult-flycheck)))
 
 (use-package wucuo
-  :init
+  :config
   (setopt ispell-extra-args '("--lang=en_US"))
   :hook
   ((prog-mode . flyspell-prog-mode)
    (text-mode . wucuo-start)))
 
 (use-package flyspell-correct
-  :defer t
   :bind
   (("C-c s" . flyspell-correct-wrapper)))
 

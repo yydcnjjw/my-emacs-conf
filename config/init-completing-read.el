@@ -35,14 +35,15 @@
 (use-package vertico
   :commands
   (vertico-mode)
-  :init
+  :config
   (setopt vertico-cycle t)
+  :init
   (vertico-mode)
   :bind (:map vertico-map
               ("M-RET" . minibuffer-force-complete-and-exit)))
 
 (use-package savehist
-  :init
+  :config
   (setopt savehist-file (expand-file-name "history" my/emacs-cache-dir))
   (savehist-mode))
 
@@ -55,7 +56,6 @@
   (setopt read-extended-command-predicate #'command-completion-default-include-p))
 
 (use-package vertico-directory
-  :after vertico
   :load-path
   (lambda () (expand-file-name "extensions" (file-name-directory (locate-library "vertico"))))
   :straight nil
@@ -67,8 +67,7 @@
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
-  :defer t
-  :init
+  :config
   (setopt completion-styles '(orderless basic)
           completion-category-overrides '((file (styles partial-completion)))
           ;; completion-pcm-leading-wildcard t
@@ -144,7 +143,7 @@
   :functions (consult-xref consult-register-window)
 
   ;; The :init configuration is always executed (Not lazy)
-  :init
+  :config
 
   ;; Tweak the register preview for `consult-register-load',
   ;; `consult-register-store' and the built-in commands.  This improves the
@@ -187,23 +186,20 @@
   )
 
 (use-package embark
-  :defer t
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   :commands
   (embark-prefix-help-command)
-  :init
-  (setq-default prefix-help-command #'embark-prefix-help-command)
   :config
+  (setq-default prefix-help-command #'embark-prefix-help-command)
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-  :after (embark consult)
   :hook
   ((embark-collect-mode . consult-preview-at-point-mode)))
 

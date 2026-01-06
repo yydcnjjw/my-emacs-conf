@@ -72,7 +72,6 @@
 
 ;; `which-key'
 (use-package which-key
-  :defer t
   :hook
   ((after-init . which-key-mode)))
 
@@ -88,8 +87,7 @@
   ((prog-mode . drag-stuff-mode)))
 
 (use-package multiple-cursors
-  :defer t
-  :init
+  :config
   (setopt mc/list-file (expand-file-name ".mc-lists.el" my/emacs-cache-dir))
   :bind
   (("C-S-c C-S-c" . mc/edit-lines)))
@@ -111,10 +109,9 @@
    ("M-s M-s d" . symbol-overlay-remove-all)))
 
 (use-package avy
-  :defer t
   :bind
   ("C-c n" . avy-goto-char)
-  :init
+  :config
   (setopt avy-background t))
 
 (use-package fingertip
@@ -136,7 +133,6 @@
 
 ;; `expand-region'
 (use-package expand-region
-  :defer t
   :bind*
   ;; override `sp-copy-sexp'
   (("C-M-w" . er/expand-region)))
@@ -153,13 +149,11 @@
   :config
   (require 'my-rime)
   (setopt rime-user-data-dir my/rime-user-data-dir)
-  :init
   (setopt default-input-method "rime"
           rime-show-candidate 'posframe))
 
 (use-package separedit
-  :defer t
-  :init
+  :config
   (setq separedit-default-mode 'markdown-mode)
   (setopt separedit-continue-fill-column t
           separedit-remove-trailing-spaces-in-comment t)

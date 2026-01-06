@@ -58,7 +58,6 @@
 
 (use-package org-contrib
   :defer t
-  :after org
   :straight (:repo "https://github.com/emacsmirror/org-contrib"))
 
 ;; for export

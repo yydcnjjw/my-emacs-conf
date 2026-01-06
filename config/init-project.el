@@ -42,12 +42,12 @@
   :commands
   (projectile-mode)
   :init
+  (projectile-mode)
+  :config
   (setopt
    projectile-indexing-method 'alien
    projectile-enable-caching t
    projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" my/emacs-cache-dir))
-  :config
-  (projectile-mode)
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind

@@ -73,14 +73,12 @@
 (size-indication-mode t)
 
 (use-package display-line-numbers
-  :defer t
-  :init
+  :config
   (setopt display-line-numbers-width-start t)
   :hook
   ((prog-mode . display-line-numbers-mode)))
 
 (use-package hl-line
-  :defer t
   :hook
   (prog-mode . hl-line-mode))
 
@@ -118,7 +116,7 @@
   :defer t
   :hook
   ((prog-mode . hl-todo-mode))
-  :init
+  :config
   (setopt hl-todo-keyword-faces
           '(("TODO"  . "#28ABE3")
             ("FIXME" . "#DB3340")

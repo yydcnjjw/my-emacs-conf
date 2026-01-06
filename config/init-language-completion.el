@@ -44,28 +44,26 @@
   (my/lsp-booster)
   :commands
   (lsp)
-  :init
+  :hook
+  ((lsp-completion-mode . my/lsp-completion-mode))
+  :config
   (setopt lsp-keymap-prefix "C-c l"
           lsp-completion-provider :none
           lsp-auto-execute-action nil
           lsp-keep-workspace-alive nil
           lsp-session-file (expand-file-name ".lsp-session-v1" my/emacs-cache-dir)
           read-process-output-max (* 1024 1024 5))
-  :hook
-  ((lsp-completion-mode . my/lsp-completion-mode))
-  :config
   (require 'my-lsp-mode)
   (my/lsp-booster))
 
 (use-package lsp-ui
   :defer t
   :commands lsp-ui-mode
-  :init
+  :config
   (setopt lsp-ui-doc-show-with-cursor t))
 
 (use-package yasnippet
-  :defer t
-  :init
+  :config
   (setopt yas-snippet-dirs (list (expand-file-name "snippets" my/emacs-assets-dir)))
   :hook
   ((prog-mode . yas-minor-mode)
@@ -76,7 +74,6 @@
   ("C-c y" . #'yas-insert-snippet))
 
 (use-package yasnippet-snippets
-  :defer t
   :after (yasnippet))
 
 (provide 'init-language-completion)

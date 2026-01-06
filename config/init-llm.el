@@ -36,14 +36,13 @@
   :ensure separedit
   :bind
   (("C-c t" . my/translate-main-menu))
-  :init
-  (setopt llm-warn-on-nonfree nil)
   :config
+  (setopt llm-warn-on-nonfree nil)
   (require 'my-llm))
 
 (use-package plz
   :defer t
-  :init
+  :config
   (setopt plz-curl-default-args `("--silent"
                                   "--compressed"
                                   "--location"

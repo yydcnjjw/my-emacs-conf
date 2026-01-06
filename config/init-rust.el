@@ -32,11 +32,6 @@
 
 (use-package emacs
   :mode (("\\.rs\\'" . rust-ts-mode))
-  :init
-  (setopt rust-indent-offset 4
-          lsp-rust-analyzer-diagnostics-enable-experimental t
-          lsp-rust-analyzer-experimental-proc-attr-macros t
-          lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"])
   :functions my/lsp-register-major-mode
   :commands
   (my/lsp-rust-analyzer-set-target)
@@ -44,6 +39,10 @@
   (my/lsp-register-major-mode 'rust-ts-mode)
   :config
   (require 'my-rust)
+  (setopt rust-indent-offset 4
+          lsp-rust-analyzer-diagnostics-enable-experimental t
+          lsp-rust-analyzer-experimental-proc-attr-macros t
+          lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"])
   ;; (with-eval-after-load 'lsp
   ;;   (let ((client (gethash 'rust-analyzer lsp-clients)))
   ;;     (setf (lsp--client-major-modes client) '(rust-mode rust-ts-mode)))

@@ -142,7 +142,7 @@
   :defer t
   :ensure valign
   :mode ("\\.md\\'" . gfm-mode)
-  :init
+  :config
   (setopt markdown-command "pandoc")
   :hook (gfm-mode . valign-mode))
 
@@ -156,10 +156,9 @@
   :defer t
   :ensure-system-package d2
   :defines org-babel-load-languages
-  :init
-  (setopt d2-flags '("--theme=200" "--pad=0" "--center" "--sketch"))
   :config
   (require 'my-d2)
+  (setopt d2-flags '("--theme=200" "--pad=0" "--center" "--sketch"))
   (advice-add 'org-babel-execute:d2 :override 'my/org-babel-execute:d2))
 
 ;; TODO
@@ -174,7 +173,7 @@
 
 (use-package logview
   :defer t
-  :init
+  :config
   (setopt
    logview-cache-filename (expand-file-name "logview-cache.extmap" my/emacs-cache-dir)
    logview-additional-level-mappings '(("PASOVAT" . ((error "error")

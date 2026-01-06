@@ -37,7 +37,7 @@
   (global-corfu-mode
    corfu-history-mode
    corfu-popupinfo-mode)
-  :init
+  :config
   (setopt corfu-auto t
           corfu-auto-prefix 1
           corfu-quit-at-boundary t
@@ -53,7 +53,7 @@
   (corfu-popupinfo-mode))
 
 (use-package emacs
-  :init
+  :config
   (setopt tab-always-indent 'complete
           text-mode-ispell-word-completion nil))
 
@@ -76,7 +76,7 @@
 (use-package kind-icon
   :ensure t
   :after corfu
-  :config
+  :init
   (setopt corfu-left-margin-width 5.0)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 

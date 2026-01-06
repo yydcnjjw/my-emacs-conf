@@ -45,15 +45,14 @@
    (elfeed-search-mode . my/elfeed-init-mode)
    (elfeed-show-mode . my/elfeed-init-mode))
   :init
-  (setopt shr-inhibit-images t)
   (defun my/elfeed-init-mode ()
     (setq-local olivetti-body-width 120)
     (olivetti-mode))
   :functions
   (my/elfeed-auto-update olivetti-mode)
   :config
+  (setopt shr-inhibit-images t)
   (require 'my-elfeed)
-
   (advice-add 'elfeed-xml-parse-region :override 'my/elfeed-xml-parse-region)
 
   ;; FIXME: (void-function (setf (elfeed-meta)))

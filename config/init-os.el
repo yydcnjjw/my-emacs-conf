@@ -57,19 +57,18 @@
 (use-package atomic-chrome
   :if (daemonp)
   :commands atomic-chrome-start-server
-  :init
-  (setopt atomic-chrome-buffer-open-style 'full)
   :config
+  (setopt atomic-chrome-buffer-open-style 'full)
+  :init
   (atomic-chrome-start-server))
 
 ;; url
 (setopt url-configuration-directory (expand-file-name "url" my/emacs-cache-dir))
 
 (use-package dirvish
-  :defer t
   :hook
   ((after-init . dirvish-override-dired-mode))
-  :init
+  :config
   (setopt dirvish-attributes  (append
                                '(vc-state subtree-state nerd-icons collapse)
                                '(git-msg file-modes file-time file-size))
