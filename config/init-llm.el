@@ -82,7 +82,7 @@
                    :repo "tninja/ai-code-interface.el"
                    :files ("*.el" "snippets"))
   :bind
-  ("C-c l" . ai-code-menu)
+  ("C-c o" . ai-code-menu)
   :config
   (ai-code-set-backend 'claude-code)
 
@@ -107,6 +107,8 @@
   :config
   (require 'my-llm)
   (setopt claude-code-terminal-backend 'vterm
+          claude-code-program "ccs"
+          claude-code-program-switches '("glm")
           claude-code-display-window-fn #'my/claude-display-right))
 
 (provide 'init-llm)
