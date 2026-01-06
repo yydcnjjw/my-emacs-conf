@@ -2,7 +2,6 @@
 /eln-cache/
 /straight/
 /.cache/
-/elpa/
 /tree-sitter/
 
 /custom.el

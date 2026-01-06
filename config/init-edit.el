@@ -146,10 +146,11 @@
 (use-package rime
   :defer t
   :defines my/rime-user-data-dir
+  :init
+  (setopt default-input-method "rime")
   :config
   (require 'my-rime)
-  (setopt rime-user-data-dir my/rime-user-data-dir)
-  (setopt default-input-method "rime"
+  (setopt rime-user-data-dir my/rime-user-data-dir
           rime-show-candidate 'posframe))
 
 (use-package separedit

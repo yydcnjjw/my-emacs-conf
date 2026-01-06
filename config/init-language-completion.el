@@ -63,8 +63,10 @@
   (setopt lsp-ui-doc-show-with-cursor t))
 
 (use-package yasnippet
-  :config
-  (setopt yas-snippet-dirs (list (expand-file-name "snippets" my/emacs-assets-dir)))
+  :init
+  ;; NOTE: Use `setq‘ avoid loading `yasnippet' cause creation default
+  ;; snippets directory
+  (setq yas-snippet-dirs (list (expand-file-name "snippets" my/emacs-assets-dir)))
   :hook
   ((prog-mode . yas-minor-mode)
    (text-mode . yas-minor-mode))

@@ -31,6 +31,9 @@
 ;;; Code:
 
 (use-package flycheck
+  :init
+  ;; NOTE: Avoid loading `package'
+  (setq flycheck-emacs-lisp-initialize-packages nil)
   :config
   (setopt flycheck-emacs-lisp-load-path 'inherit)
   :hook
