@@ -30,12 +30,13 @@
 
 ;;; Code:
 
+(require 'my-path)
+
 (use-package flycheck
-  :init
-  ;; NOTE: Avoid loading `package'
-  (setq flycheck-emacs-lisp-initialize-packages nil)
   :config
-  (setopt flycheck-emacs-lisp-load-path 'inherit)
+  (setopt
+   flycheck-emacs-lisp-package-user-dir (expand-file-name "flycheck-elpa" my/emacs-cache-dir)
+   flycheck-emacs-lisp-load-path 'inherit)
   :hook
   ((emacs-lisp-mode . flycheck-mode)))
 
