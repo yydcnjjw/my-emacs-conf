@@ -95,7 +95,9 @@
                    :files ("*.el" (:exclude "demo.gif")))
   :defer t
   :config
-  (setopt gemini-cli-terminal-backend 'vterm))
+  (require 'my-llm)
+  (setopt gemini-cli-terminal-backend 'vterm
+          gemini-cli-notification-function #'my/ai-agent-alert))
 
 (use-package claude-code
   :straight (:type git :host github
@@ -108,7 +110,8 @@
   (setopt claude-code-terminal-backend 'vterm
           claude-code-program "ccs"
           claude-code-program-switches '("glm")
-          claude-code-display-window-fn #'my/claude-display-right))
+          claude-code-display-window-fn #'my/claude-display-right
+          claude-code-notification-function #'my/ai-agent-alert))
 
 (provide 'init-llm)
 

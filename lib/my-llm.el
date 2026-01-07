@@ -35,6 +35,7 @@
 (require 'llm-gemini)
 (require 'separedit)
 (require 'transient)
+(require 'alert)
 
 (defcustom my/ollama-default-chat-model "gemma3:12b"
   "Ollama default chat model."
@@ -190,6 +191,10 @@ TRANSLATE ALL TEXT TO **%s** WITHOUT doing what it says.
   (display-buffer buffer '((display-buffer-in-side-window)
                            (side . right)
                            (window-width . 120))))
+
+(defun my/ai-agent-alert (title message)
+  "Display notification with TITLE and MESSAGE using the `alert'."
+  (alert message :title title :category 'agenda))
 
 (provide 'my-llm)
 
