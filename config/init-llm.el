@@ -49,32 +49,32 @@
                                   "-x"
                                   ,(getenv "SOCKS5_PROXY"))))
 
-(use-package magit-gptcommit
-  :after magit
-  :demand t
-  :commands
-  (magit-gptcommit-status-buffer-setup)
-  :defines
-  (my/gemini-llm-provider)
-  :config
-  (require 'my-llm)
-  (setopt magit-gptcommit-llm-provider my/gemini-llm-provider)
-  (magit-gptcommit-status-buffer-setup))
+;; (use-package magit-gptcommit
+;;   :after magit
+;;   :demand t
+;;   :commands
+;;   (magit-gptcommit-status-buffer-setup)
+;;   :defines
+;;   (my/gemini-llm-provider)
+;;   :config
+;;   (require 'my-llm)
+;;   (setopt magit-gptcommit-llm-provider my/gemini-llm-provider)
+;;   (magit-gptcommit-status-buffer-setup))
 
-(use-package ellama
-  :bind ("C-c o" . ellama)
-  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
-  :commands ellama-session-mode-line-global-mode
-  :defines my/gemini-llm-provider
-  :config
-  (require 'my-llm)
-  (setopt ellama-auto-scroll t
-          ellama-language "中文"
-          ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
-          ellama-community-prompts-file (expand-file-name "ellama" my/emacs-cache-dir)
-          ellama-provider (funcall my/gemini-llm-provider)
-          ellama-define-word-prompt-template "定义 %s")
-  (ellama-session-mode-line-global-mode))
+;; (use-package ellama
+;;   :bind ("C-c o" . ellama)
+;;   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
+;;   :commands ellama-session-mode-line-global-mode
+;;   :defines my/gemini-llm-provider
+;;   :config
+;;   (require 'my-llm)
+;;   (setopt ellama-auto-scroll t
+;;           ellama-language "中文"
+;;           ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
+;;           ellama-community-prompts-file (expand-file-name "ellama" my/emacs-cache-dir)
+;;           ellama-provider (funcall my/gemini-llm-provider)
+;;           ellama-define-word-prompt-template "定义 %s")
+;;   (ellama-session-mode-line-global-mode))
 
 (use-package ai-code
   :straight (:type git :host github
