@@ -161,6 +161,9 @@
   :bind
   ("C-c '" . separedit))
 
+(use-package vundo
+  :defer t)
+
 (provide 'init-edit)
 
 ;;; init-edit.el ends here
