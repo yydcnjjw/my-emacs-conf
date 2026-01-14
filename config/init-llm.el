@@ -47,7 +47,7 @@
                                   "--compressed"
                                   "--location"
                                   "-x"
-                                  ,(getenv "SOCKS5_PROXY"))))
+                                  ,(getenv "ALL_PROXY"))))
 
 ;; (use-package magit-gptcommit
 ;;   :after magit
@@ -61,20 +61,20 @@
 ;;   (setopt magit-gptcommit-llm-provider my/gemini-llm-provider)
 ;;   (magit-gptcommit-status-buffer-setup))
 
-;; (use-package ellama
-;;   :bind ("C-c o" . ellama)
-;;   :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
-;;   :commands ellama-session-mode-line-global-mode
-;;   :defines my/gemini-llm-provider
-;;   :config
-;;   (require 'my-llm)
-;;   (setopt ellama-auto-scroll t
-;;           ellama-language "中文"
-;;           ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
-;;           ellama-community-prompts-file (expand-file-name "ellama" my/emacs-cache-dir)
-;;           ellama-provider (funcall my/gemini-llm-provider)
-;;           ellama-define-word-prompt-template "定义 %s")
-;;   (ellama-session-mode-line-global-mode))
+(use-package ellama
+  :bind ("C-c ." . ellama)
+  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
+  :commands ellama-session-mode-line-global-mode
+  :defines my/gemini-llm-provider
+  :config
+  (require 'my-llm)
+  (setopt ellama-auto-scroll t
+          ellama-language "中文"
+          ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
+          ellama-community-prompts-file (expand-file-name "ellama" my/emacs-cache-dir)
+          ellama-provider (funcall my/gemini-llm-provider)
+          ellama-define-word-prompt-template "定义 %s")
+  (ellama-session-mode-line-global-mode))
 
 (use-package ai-code
   :straight (:type git :host github
@@ -83,7 +83,7 @@
   :bind
   ("C-c o" . ai-code-menu)
   :config
-  (ai-code-set-backend 'claude-code)
+  (ai-code-set-backend 'gemini)
 
   (with-eval-after-load 'magit
     (ai-code-magit-setup-transients)))
