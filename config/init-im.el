@@ -36,6 +36,8 @@
   :bind
   (("C-c c" . org-capture)
    ("C-c a" . org-agenda))
+  :hook
+  ((org-metareturn . my/im-org-metareturn-hook))
   :config
   (setopt org-id-locations-file (expand-file-name ".org-id-locations" my/emacs-cache-dir)))
 

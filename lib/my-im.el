@@ -114,6 +114,30 @@
                    'display
                    (substring-no-properties (org-get-heading t t t t)))))))
 
+(defun my/org-insert-timestamp-log-item ()
+  "Insert timestamp log item."
+  (interactive)
+  (if (org-at-item-p)
+      (progn
+        (end-of-line)
+        (org-insert-item)
+        (insert (format "%s :: " (format-time-string "%H:%M"))))
+    (insert (format "+ %s :: " (format-time-string "%H:%M")))))
+
+(defun my/im-org-metareturn-hook ()
+  "Org metareturn hook for timestamp log item."
+  (when (and (eq major-mode 'org-mode)
+             (org-at-item-p))
+    (let ((is-ts-log-item (save-excursion
+                            (beginning-of-line)
+                            (looking-at-p "^[ \t]*\\+ [0-9][0-9]:[0-9][0-9] ::"))))
+      (when is-ts-log-item
+        (end-of-line)
+        (org-insert-item)
+        (insert (format-time-string "%H:%M"))
+        (end-of-line)
+        t))))
+
 (provide 'my-im)
 
 ;;; my-im.el ends here
