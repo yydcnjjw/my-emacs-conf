@@ -126,11 +126,11 @@
   :init
   (add-to-list 'org-capture-templates '("t" "Todo heading"
                                         entry (function my/gtd-capture-todo-heading-function)
-                                        "* TODO %:description%?\n%U\n\n  %i"
+                                        "* TODO %?\n%U\n\n  %i"
                                         :kill-buffer t))
   (add-to-list 'org-capture-templates '("i" "Inbox"
                                         entry (file my/agenda-inbox-file)
-                                        "* TODO %:description%?\n%U\n\n  %i"
+                                        "* TODO %?\n%U\n\n  %i"
                                         :kill-buffer t)))
 
 (use-package org-super-agenda
@@ -166,7 +166,7 @@
 
   (add-to-list 'org-capture-templates `("d" "Daily agenda"
                                         entry (file+headline ,(my/org-dailies-today-file) "Agenda")
-                                        "* %:description%?\n:PROPERTIES:\nCLOCK: %^U--%U\n:END:\n%U\n\n"
+                                        "* %?\n:PROPERTIES:\nCLOCK: %^U--%U\n:END:\n%U\n\n"
                                         :prepend t
                                         :jump-to-captured t))
   (org-roam-db-autosync-mode))
