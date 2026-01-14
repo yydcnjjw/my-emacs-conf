@@ -114,7 +114,10 @@
 (use-package php-mode
   :defer t
   :init
-  (my/lsp-register-major-mode 'php-mode))
+  (my/lsp-register-major-mode 'php-mode)
+  :config
+  (setopt lsp-intelephense-storage-path (expand-file-name "lsp-php-cache" my/emacs-cache-dir)
+          lsp-intelephense-global-storage-path (expand-file-name "php-intelephense" my/emacs-cache-dir)))
 
 (use-package just-mode
   :defer t)
