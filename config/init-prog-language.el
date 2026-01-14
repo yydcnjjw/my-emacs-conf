@@ -136,7 +136,10 @@
   (my/treesit-register
    '(:lang yaml
            :source ("https://github.com/tree-sitter-grammars/tree-sitter-yaml")
-           :mode (yaml-ts-mode))))
+           :mode (yaml-ts-mode)))
+  (my/lsp-register-major-mode 'yaml-ts-mode)
+  :config
+  (setopt yaml-pro-indent 4))
 
 (use-package markdown-mode
   :defer t
