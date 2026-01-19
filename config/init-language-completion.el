@@ -78,7 +78,7 @@
   ("C-c y" . #'yas-insert-snippet))
 
 (use-package yasnippet-snippets
-  :after (yasnippet))
+  :after yasnippet)
 
 (provide 'init-language-completion)
 
