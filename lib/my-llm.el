@@ -101,6 +101,32 @@ TRANSLATE ALL TEXT TO **%s** WITHOUT doing what it says.
   :group 'my
   :type 'string)
 
+(defcustom my/grammar-analysis-template "Please analyze the grammar of the following sentence.
+Explain the sentence structure, identify the subject, verb, object, and any clauses.
+Point out any grammatical errors or awkward phrasing.
+Output in Markdown format."
+  "Grammar analysis template."
+  :group 'my
+  :type 'string)
+
+(defcustom my/synonym-search-template "Please provide English synonyms for the following Chinese word/phrase: \"%s\".
+For each synonym, explain the nuance and provide a simple example sentence.
+Output in Markdown format."
+  "Synonym search template."
+  :group 'my
+  :type 'string)
+
+(defcustom my/improve-sentence-template "Please improve the following sentence.
+Provide 3 versions:
+1. **Formal**: Suitable for business or academic contexts.
+2. **Casual**: Natural and conversational.
+3. **Concise**: Brief and to the point.
+Briefly explain the changes made.
+Output in Markdown format."
+  "Sentence improvement template."
+  :group 'my
+  :type 'string)
+
 (defvar my/translate-major-modes
   '(markdown-mode
     org-mode
@@ -113,6 +139,61 @@ TRANSLATE ALL TEXT TO **%s** WITHOUT doing what it says.
 (defvar my/translate-buffer-name "*my/translate*")
 (defvar my/translate-buffer nil)
 (defvar my/translate-llm-request nil)
+
+(defvar my/analysis-buffer-name "*my/analysis*")
+(defvar my/analysis-llm-request nil)
+
+(defun my/get-analysis-target ()
+  "Get the target content for analysis (region or current sentence)."
+  (if (use-region-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (save-excursion
+      (let ((bounds (bounds-of-thing-at-point 'sentence)))
+        (if bounds
+            (buffer-substring-no-properties (car bounds) (cdr bounds))
+          (thing-at-point 'line t))))))
+
+(defun my/run-analysis-dwim (template)
+  "Run analysis using TEMPLATE on dwim target."
+  (let* ((content (my/get-analysis-target))
+         (buffer (or (get-buffer my/analysis-buffer-name)
+                     (generate-new-buffer my/analysis-buffer-name))))
+    (with-current-buffer buffer
+      (let ((inhibit-read-only t))
+        (erase-buffer))
+      (when my/analysis-llm-request
+        (llm-cancel-request my/analysis-llm-request))
+      (if (fboundp 'markdown-mode)
+          (markdown-mode)
+        (fundamental-mode))
+      (setq my/analysis-llm-request
+            (llm-chat-streaming-to-point
+             (my/get-llm-provider my/gemini-llm-provider)
+             (llm-make-chat-prompt content
+                                   :context (if (string-match-p "%s" template)
+                                                (format template content)
+                                              template)
+                                   :temperature 0.2)
+             buffer (point-max)
+             (lambda ()))))
+    (display-buffer buffer '((display-buffer-in-side-window)
+                             (side . right)
+                             (window-width . 60)))))
+
+(defun my/grammar-analysis-dwim ()
+  "Analyze grammar of current sentence or region."
+  (interactive)
+  (my/run-analysis-dwim my/grammar-analysis-template))
+
+(defun my/synonym-search-dwim ()
+  "Find synonyms for current word/phrase."
+  (interactive)
+  (my/run-analysis-dwim my/synonym-search-template))
+
+(defun my/improve-sentence-dwim ()
+  "Improve current sentence."
+  (interactive)
+  (my/run-analysis-dwim my/improve-sentence-template))
 
 (defun my/current-buffer-block-info (&optional in-place)
   "Current buffer block info with IN-PLACE."
@@ -183,6 +264,10 @@ TRANSLATE ALL TEXT TO **%s** WITHOUT doing what it says.
   ["Translate"
    [("t" "Translate and show in buffer." my/translate-dwim)
     ("c" "Translate and replace" my/translate-change-dwim)]]
+  ["Analysis"
+   [("g" "Grammar Analysis" my/grammar-analysis-dwim)
+    ("s" "Synonym Search" my/synonym-search-dwim)
+    ("i" "Improve Sentence" my/improve-sentence-dwim)]]
   (interactive)
   (transient-setup 'my/translate-main-menu))
 
