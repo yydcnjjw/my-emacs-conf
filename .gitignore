@@ -6,6 +6,8 @@
 
 /custom.el
 
+### Gemini ###
+/.gemini/
 
 ### Claude code ###
 /CLAUDE.md
