@@ -164,6 +164,13 @@
 (use-package vundo
   :defer t)
 
+(use-package indent-bars
+  :config
+  (setopt indent-bars-no-descend-lists 'skip
+          indent-bars-treesit-support t
+          indent-bars-treesit-ignore-blank-lines-types '("module"))
+  :defer t)
+
 (provide 'init-edit)
 
 ;;; init-edit.el ends here

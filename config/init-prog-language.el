@@ -133,9 +133,14 @@
 ;; YAML
 (use-package yaml-pro
   :after treesit
-  :hook (yaml-ts-mode . yaml-pro-ts-mode)
+  :functions (yaml-pro-ts-mode indent-bars-mode)
+  :hook (yaml-ts-mode . my/yaml-ts-mode)
   :mode ("\\.ya?ml\\'" . yaml-ts-mode)
   :init
+  (defun my/yaml-ts-mode ()
+    (yaml-pro-ts-mode)
+    (when (boundp 'indent-bars-mode)
+      (indent-bars-mode)))
   (my/treesit-register
    '(:lang yaml
            :source ("https://github.com/tree-sitter-grammars/tree-sitter-yaml")
