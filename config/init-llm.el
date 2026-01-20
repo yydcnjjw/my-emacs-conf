@@ -46,20 +46,7 @@
   (setopt plz-curl-default-args `("--silent"
                                   "--compressed"
                                   "--location"
-                                  "-x"
-                                  ,(getenv "ALL_PROXY"))))
-
-;; (use-package magit-gptcommit
-;;   :after magit
-;;   :demand t
-;;   :commands
-;;   (magit-gptcommit-status-buffer-setup)
-;;   :defines
-;;   (my/gemini-llm-provider)
-;;   :config
-;;   (require 'my-llm)
-;;   (setopt magit-gptcommit-llm-provider my/gemini-llm-provider)
-;;   (magit-gptcommit-status-buffer-setup))
+                                  ,@(when-let (proxy (getenv "ALL_PROXY")) (list "-x" proxy)))))
 
 (use-package ellama
   :bind ("C-c ." . ellama)
