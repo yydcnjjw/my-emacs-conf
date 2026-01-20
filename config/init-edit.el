@@ -168,8 +168,7 @@
   :config
   (setopt indent-bars-no-descend-lists 'skip
           indent-bars-treesit-support t
-          indent-bars-treesit-ignore-blank-lines-types '("module"))
-  :defer t)
+          indent-bars-treesit-ignore-blank-lines-types '("module")))
 
 (provide 'init-edit)
 
