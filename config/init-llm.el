@@ -32,73 +32,41 @@
 
 (require 'my-path)
 
-(use-package llm
-  :ensure separedit
-  :bind
-  (("C-c t" . my/translate-main-menu))
-  :config
-  (setopt llm-warn-on-nonfree nil)
-  (require 'my-llm))
-
 (use-package plz
   :defer t
   :config
-  (setopt plz-curl-default-args `("--silent"
-                                  "--compressed"
-                                  "--location"
-                                  ,@(when-let (proxy (getenv "ALL_PROXY")) (list "-x" proxy)))))
+  (setopt plz-curl-default-args
+          `("--silent"
+            "--compressed"
+            "--location"
+            ,@(when-let (proxy (getenv "ALL_PROXY")) (list "-x" proxy)))))
 
-(use-package ellama
-  :bind ("C-c ." . ellama)
-  :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
-  :commands ellama-session-mode-line-global-mode
-  :defines my/gemini-llm-provider
+(use-package llm
+  :straight (:type git :host github
+                   :repo "yydcnjjw/llm"
+                   :branch "main")
+  :defer t
   :config
-  (require 'my-llm)
-  (setopt ellama-auto-scroll t
-          ellama-language "中文"
-          ellama-sessions-directory (expand-file-name "ellama-sessions" my/emacs-cache-dir)
-          ellama-community-prompts-file (expand-file-name "ellama" my/emacs-cache-dir)
-          ellama-provider (funcall my/gemini-llm-provider)
-          ellama-define-word-prompt-template "定义 %s")
-  (ellama-session-mode-line-global-mode))
+  (setopt llm-warn-on-nonfree nil))
 
 (use-package ai-code
   :straight (:type git :host github
                    :repo "tninja/ai-code-interface.el"
                    :files ("*.el" "snippets"))
-  :bind
-  ("C-c o" . ai-code-menu)
-  :config
-  (ai-code-set-backend 'gemini)
-
+  :defer t
+  :init
   (with-eval-after-load 'magit
-    (ai-code-magit-setup-transients)))
-
-(use-package gemini-cli
-  :straight (:type git :host github
-                   :repo "linchen2chris/gemini-cli.el"
-                   :branch "main"
-                   :files ("*.el" (:exclude "demo.gif")))
-  :defer t
+    (ai-code-magit-setup-transients))
   :config
-  (require 'my-llm)
-  (setopt gemini-cli-terminal-backend 'vterm
-          gemini-cli-notification-function #'my/ai-agent-alert))
+  (require 'ai-code-gemini-cli)
+  (ai-code-set-backend 'gemini))
 
-(use-package claude-code
-  :straight (:type git :host github
-                   :repo "stevemolitor/claude-code.el"
-                   :branch "main"
-                   :files ("*.el" (:exclude "images/*")))
-  :defer t
+(use-package emacs
+  :ensure separedit
+  :bind
+  ("C-c o" . my/ai-menu)
   :config
-  (require 'my-llm)
-  (setopt claude-code-terminal-backend 'vterm
-          claude-code-program "ccs"
-          claude-code-program-switches '("glm")
-          claude-code-display-window-fn #'my/claude-display-right
-          claude-code-notification-function #'my/ai-agent-alert))
+  (require 'my-llm))
 
 (provide 'init-llm)
 
