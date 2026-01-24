@@ -46,7 +46,7 @@
  :context-length 40960
  :regex "qwen3:14b")
 
-(defcustom my/local-default-chat-model "qwen3:14b"
+(defcustom my/local-default-chat-model "gpt-oss:20b"
   "Local default chat model."
   :group 'my
   :type 'string)
@@ -82,7 +82,9 @@
           (sexp :tag "llm provider")
           (function :tag "Function that returns an llm provider.")))
 
-(defcustom my/local-llm-extra-params '((num_ctx . 40960))
+(defcustom my/local-llm-extra-params
+  (list
+   (cons 'num_ctx (llm-model-context-length (llm-models-match my/local-default-chat-model))))
   "Local llm extra params."
   :group 'my
   :type 'alist)
@@ -216,7 +218,7 @@
      (llm-make-chat-prompt content
                            :context
                            (format my/translation-template "English")
-                           :reasoning 'none
+                           :reasoning 'light
                            :non-standard-params my/local-llm-extra-params)
      buffer beg (lambda ()))))
 
@@ -245,7 +247,7 @@
              (llm-make-chat-prompt content
                                    :context
                                    (format my/translation-template "中文")
-                                   :reasoning 'none
+                                   :reasoning 'light
                                    :non-standard-params my/local-llm-extra-params)
              buffer (point-max)
              (lambda ()))))
