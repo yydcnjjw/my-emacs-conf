@@ -170,6 +170,12 @@
           indent-bars-treesit-support t
           indent-bars-treesit-ignore-blank-lines-types '("module")))
 
+(use-package caser
+  :bind
+  (("M-C" . caser-camelcase-dwim)
+   ("M-S" . caser-snakecase-dwim)
+   ("M-D" . caser-dashcase-dwim)))
+
 (provide 'init-edit)
 
 ;;; init-edit.el ends here
