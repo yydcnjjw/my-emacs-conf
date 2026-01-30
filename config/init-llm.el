@@ -78,8 +78,6 @@
    ("M-A" . minuet-accept-suggestion)
    ("M-a" . minuet-accept-suggestion-line)
    ("M-e" . minuet-dismiss-suggestion))
-  :hook
-  ((prog-mode . minuet-auto-suggestion-mode))
   :functions minuet-set-optional-options
   :config
   (setopt minuet-provider 'openai-fim-compatible
