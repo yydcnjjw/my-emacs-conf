@@ -68,6 +68,30 @@
   :config
   (require 'my-llm))
 
+(use-package minuet
+  :bind
+  (("M-y" . minuet-complete-with-minibuffer)
+   ("M-i" . minuet-show-suggestion)
+   :map minuet-active-mode-map
+   ("M-p" . minuet-previous-suggestion)
+   ("M-n" . minuet-next-suggestion)
+   ("M-A" . minuet-accept-suggestion)
+   ("M-a" . minuet-accept-suggestion-line)
+   ("M-e" . minuet-dismiss-suggestion))
+  :hook
+  ((prog-mode . minuet-auto-suggestion-mode))
+  :functions minuet-set-optional-options
+  :config
+  (setopt minuet-provider 'openai-fim-compatible
+          minuet-n-completions 1
+          minuet-context-window 512)
+  (plist-put minuet-openai-fim-compatible-options :end-point "http://127.0.0.1:11434/v1/completions")
+  (plist-put minuet-openai-fim-compatible-options :name "Ollama")
+  (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
+  (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:3b")
+
+  (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 64))
+
 (provide 'init-llm)
 
 ;;; init-llm.el ends here
