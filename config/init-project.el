@@ -48,6 +48,10 @@
    projectile-indexing-method 'alien
    projectile-enable-caching t
    projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" my/emacs-cache-dir))
+
+  (advice-add 'projectile-project-root :before-while
+              (lambda (&optional dir)
+                (not (file-remote-p (or dir default-directory)))))
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind
