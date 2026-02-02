@@ -70,6 +70,10 @@
   :config
   (setopt completion-styles '(orderless basic)
           completion-category-overrides '((file (styles partial-completion)))
+          orderless-smart-case nil
+          completion-ignore-case t
+          read-file-name-completion-ignore-case t
+          read-buffer-completion-ignore-case t
           ;; completion-pcm-leading-wildcard t
           )
   (setq completion-category-defaults nil))
