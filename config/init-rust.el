@@ -42,7 +42,11 @@
   (setopt rust-indent-offset 4
           lsp-rust-analyzer-diagnostics-enable-experimental t
           lsp-rust-analyzer-experimental-proc-attr-macros t
-          lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"])
+          lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro" "unresolved-macro-call"]
+          lsp-rust-analyzer-library-directories '("~/.cargo/git"
+                                                  "~/.cargo/registry/src"
+                                                  "~/.rustup/toolchains"
+                                                  "/opt"))
   ;; (with-eval-after-load 'lsp
   ;;   (let ((client (gethash 'rust-analyzer lsp-clients)))
   ;;     (setf (lsp--client-major-modes client) '(rust-mode rust-ts-mode)))
