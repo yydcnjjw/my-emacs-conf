@@ -127,8 +127,16 @@
   :init
   (my/lsp-register-major-mode 'lua-mode))
 
-(use-package json-mode
-  :defer t)
+(use-package emacs
+  :after treesit
+  :mode (("\\.json\\'" . json-ts-mode)
+         ("\\.jsonc\\'" . json-ts-mode))
+  :init
+  (my/treesit-register
+   '(:lang json
+           :source ("https://github.com/tree-sitter/tree-sitter-json")
+           :mode (json-ts-mode)))
+  (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode)))
 
 ;; YAML
 (use-package yaml-pro
