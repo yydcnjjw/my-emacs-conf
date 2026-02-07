@@ -32,14 +32,14 @@
 
 (use-package mu4e
   :straight (:host github
-                   :repo "emacsmirror/mu4e"
-                   :branch "master"
+                   :repo "djcb/mu"
+                   :branch "release/1.12"
                    :files ("build/mu4e/*")
                    :pre-build (("./autogen.sh")
                                ("make")))
   :config
   (setopt mail-user-agent 'mu4e-user-agent
-          mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu4e"))
+          mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu"))
           mu4e-sent-messages-behavior 'sent
           mu4e-sent-folder "/Sent"
           mu4e-drafts-folder "/Drafts"
