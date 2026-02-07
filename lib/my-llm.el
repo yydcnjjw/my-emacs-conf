@@ -37,6 +37,9 @@
 (require 'separedit)
 (require 'transient)
 (require 'alert)
+(require 'subr-x)
+(require 'thingatpt)
+(require 'my-llm-ui)
 ;; (require 'ai-code)
 (require 'markdown-mode)
 
@@ -173,6 +176,280 @@
   :group 'my
   :type 'string)
 
+(defcustom my/sentence-improve-template "
+# Role
+English Writing Coach.
+
+# Task
+Rewrite the provided sentence for the \"%s\" context.
+
+# Output Format
+Return ONLY valid JSON.
+
+{
+  \"original\": \"original sentence\",
+  \"suggestions\": [
+    {
+      \"text\": \"rewritten sentence\",
+      \"label\": \"style label (e.g. Concise, Polite, Impactful)\",
+      \"explanation\": \"brief explanation of changes\"
+    }
+  ]
+}
+
+Provide 3 distinct options.
+
+# Input Sentence
+%s
+"
+  "Sentence improvement prompt template."
+  :group 'my
+  :type 'string)
+
+(defcustom my/synonym-lookup-template "
+# Role
+English Vocabulary Expert.
+
+# Task
+Find English synonyms for the provided Chinese term/definition.
+
+# Output Format
+Return ONLY valid JSON.
+
+{
+  \"input\": \"input term\",
+  \"synonyms\": [
+    {
+      \"word\": \"english synonym\",
+      \"nuance\": \"brief explanation of nuance in Chinese\",
+      \"formality\": \"Neutral/Formal/Informal/Academic\",
+      \"example\": \"Short example sentence\"
+    }
+  ]
+}
+
+Provide at least 3-5 distinct synonyms covering different nuances.
+
+# Input Term
+%s
+"
+  "Synonym lookup prompt template."
+  :group 'my
+  :type 'string)
+
+(defcustom my/grammar-check-template "
+# Role
+English Grammar Expert.
+
+# Task
+Analyze the provided text for grammar errors and sentence structure.
+
+# Output Format
+Return ONLY valid JSON. No Markdown. No Explanations.
+
+{
+  \"errors\": [
+    {
+      \"original\": \"exact text segment with error\",
+      \"correction\": \"corrected text segment\",
+      \"type\": \"error category (e.g. Agreement, Tense)\",
+      \"explanation\": \"brief explanation in Chinese\"
+    }
+  ],
+  \"structure\": {
+    \"subject\": \"subject phrase\",
+    \"verb\": \"main verb\",
+    \"object\": \"object phrase (optional)\"
+  },
+  \"tense\": \"primary tense\",
+  \"voice\": \"active/passive\"
+}
+
+If no errors, \"errors\" should be an empty list [].
+
+# Input Text
+%s
+"
+  "Grammar check prompt template."
+  :group 'my
+  :type 'string)
+
+(defun my/synonym-lookup (term)
+  "Lookup synonyms for TERM (Chinese)."
+  (interactive "s中文含义: ")
+  (let ((buffer (my/llm-ui-get-buffer-create my/llm-ui-buffer-name-synonym))
+        (target-buffer (current-buffer)))
+    
+    (my/llm-ui-display-buffer-in-side-window buffer)
+    (my/llm-ui-render-loading buffer (format "Finding synonyms for '%s'" term))
+    
+    (my/llm-streaming-json
+     (my/get-llm-provider my/translate-llm-provider)
+     (llm-make-chat-prompt (format my/synonym-lookup-template term)
+                           :reasoning 'none
+                           :non-standard-params my/local-llm-extra-params)
+     buffer
+     (lambda (data)
+       (my/render-synonym-result buffer target-buffer data))
+     (lambda (msg)
+       (with-current-buffer buffer
+         (insert (format "\n\n❌ Error: %s" msg)))))))
+
+(defun my/sentence-improve (scenario)
+  "Improve sentence with SCENARIO."
+  (interactive "sScenario: ")
+  (let* ((selection (my/select-sentence-at-point))
+         (text (nth 0 selection))
+         (beg (nth 1 selection))
+         (end (nth 2 selection))
+         (source-buffer (current-buffer))
+         (buffer (my/llm-ui-get-buffer-create my/llm-ui-buffer-name-improve)))
+    (unless (and text (not (string-blank-p text)))
+      (user-error "No sentence found at point"))
+    
+    (my/llm-ui-display-buffer-in-side-window buffer)
+    (my/llm-ui-render-loading buffer (format "Improving (%s)" scenario))
+    
+    (my/llm-streaming-json
+     (my/get-llm-provider my/translate-llm-provider)
+     (llm-make-chat-prompt (format my/sentence-improve-template scenario text)
+                           :reasoning 'none
+                           :non-standard-params my/local-llm-extra-params)
+     buffer
+     (lambda (data)
+       (my/render-improve-result buffer source-buffer beg end data))
+     (lambda (msg)
+       (with-current-buffer buffer
+         (insert (format "\n\n❌ Error: %s" msg)))))))
+
+(defun my/render-improve-result (buffer source-buffer start-pos end-pos data)
+  "Render improvement DATA in BUFFER.
+SOURCE-BUFFER is the buffer where text will be replaced.
+START-POS and END-POS define the region to replace."
+  (with-current-buffer buffer
+    (erase-buffer)
+    (let ((original (alist-get 'original data))
+          (suggestions (alist-get 'suggestions data)))
+      
+      (insert (propertize "\n  句子润色 (Sentence Improvement)\n" 'face '(:height 1.2 :weight bold)))
+      (insert (propertize "  ───────────────────────────────\n\n" 'face '(:foreground "gray")))
+      
+      (insert (propertize "  原文 (Original):\n" 'face '(:weight bold)))
+      (insert (format "  %s\n\n" (propertize original 'face '(:slant italic))))
+      
+      (if (seq-empty-p suggestions)
+          (insert "  未找到建议 (No suggestions found).")
+        (insert (propertize "  建议 (Suggestions):\n" 'face '(:weight bold)))
+        (seq-do (lambda (item)
+                  (let ((text (alist-get 'text item))
+                        (label (alist-get 'label item))
+                        (explanation (alist-get 'explanation item)))
+                    (insert (format "  • %s " (propertize label 'face '(:weight bold :foreground "cyan"))))
+                    (insert (format "(%s)\n" explanation))
+                    (insert (format "    \"%s\"  " text))
+                    
+                    (insert-text-button "[Replace]"
+                                        'action (lambda (_)
+                                                  (with-current-buffer source-buffer
+                                                    (save-excursion
+                                                      (goto-char start-pos)
+                                                      (delete-region start-pos end-pos)
+                                                      (insert text)))
+                                                  (message "Replaced with: %s" label))
+                                        'face '(:background "orange" :foreground "black" :box (:line-width 1 :style released-button)))
+                    (insert "\n\n")))
+                suggestions))
+      (goto-char (point-min)))))
+
+(defun my/render-synonym-result (buffer target-buffer data)
+  "Render synonym DATA in BUFFER.
+TARGET-BUFFER is where the selected synonym will be inserted."
+  (with-current-buffer buffer
+    (erase-buffer)
+    (let ((input (alist-get 'input data))
+          (synonyms (alist-get 'synonyms data)))
+      
+      (insert (propertize "\n  同义词查询 (Synonym Lookup)\n" 'face '(:height 1.2 :weight bold)))
+      (insert (format "  查询 (Query): %s\n" input))
+      (insert (propertize "  ───────────────────────────\n\n" 'face '(:foreground "gray")))
+      
+      (if (seq-empty-p synonyms)
+          (insert "  未找到同义词 (No synonyms found).")
+        (seq-do (lambda (item)
+                  (let ((word (alist-get 'word item))
+                        (nuance (alist-get 'nuance item))
+                        (formality (alist-get 'formality item))
+                        (example (alist-get 'example item)))
+                    (insert (format "  • %s " (propertize word 'face '(:weight bold :foreground "cyan"))))
+                    (insert (propertize (format "[%s]\n" formality) 'face '(:height 0.8 :foreground "gray")))
+                    (insert (format "    %s\n" nuance))
+                    (insert (format "    例句: \"%s\"  " (propertize example 'face '(:slant italic))))
+                    
+                    (insert-text-button "[Insert]"
+                                        'action (lambda (_)
+                                                  (with-current-buffer target-buffer
+                                                    (insert word))
+                                                  (message "Inserted: %s" word))
+                                        'face '(:background "blue" :foreground "white" :box (:line-width 1 :style released-button)))
+                    (insert "\n\n")))
+                synonyms))
+      (goto-char (point-min)))))
+
+(defun my/render-grammar-result (buffer source-buffer start-pos end-pos data)
+  "Render grammar analysis DATA in BUFFER.
+SOURCE-BUFFER is the original buffer.
+START-POS and END-POS define the sentence bounds."
+  (with-current-buffer buffer
+    (erase-buffer)
+    (let ((errors (alist-get 'errors data))
+          (structure (alist-get 'structure data))
+          (tense (alist-get 'tense data))
+          (voice (alist-get 'voice data)))
+      
+      (insert (propertize "\n  语法分析 (Grammar Analysis)\n" 'face '(:height 1.2 :weight bold)))
+      (insert (propertize "  ───────────────────────────\n\n" 'face '(:foreground "gray")))
+      
+      ;; 1. Structure
+      (when structure
+        (insert (propertize "  句子结构 (Sentence Structure):\n" 'face '(:weight bold)))
+        (insert (format "  • 主语 (Subject): %s\n" (alist-get 'subject structure)))
+        (insert (format "  • 谓语 (Verb):    %s\n" (alist-get 'verb structure)))
+        (when (alist-get 'object structure)
+          (insert (format "  • 宾语 (Object):  %s\n" (alist-get 'object structure))))
+        (insert (format "  • 时态 (Tense):   %s\n" tense))
+        (insert (format "  • 语态 (Voice):   %s\n\n" voice)))
+      
+      ;; 2. Errors
+      (if (seq-empty-p errors)
+          (insert (propertize "  ✅ 未发现错误 (No errors found)." 'face '(:foreground "green")))
+        (insert (propertize "  发现问题 (Found Issues):\n" 'face '(:weight bold :foreground "orange")))
+        (seq-do (lambda (err)
+                  (let ((original (alist-get 'original err))
+                        (correction (alist-get 'correction err))
+                        (type (alist-get 'type err))
+                        (explanation (alist-get 'explanation err)))
+                    (insert (format "  • [%s] %s\n" type explanation))
+                    (insert (format "    原文: \"%s\"\n" (propertize original 'face '(:strike-through t))))
+                    (insert (format "    修正: \"%s\"  " (propertize correction 'face '(:weight bold))))
+                    (insert-text-button "[Apply Fix]"
+                                        'action (lambda (_)
+                                                  (with-current-buffer source-buffer
+                                                    (save-excursion
+                                                      (goto-char start-pos)
+                                                      ;; Search within the sentence bounds
+                                                      (let ((limit end-pos))
+                                                        (if (search-forward original limit t)
+                                                            (replace-match correction)
+                                                          (message "Could not find original text")))))
+                                                  (message "Applied fix: %s -> %s" original correction))
+                                        'face '(:background "green" :foreground "black" :box (:line-width 1 :style released-button)))
+                    (insert "\n\n")))
+                errors))
+      
+      (goto-char (point-min)))))
+
+
+
 (defvar my/translate-major-modes
   '(markdown-mode
     org-mode
@@ -191,6 +468,40 @@
 (defvar my/dictionary-buffer nil)
 (defvar my/dictionary-llm-request nil)
 
+(defun my/llm-streaming-json (provider prompt buffer on-success &optional on-error)
+  "Stream output from PROVIDER with PROMPT to BUFFER, parsing JSON on completion.
+ON-SUCCESS is called with the parsed JSON object.
+ON-ERROR is called with an error message if parsing or request fails."
+  (with-current-buffer buffer
+    (erase-buffer))
+  (llm-chat-streaming
+   provider
+   prompt
+   (lambda (text)
+     (with-current-buffer buffer
+       (erase-buffer)
+       (insert text)))
+   (lambda (text)
+     (with-current-buffer buffer
+       (erase-buffer)
+       (insert text))
+     (let ((json-data nil))
+       ;; Try to clean up markdown code blocks if present
+       (when (string-match "```json\\s-*\n?\\(\\(.\\|\n\\)*?\\)\n?```" text)
+         (setq text (match-string 1 text)))
+       (condition-case err
+           (setq json-data (json-read-from-string text))
+         (error
+          (if on-error
+              (funcall on-error (format "JSON Parse Error: %s" (error-message-string err)))
+            (message "JSON Parse Error: %s" err))))
+       (when json-data
+         (funcall on-success json-data))))
+   (lambda (_type msg)
+     (if on-error
+         (funcall on-error msg)
+       (message "LLM Error: %s" msg)))))
+
 (defun my/current-buffer-block-info (&optional in-place)
   "Current buffer block info with IN-PLACE."
   (cond
@@ -203,6 +514,35 @@
           :end (point-max)
           :major-mode major-mode))
    (t (separedit--block-info))))
+
+(defun my/select-sentence-at-point ()
+  "Select sentence at point, return (text beg end)."
+  (let ((sentence-end-double-space nil))
+    (cond
+     ((use-region-p)
+      (list (buffer-substring-no-properties (region-beginning) (region-end))
+            (region-beginning)
+            (region-end)))
+     ((derived-mode-p 'prog-mode)
+      (if-let ((block (separedit--block-info)))
+          (let ((beg (plist-get block :beginning))
+                (end (plist-get block :end)))
+            (if (and (>= (point) beg) (<= (point) end))
+                (save-restriction
+                  (narrow-to-region beg end)
+                  (let ((bounds (bounds-of-thing-at-point 'sentence)))
+                    (if bounds
+                        (list (buffer-substring-no-properties (car bounds) (cdr bounds))
+                              (car bounds)
+                              (cdr bounds))
+                      (list (buffer-substring-no-properties beg end) beg end))))
+              nil))
+        nil))
+     (t (let ((bounds (bounds-of-thing-at-point 'sentence)))
+          (when bounds
+            (list (buffer-substring-no-properties (car bounds) (cdr bounds))
+                  (car bounds)
+                  (cdr bounds))))))))
 
 (defun my/translate-change-dwim ()
   "Change text to translate text."
@@ -277,14 +617,29 @@
 
 (require 'transient)
 
+(transient-define-prefix my/sentence-improve-menu ()
+  "Select scenario for sentence improvement."
+  ["Select Scenario"
+   [("f" "Formal"       (lambda () (interactive) (my/sentence-improve "Formal")))
+    ("c" "Casual"       (lambda () (interactive) (my/sentence-improve "Casual")))
+    ("a" "Academic"     (lambda () (interactive) (my/sentence-improve "Academic")))]
+   [("b" "Business"     (lambda () (interactive) (my/sentence-improve "Business")))
+    ("s" "Simple"       (lambda () (interactive) (my/sentence-improve "Simple")))
+    ("l" "Blog"         (lambda () (interactive) (my/sentence-improve "Blog")))
+    ("d" "Diary"        (lambda () (interactive) (my/sentence-improve "Diary")))]])
+
 (transient-define-prefix my/language-tool-menu ()
   "Language tool Menu."
   ["Language tool Commands"
    ["AI Translate"
     ("t" "Translate and show in buffer." my/translate-dwim)
-        ("c" "Translate and replace" my/translate-change-dwim)]
+    ("c" "Translate and replace" my/translate-change-dwim)]
    ["AI Dictionary"
-    ("d" "Query word in side buffer." my/dictionary-query-word)]])
+    ("d" "Query word in side buffer." my/dictionary-query-word)]
+   ["Writing Assist"
+    ("g" "Grammar Check" my/grammar-check)
+    ("s" "Synonym Lookup" my/synonym-lookup)
+    ("i" "Sentence Improve" my/sentence-improve-menu)]])
 
 (transient-define-prefix my/ai-settings-menu ()
   "AI settings Menu."
