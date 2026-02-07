@@ -114,15 +114,6 @@
   :config
   (setopt avy-background t))
 
-(use-package fingertip
-  :straight (:host github :repo "manateelazycat/fingertip"
-                   :branch "master")
-  :hook
-  ((prog-mode) . fingertip-mode)
-  :config
-  (require 'my-fingertip)
-  (my/setup-fingertip-default-bindings))
-
 (use-package thing-edit
   :straight (:host github :repo "manateelazycat/thing-edit"
                    :branch "master")
@@ -175,6 +166,11 @@
   (("M-C" . caser-camelcase-dwim)
    ("M-S" . caser-snakecase-dwim)
    ("M-D" . caser-dashcase-dwim)))
+
+(use-package combobulate
+  :init
+  (setq combobulate-key-prefix "C-c u")
+  :hook ((prog-mode . combobulate-mode)))
 
 (provide 'init-edit)
 

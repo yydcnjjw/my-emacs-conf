@@ -68,6 +68,15 @@
              ("C-j" . fingertip-jump-up))
   )
 
+;; (use-package fingertip
+;;   :straight (:host github :repo "manateelazycat/fingertip"
+;;                    :branch "master")
+;;   :hook
+;;   ((prog-mode) . fingertip-mode)
+;;   :config
+;;   (require 'my-fingertip)
+;;   (my/setup-fingertip-default-bindings))
+
 (provide 'my-fingertip)
 
 ;;; my-fingertip.el ends here
