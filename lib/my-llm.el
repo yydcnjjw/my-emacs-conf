@@ -37,7 +37,7 @@
 (require 'separedit)
 (require 'transient)
 (require 'alert)
-(require 'ai-code)
+;; (require 'ai-code)
 (require 'markdown-mode)
 
 (llm-models-add
@@ -296,7 +296,7 @@
 (transient-define-prefix my/ai-menu ()
   "AI Menu."
   ["AI tools"
-   [("c" "AI code" ai-code-menu)
+   [("c" "Opencode" opencode)
     ("l" "Language tool" my/language-tool-menu)
     ("s" "Settings" my/ai-settings-menu)]]
   (interactive)
@@ -305,6 +305,41 @@
 (defun my/ai-agent-alert (title message)
   "Display notification with TITLE and MESSAGE using the `alert'."
   (alert message :title title :category 'agenda))
+
+;;; ARCHIVED
+;; (use-package ai-code
+;;   :straight (:type git :host github
+;;                    :repo "tninja/ai-code-interface.el"
+;;                    :files ("*.el" "snippets"))
+;;   :defer t
+;;   :init
+;;   (with-eval-after-load 'magit
+;;     (ai-code-magit-setup-transients))
+;;   :config
+;;   (require 'ai-code-gemini-cli)
+;;   (ai-code-set-backend 'gemini))
+
+;; (use-package minuet
+;;   :bind
+;;   (("M-y" . minuet-complete-with-minibuffer)
+;;    ("M-i" . minuet-show-suggestion)
+;;    :map minuet-active-mode-map
+;;    ("M-p" . minuet-previous-suggestion)
+;;    ("M-n" . minuet-next-suggestion)
+;;    ("M-A" . minuet-accept-suggestion)
+;;    ("M-a" . minuet-accept-suggestion-line)
+;;    ("M-e" . minuet-dismiss-suggestion))
+;;   :functions minuet-set-optional-options
+;;   :config
+;;   (setopt minuet-provider 'openai-fim-compatible
+;;           minuet-n-completions 1
+;;           minuet-context-window 512)
+;;   (plist-put minuet-openai-fim-compatible-options :end-point "http://127.0.0.1:11434/v1/completions")
+;;   (plist-put minuet-openai-fim-compatible-options :name "Ollama")
+;;   (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
+;;   (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:3b")
+
+;;   (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 64))
 
 (provide 'my-llm)
 

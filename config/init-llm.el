@@ -49,46 +49,19 @@
   :config
   (setopt llm-warn-on-nonfree nil))
 
-(use-package ai-code
-  :straight (:type git :host github
-                   :repo "tninja/ai-code-interface.el"
-                   :files ("*.el" "snippets"))
-  :defer t
-  :init
-  (with-eval-after-load 'magit
-    (ai-code-magit-setup-transients))
-  :config
-  (require 'ai-code-gemini-cli)
-  (ai-code-set-backend 'gemini))
-
 (use-package emacs
   :ensure separedit
+  :defer t
   :bind
   ("C-c o" . my/ai-menu)
   :config
   (require 'my-llm))
 
-(use-package minuet
-  :bind
-  (("M-y" . minuet-complete-with-minibuffer)
-   ("M-i" . minuet-show-suggestion)
-   :map minuet-active-mode-map
-   ("M-p" . minuet-previous-suggestion)
-   ("M-n" . minuet-next-suggestion)
-   ("M-A" . minuet-accept-suggestion)
-   ("M-a" . minuet-accept-suggestion-line)
-   ("M-e" . minuet-dismiss-suggestion))
-  :functions minuet-set-optional-options
+(use-package opencode
+  :straight (opencode :type git :host codeberg :repo "sczi/opencode.el")
+  :defer t
   :config
-  (setopt minuet-provider 'openai-fim-compatible
-          minuet-n-completions 1
-          minuet-context-window 512)
-  (plist-put minuet-openai-fim-compatible-options :end-point "http://127.0.0.1:11434/v1/completions")
-  (plist-put minuet-openai-fim-compatible-options :name "Ollama")
-  (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
-  (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:3b")
-
-  (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 64))
+  (setq opencode-host "127.0.0.1"))
 
 (provide 'init-llm)
 
