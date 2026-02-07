@@ -39,6 +39,7 @@
           `("--silent"
             "--compressed"
             "--location"
+            "--noproxy" "127.0.0.1"
             ,@(when-let (proxy (getenv "ALL_PROXY")) (list "-x" proxy)))))
 
 (use-package llm
