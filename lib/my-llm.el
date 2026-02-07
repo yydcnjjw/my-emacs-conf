@@ -295,6 +295,34 @@ If no errors, \"errors\" should be an empty list [].
        (with-current-buffer buffer
          (insert (format "\n\n❌ Error: %s" msg)))))))
 
+(defun my/grammar-check ()
+  "Check grammar for sentence at point."
+  (interactive)
+  (let* ((selection (my/select-sentence-at-point))
+         (text (nth 0 selection))
+         (beg (nth 1 selection))
+         (end (nth 2 selection))
+         (source-buffer (current-buffer))
+         (buffer (my/llm-ui-get-buffer-create my/llm-ui-buffer-name-grammar)))
+    (unless (and text (not (string-blank-p text)))
+      (user-error "No sentence found at point"))
+    
+    (my/llm-ui-display-buffer-in-side-window buffer)
+    (my/llm-ui-render-loading buffer "Analyzing Grammar")
+    
+    (my/llm-streaming-json
+     (my/get-llm-provider my/translate-llm-provider)
+     (llm-make-chat-prompt (format my/grammar-check-template text)
+                           :reasoning 'none
+                           :non-standard-params my/local-llm-extra-params)
+     buffer
+     (lambda (data)
+       (my/render-grammar-result buffer source-buffer beg end data))
+     (lambda (msg)
+       (with-current-buffer buffer
+         (let ((inhibit-read-only t))
+           (insert (format "\n\n❌ Error: %s" msg))))))))
+
 (defun my/sentence-improve (scenario)
   "Improve sentence with SCENARIO."
   (interactive "sScenario: ")
@@ -327,126 +355,160 @@ If no errors, \"errors\" should be an empty list [].
 SOURCE-BUFFER is the buffer where text will be replaced.
 START-POS and END-POS define the region to replace."
   (with-current-buffer buffer
-    (erase-buffer)
-    (let ((original (alist-get 'original data))
-          (suggestions (alist-get 'suggestions data)))
-      
-      (insert (propertize "\n  句子润色 (Sentence Improvement)\n" 'face '(:height 1.2 :weight bold)))
-      (insert (propertize "  ───────────────────────────────\n\n" 'face '(:foreground "gray")))
-      
-      (insert (propertize "  原文 (Original):\n" 'face '(:weight bold)))
-      (insert (format "  %s\n\n" (propertize original 'face '(:slant italic))))
-      
-      (if (seq-empty-p suggestions)
-          (insert "  未找到建议 (No suggestions found).")
-        (insert (propertize "  建议 (Suggestions):\n" 'face '(:weight bold)))
-        (seq-do (lambda (item)
-                  (let ((text (alist-get 'text item))
-                        (label (alist-get 'label item))
-                        (explanation (alist-get 'explanation item)))
-                    (insert (format "  • %s " (propertize label 'face '(:weight bold :foreground "cyan"))))
-                    (insert (format "(%s)\n" explanation))
-                    (insert (format "    \"%s\"  " text))
-                    
-                    (insert-text-button "[Replace]"
-                                        'action (lambda (_)
-                                                  (with-current-buffer source-buffer
-                                                    (save-excursion
-                                                      (goto-char start-pos)
-                                                      (delete-region start-pos end-pos)
-                                                      (insert text)))
-                                                  (message "Replaced with: %s" label))
-                                        'face '(:background "orange" :foreground "black" :box (:line-width 1 :style released-button)))
-                    (insert "\n\n")))
-                suggestions))
-      (goto-char (point-min)))))
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (let ((original (alist-get 'original data))
+            (suggestions (alist-get 'suggestions data))
+            (count 0))
+        
+        (insert (propertize "\n  句子润色 (Sentence Improvement)\n" 'face '(:height 1.2 :weight bold)))
+        (insert (propertize "  ───────────────────────────────\n\n" 'face '(:foreground "gray")))
+        
+        (insert (propertize "  原文 (Original):\n" 'face '(:weight bold)))
+        (insert (format "  %s\n\n" (propertize original 'face '(:slant italic))))
+        
+        (if (seq-empty-p suggestions)
+            (insert "  未找到建议 (No suggestions found).")
+          (insert (propertize "  建议 (Suggestions):\n" 'face '(:weight bold)))
+          (seq-do (lambda (item)
+                    (setq count (1+ count))
+                    (let ((text (alist-get 'text item))
+                          (label (alist-get 'label item))
+                          (explanation (alist-get 'explanation item))
+                          (start (point)))
+                      (insert (format "  [%d] " count))
+                      (let ((act-start (point)))
+                        (insert (format "%s" (propertize label 'face '(:weight bold :foreground "cyan"))))
+                        (insert (format " (%s)\n" explanation))
+                        (insert (format "      \"%s\"" text))
+                        (add-text-properties act-start (point)
+                                             `(my-writing-assist-action
+                                               (lambda (d)
+                                                 (with-current-buffer (plist-get d :source-buffer)
+                                                   (save-excursion
+                                                     (goto-char (plist-get d :start-pos))
+                                                     (delete-region (plist-get d :start-pos) (plist-get d :end-pos))
+                                                     (insert (plist-get d :text))))
+                                                 (message "Replaced with: %s" (plist-get d :label)))
+                                               my-writing-assist-data
+                                               (:source-buffer ,source-buffer
+                                                :start-pos ,start-pos
+                                                :end-pos ,end-pos
+                                                :text ,text
+                                                :label ,label)
+                                               mouse-face highlight
+                                               help-echo "RET to replace")))
+                      (insert "\n\n")))
+                  suggestions))
+        (goto-char (point-min))))))
 
 (defun my/render-synonym-result (buffer target-buffer data)
   "Render synonym DATA in BUFFER.
 TARGET-BUFFER is where the selected synonym will be inserted."
   (with-current-buffer buffer
-    (erase-buffer)
-    (let ((input (alist-get 'input data))
-          (synonyms (alist-get 'synonyms data)))
-      
-      (insert (propertize "\n  同义词查询 (Synonym Lookup)\n" 'face '(:height 1.2 :weight bold)))
-      (insert (format "  查询 (Query): %s\n" input))
-      (insert (propertize "  ───────────────────────────\n\n" 'face '(:foreground "gray")))
-      
-      (if (seq-empty-p synonyms)
-          (insert "  未找到同义词 (No synonyms found).")
-        (seq-do (lambda (item)
-                  (let ((word (alist-get 'word item))
-                        (nuance (alist-get 'nuance item))
-                        (formality (alist-get 'formality item))
-                        (example (alist-get 'example item)))
-                    (insert (format "  • %s " (propertize word 'face '(:weight bold :foreground "cyan"))))
-                    (insert (propertize (format "[%s]\n" formality) 'face '(:height 0.8 :foreground "gray")))
-                    (insert (format "    %s\n" nuance))
-                    (insert (format "    例句: \"%s\"  " (propertize example 'face '(:slant italic))))
-                    
-                    (insert-text-button "[Insert]"
-                                        'action (lambda (_)
-                                                  (with-current-buffer target-buffer
-                                                    (insert word))
-                                                  (message "Inserted: %s" word))
-                                        'face '(:background "blue" :foreground "white" :box (:line-width 1 :style released-button)))
-                    (insert "\n\n")))
-                synonyms))
-      (goto-char (point-min)))))
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (let ((input (alist-get 'input data))
+            (synonyms (alist-get 'synonyms data))
+            (count 0))
+        
+        (insert (propertize "\n  同义词查询 (Synonym Lookup)\n" 'face '(:height 1.2 :weight bold)))
+        (insert (format "  查询 (Query): %s\n" input))
+        (insert (propertize "  ───────────────────────────\n\n" 'face '(:foreground "gray")))
+        
+        (if (seq-empty-p synonyms)
+            (insert "  未找到同义词 (No synonyms found).")
+          (seq-do (lambda (item)
+                    (setq count (1+ count))
+                    (let ((word (alist-get 'word item))
+                          (nuance (alist-get 'nuance item))
+                          (formality (alist-get 'formality item))
+                          (example (alist-get 'example item)))
+                      (insert (format "  [%d] " count))
+                      (let ((act-start (point)))
+                        (insert (format "%s " (propertize word 'face '(:weight bold :foreground "cyan"))))
+                        (insert (propertize (format "[%s]\n" formality) 'face '(:height 0.8 :foreground "gray")))
+                        (insert (format "      %s\n" nuance))
+                        (insert (format "      例句: \"%s\"" (propertize example 'face '(:slant italic))))
+                        (add-text-properties act-start (point)
+                                             `(my-writing-assist-action
+                                               (lambda (d)
+                                                 (with-current-buffer (plist-get d :target-buffer)
+                                                   (insert (plist-get d :word)))
+                                                 (message "Inserted: %s" (plist-get d :word)))
+                                               my-writing-assist-data
+                                               (:target-buffer ,target-buffer
+                                                :word ,word)
+                                               mouse-face highlight
+                                               help-echo "RET to insert")))
+                      (insert "\n\n")))
+                  synonyms))
+        (goto-char (point-min))))))
 
 (defun my/render-grammar-result (buffer source-buffer start-pos end-pos data)
   "Render grammar analysis DATA in BUFFER.
 SOURCE-BUFFER is the original buffer.
 START-POS and END-POS define the sentence bounds."
   (with-current-buffer buffer
-    (erase-buffer)
-    (let ((errors (alist-get 'errors data))
-          (structure (alist-get 'structure data))
-          (tense (alist-get 'tense data))
-          (voice (alist-get 'voice data)))
-      
-      (insert (propertize "\n  语法分析 (Grammar Analysis)\n" 'face '(:height 1.2 :weight bold)))
-      (insert (propertize "  ───────────────────────────\n\n" 'face '(:foreground "gray")))
-      
-      ;; 1. Structure
-      (when structure
-        (insert (propertize "  句子结构 (Sentence Structure):\n" 'face '(:weight bold)))
-        (insert (format "  • 主语 (Subject): %s\n" (alist-get 'subject structure)))
-        (insert (format "  • 谓语 (Verb):    %s\n" (alist-get 'verb structure)))
-        (when (alist-get 'object structure)
-          (insert (format "  • 宾语 (Object):  %s\n" (alist-get 'object structure))))
-        (insert (format "  • 时态 (Tense):   %s\n" tense))
-        (insert (format "  • 语态 (Voice):   %s\n\n" voice)))
-      
-      ;; 2. Errors
-      (if (seq-empty-p errors)
-          (insert (propertize "  ✅ 未发现错误 (No errors found)." 'face '(:foreground "green")))
-        (insert (propertize "  发现问题 (Found Issues):\n" 'face '(:weight bold :foreground "orange")))
-        (seq-do (lambda (err)
-                  (let ((original (alist-get 'original err))
-                        (correction (alist-get 'correction err))
-                        (type (alist-get 'type err))
-                        (explanation (alist-get 'explanation err)))
-                    (insert (format "  • [%s] %s\n" type explanation))
-                    (insert (format "    原文: \"%s\"\n" (propertize original 'face '(:strike-through t))))
-                    (insert (format "    修正: \"%s\"  " (propertize correction 'face '(:weight bold))))
-                    (insert-text-button "[Apply Fix]"
-                                        'action (lambda (_)
-                                                  (with-current-buffer source-buffer
-                                                    (save-excursion
-                                                      (goto-char start-pos)
-                                                      ;; Search within the sentence bounds
-                                                      (let ((limit end-pos))
-                                                        (if (search-forward original limit t)
-                                                            (replace-match correction)
-                                                          (message "Could not find original text")))))
-                                                  (message "Applied fix: %s -> %s" original correction))
-                                        'face '(:background "green" :foreground "black" :box (:line-width 1 :style released-button)))
-                    (insert "\n\n")))
-                errors))
-      
-      (goto-char (point-min)))))
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (let ((errors (alist-get 'errors data))
+            (structure (alist-get 'structure data))
+            (tense (alist-get 'tense data))
+            (voice (alist-get 'voice data))
+            (count 0))
+        
+        (insert (propertize "\n  语法分析 (Grammar Analysis)\n" 'face '(:height 1.2 :weight bold)))
+        (insert (propertize "  ────────────────\n\n" 'face '(:foreground "gray")))
+        
+        ;; 1. Structure
+        (when structure
+          (insert (propertize "  句子结构 (Sentence Structure):\n" 'face '(:weight bold)))
+          (insert (format "  • 主语 (Subject): %s\n" (alist-get 'subject structure)))
+          (insert (format "  • 谓语 (Verb):    %s\n" (alist-get 'verb structure)))
+          (when (alist-get 'object structure)
+            (insert (format "  • 宾语 (Object):  %s\n" (alist-get 'object structure))))
+          (insert (format "  • 时态 (Tense):   %s\n" tense))
+          (insert (format "  • 语态 (Voice):   %s\n\n" voice)))
+        
+        ;; 2. Errors
+        (if (seq-empty-p errors)
+            (insert (propertize "  ✅ 未发现错误 (No errors found)." 'face '(:foreground "green")))
+          (insert (propertize "  发现问题 (Found Issues):\n" 'face '(:weight bold :foreground "orange")))
+          (seq-do (lambda (err)
+                    (setq count (1+ count))
+                    (let ((original (alist-get 'original err))
+                          (correction (alist-get 'correction err))
+                          (type (alist-get 'type err))
+                          (explanation (alist-get 'explanation err)))
+                      (insert (format "  • [%s] %s\n" type explanation))
+                      (insert (format "    原文: \"%s\"\n" (propertize original 'face '(:strike-through t))))
+                      (insert (format "    [%d] 修正: " count))
+                      (let ((act-start (point)))
+                        (insert (format "\"%s\"" (propertize correction 'face '(:weight bold))))
+                        (add-text-properties act-start (point)
+                                             `(my-writing-assist-action
+                                               (lambda (d)
+                                                 (with-current-buffer (plist-get d :source-buffer)
+                                                   (save-excursion
+                                                     (goto-char (plist-get d :start-pos))
+                                                     ;; Search within the sentence bounds
+                                                     (let ((limit (plist-get d :end-pos)))
+                                                       (if (search-forward (plist-get d :original) limit t)
+                                                           (replace-match (plist-get d :correction))
+                                                         (message "Could not find original text")))))
+                                                 (message "Applied fix: %s -> %s" (plist-get d :original) (plist-get d :correction)))
+                                               my-writing-assist-data
+                                               (:source-buffer ,source-buffer
+                                                :start-pos ,start-pos
+                                                :end-pos ,end-pos
+                                                :original ,original
+                                                :correction ,correction)
+                                               mouse-face highlight
+                                               help-echo "RET to apply fix")))
+                      (insert "\n\n")))
+                  errors))
+        (goto-char (point-min))))))
 
 
 
@@ -473,18 +535,21 @@ START-POS and END-POS define the sentence bounds."
 ON-SUCCESS is called with the parsed JSON object.
 ON-ERROR is called with an error message if parsing or request fails."
   (with-current-buffer buffer
-    (erase-buffer))
+    (let ((inhibit-read-only t))
+      (erase-buffer)))
   (llm-chat-streaming
    provider
    prompt
    (lambda (text)
      (with-current-buffer buffer
-       (erase-buffer)
-       (insert text)))
+       (let ((inhibit-read-only t))
+         (erase-buffer)
+         (insert text))))
    (lambda (text)
      (with-current-buffer buffer
-       (erase-buffer)
-       (insert text))
+       (let ((inhibit-read-only t))
+         (erase-buffer)
+         (insert text)))
      (let ((json-data nil))
        ;; Try to clean up markdown code blocks if present
        (when (string-match "```json\\s-*\n?\\(\\(.\\|\n\\)*?\\)\n?```" text)
@@ -496,7 +561,8 @@ ON-ERROR is called with an error message if parsing or request fails."
               (funcall on-error (format "JSON Parse Error: %s" (error-message-string err)))
             (message "JSON Parse Error: %s" err))))
        (when json-data
-         (funcall on-success json-data))))
+         (let ((inhibit-read-only t))
+           (funcall on-success json-data)))))
    (lambda (_type msg)
      (if on-error
          (funcall on-error msg)
