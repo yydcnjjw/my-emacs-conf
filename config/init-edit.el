@@ -176,6 +176,8 @@
   (setq combobulate-key-prefix "C-c u")
   :hook ((prog-mode . combobulate-mode)))
 
+(electric-pair-mode)
+
 (provide 'init-edit)
 
 ;;; init-edit.el ends here
