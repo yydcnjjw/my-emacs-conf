@@ -55,9 +55,11 @@
 (setopt tramp-persistency-file-name (expand-file-name "tramp" my/emacs-cache-dir))
 
 ;; transient
-(setopt transient-levels-file (expand-file-name "transient/levels.el" my/emacs-cache-dir)
-        transient-values-file (expand-file-name "transient/values.el" my/emacs-cache-dir)
-        transient-history-file (expand-file-name "transient/history.el" my/emacs-cache-dir))
+(use-package transient
+  :config
+  (setopt transient-levels-file (expand-file-name "transient/levels.el" my/emacs-cache-dir)
+          transient-values-file (expand-file-name "transient/values.el" my/emacs-cache-dir)
+          transient-history-file (expand-file-name "transient/history.el" my/emacs-cache-dir)))
 
 ;; recentf
 (setopt recentf-save-file (expand-file-name "recentf" my/emacs-cache-dir))
@@ -168,6 +170,8 @@
    ("M-D" . caser-dashcase-dwim)))
 
 (use-package combobulate
+  :defer t
+  :defines combobulate-key-prefix
   :init
   (setq combobulate-key-prefix "C-c u")
   :hook ((prog-mode . combobulate-mode)))
