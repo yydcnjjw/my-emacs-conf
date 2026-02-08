@@ -241,33 +241,72 @@ ON-ERROR is called with an error message if parsing or request fails."
    (t (separedit--block-info))))
 
 (defun my/select-sentence-at-point ()
-  "Select sentence at point, return (text beg end)."
-  (let ((sentence-end-double-space nil))
-    (cond
-     ((use-region-p)
-      (list (buffer-substring-no-properties (region-beginning) (region-end))
-            (region-beginning)
-            (region-end)))
-     ((derived-mode-p 'prog-mode)
-      (if-let ((block (separedit--block-info)))
-          (let ((beg (plist-get block :beginning))
-                (end (plist-get block :end)))
-            (if (and (>= (point) beg) (<= (point) end))
-                (save-restriction
-                  (narrow-to-region beg end)
-                  (let ((bounds (bounds-of-thing-at-point 'sentence)))
-                    (if bounds
-                        (list (buffer-substring-no-properties (car bounds) (cdr bounds))
-                              (car bounds)
-                              (cdr bounds))
-                      (list (buffer-substring-no-properties beg end) beg end))))
+  "Select sentence at point, return (stripped-text beg end original-text)."
+  (let* ((sentence-end-double-space nil)
+         (source-buffer (current-buffer))
+         (selection
+          (cond
+           ((use-region-p)
+            (list (region-beginning) (region-end)))
+           ((derived-mode-p 'prog-mode)
+            (if-let ((block (separedit--block-info)))
+                (let ((beg (plist-get block :beginning))
+                      (end (plist-get block :end)))
+                  (if (and (>= (point) beg) (<= (point) end))
+                      (save-restriction
+                        (narrow-to-region beg end)
+                        (let ((bounds (bounds-of-thing-at-point 'sentence)))
+                          (if bounds
+                              (list (car bounds) (cdr bounds))
+                            (list beg end))))
+                    nil))
               nil))
-        nil))
-     (t (let ((bounds (bounds-of-thing-at-point 'sentence)))
-          (when bounds
-            (list (buffer-substring-no-properties (car bounds) (cdr bounds))
-                  (car bounds)
-                  (cdr bounds))))))))
+           (t (let ((bounds (bounds-of-thing-at-point 'sentence)))
+                (when bounds
+                  (list (car bounds) (cdr bounds))))))))
+    (when selection
+      (let* ((beg (car selection))
+             (end (cadr selection))
+             (original-text (buffer-substring-no-properties beg end))
+             (stripped-text nil))
+        ;; Use separedit to get clean content if in a code buffer
+        (let ((separedit-inhibit-edit-window-p t))
+          (save-excursion
+            (save-restriction
+              (narrow-to-region beg end)
+              (goto-char beg)
+              (condition-case nil
+                  (let ((edit-buf (separedit)))
+                    (when (buffer-live-p edit-buf)
+                      (with-current-buffer edit-buf
+                        (setq stripped-text (buffer-string))
+                        (separedit-abort))))
+                (error nil)))))
+        ;; Fallback to simple strip or original text
+        (unless stripped-text
+          (setq stripped-text (string-trim original-text)))
+        (list stripped-text beg end original-text)))))
+
+(defun my/apply-text-replacement (source-buffer beg end new-text)
+  "Replace text from BEG to END in SOURCE-BUFFER with NEW-TEXT safely."
+  (with-current-buffer source-buffer
+    (save-excursion
+      (save-restriction
+        (narrow-to-region beg end)
+        (goto-char beg)
+        (let ((separedit-inhibit-edit-window-p t))
+          (condition-case nil
+              (let ((edit-buf (separedit)))
+                (if (buffer-live-p edit-buf)
+                    (with-current-buffer edit-buf
+                      (erase-buffer)
+                      (insert new-text)
+                      (separedit-commit))
+                  (delete-region (point-min) (point-max))
+                  (insert new-text)))
+            (error
+             (delete-region (point-min) (point-max))
+             (insert new-text))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Interactive Commands
@@ -275,20 +314,21 @@ ON-ERROR is called with an error message if parsing or request fails."
 (defun my/translate-change-dwim ()
   "Change text to translate text."
   (interactive)
-  (let* ((buffer (current-buffer))
-         (block (my/current-buffer-block-info t))
-         (beg (plist-get block :beginning))
-         (end (plist-get block :end))
-         (content (buffer-substring-no-properties beg end))
-         (prompt-data (my/llm-prompt-render "translate" `((text . ,content) (language . "English")))))
-    (kill-region beg end)
+  (let* ((source-buffer (current-buffer))
+         (selection (my/select-sentence-at-point))
+         (text (nth 0 selection))
+         (beg (nth 1 selection))
+         (end (nth 2 selection))
+         (prompt-data (my/llm-prompt-render "translate" `((text . ,text) (language . "English")))))
+    (my/apply-text-replacement source-buffer beg end "") ; Prepare the area
+    (goto-char beg)
     (llm-chat-streaming-to-point
      (my/get-llm-provider my/translate-llm-provider)
      (llm-make-chat-prompt (plist-get prompt-data :user)
                            :context (plist-get prompt-data :system)
                            :reasoning 'light
                            :non-standard-params my/local-llm-extra-params)
-     buffer beg (lambda ()))))
+     source-buffer beg (lambda ()))))
 
 (defun my/translate-dwim ()
   "Translate dwim."
@@ -463,11 +503,11 @@ START-POS and END-POS define the region to replace."
                         (add-text-properties act-start (point)
                                              `(my-writing-assist-action
                                                 (lambda (d)
-                                                  (with-current-buffer (plist-get d :source-buffer)
-                                                    (save-excursion
-                                                      (goto-char (plist-get d :start-pos))
-                                                      (delete-region (plist-get d :start-pos) (plist-get d :end-pos))
-                                                      (insert (plist-get d :text))))
+                                                  (my/apply-text-replacement
+                                                   (plist-get d :source-buffer)
+                                                   (plist-get d :start-pos)
+                                                   (plist-get d :end-pos)
+                                                   (plist-get d :text))
                                                   (message "Replaced with: %s" (plist-get d :label)))
                                                 my-writing-assist-data
                                                 (:source-buffer ,source-buffer
