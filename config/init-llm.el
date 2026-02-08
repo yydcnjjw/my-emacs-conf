@@ -64,6 +64,12 @@
   :config
   (setq opencode-host "127.0.0.1"))
 
+(use-package copilot
+  :straight (:host github
+                   :repo "copilot-emacs/copilot.el"
+                   :files ("*.el"))
+  :ensure t)
+
 (provide 'init-llm)
 
 ;;; init-llm.el ends here
