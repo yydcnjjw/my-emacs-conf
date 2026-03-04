@@ -30,10 +30,6 @@
 
 ;;; Code:
 
-(require 'llm)
-(require 'llm-ollama)
-(require 'llm-gemini)
-(require 'llm-models)
 (require 'separedit)
 (require 'transient)
 (require 'alert)
@@ -42,78 +38,77 @@
 (require 'my-llm-ui)
 (require 'markdown-mode)
 (require 'json)
+(require 'gptel-prompts)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Customization
 
-(defcustom my/local-default-chat-model "gpt-oss:20b"
-  "Local default chat model."
-  :group 'my
-  :type 'string)
+;; (defcustom my/local-default-chat-model "gpt-oss:20b"
+;;   "Local default chat model."
+;;   :group 'my
+;;   :type 'string)
 
-(defcustom my/local-default-embedding-model "qwen3-embedding:8b"
-  "Local default chat model."
-  :group 'my
-  :type 'string)
+;; (defcustom my/local-default-embedding-model "qwen3-embedding:8b"
+;;   "Local default chat model."
+;;   :group 'my
+;;   :type 'string)
 
-(defcustom my/cloud-default-chat-model "gemini-2.5-flash"
-  "Cloud default chat model."
-  :group 'my
-  :type 'string)
+;; (defcustom my/cloud-default-chat-model "gemini-2.5-flash"
+;;   "Cloud default chat model."
+;;   :group 'my
+;;   :type 'string)
 
-(defcustom my/cloud-default-embedding-model nil
-  "Cloud default embedding model."
-  :group 'my
-  :type 'string)
+;; (defcustom my/cloud-default-embedding-model nil
+;;   "Cloud default embedding model."
+;;   :group 'my
+;;   :type 'string)
 
-(defcustom my/cloud-api-key ""
-  "Cloud api key."
-  :group 'my
-  :type 'string)
+;; (defcustom my/cloud-api-key ""
+;;   "Cloud api key."
+;;   :group 'my
+;;   :type 'string)
 
-(defcustom my/local-llm-provider (lambda ()
-                                   (make-llm-ollama
-                                    :host "127.0.0.1"
-                                    :embedding-model my/local-default-embedding-model
-                                    :chat-model my/local-default-chat-model))
-  "Local llm provider."
-  :group 'my
-  :type '(choice
-          (sexp :tag "llm provider")
-          (function :tag "Function that returns an llm provider.")))
+;; (defcustom my/local-llm-provider (lambda ()
+;;                                    (make-llm-ollama
+;;                                     :host "127.0.0.1"
+;;                                     :embedding-model my/local-default-embedding-model
+;;                                     :chat-model my/local-default-chat-model))
+;;   "Local llm provider."
+;;   :group 'my
+;;   :type '(choice
+;;           (sexp :tag "llm provider")
+;;           (function :tag "Function that returns an llm provider.")))
 
-(defcustom my/local-llm-extra-params
-  (list
-   (cons 'num_ctx (llm-model-context-length (llm-models-match my/local-default-chat-model))))
-  "Local llm extra params."
-  :group 'my
-  :type 'alist)
+;; (defcustom my/local-llm-extra-params
+;;   (list
+;;    (cons 'num_ctx (llm-model-context-length (llm-models-match my/local-default-chat-model))))
+;;   "Local llm extra params."
+;;   :group 'my
+;;   :type 'alist)
 
-(defcustom my/cloud-llm-provider (lambda ()
-                                   (make-llm-gemini
-                                    :key my/cloud-api-key
-                                    ;; :embedding-model (or my/cloud-default-embedding-model "embedding-001")
-                                    :chat-model my/cloud-default-chat-model))
-  "Cloud llm provider."
-  :group 'my
-  :type '(choice
-          (sexp :tag "llm provider")
-          (function :tag "Function that returns an llm provider.")))
+;; (defcustom my/cloud-llm-provider (lambda ()
+;;                                    (make-llm-gemini
+;;                                     :key my/cloud-api-key
+;;                                     ;; :embedding-model (or my/cloud-default-embedding-model "embedding-001")
+;;                                     :chat-model my/cloud-default-chat-model))
+;;   "Cloud llm provider."
+;;   :group 'my
+;;   :type '(choice
+;;           (sexp :tag "llm provider")
+;;           (function :tag "Function that returns an llm provider.")))
 
-(defcustom my/translate-llm-provider my/local-llm-provider
-  "Translate llm provider."
-  :group 'my
-  :type '(choice
-          (sexp :tag "llm provider")
-          (function :tag "Function that returns an llm provider.")))
+;; (defcustom my/translate-llm-provider my/local-llm-provider
+;;   "Translate llm provider."
+;;   :group 'my
+;;   :type '(choice
+;;           (sexp :tag "llm provider")
+;;           (function :tag "Function that returns an llm provider.")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Internal Variables
 
-(defvar my/llm-prompt-dir (expand-file-name "assets/ai-prompts/" user-emacs-directory))
-(defvar my/llm-prompt-cache (make-hash-table :test 'equal))
+(defvar my/translate-buffer "*translate*")
+(defvar my/translate-directive (alist-get 'translate gptel-directives))
 
-(defvar my/translate-major-modes
+(defvar my/block-info-major-modes
   '(markdown-mode
     org-mode
     gfm-mode
@@ -122,111 +117,6 @@
     fundamental-mode
     help-mode))
 
-(defvar my/translate-buffer-name "*my/translate*")
-(defvar my/translate-buffer nil)
-(defvar my/translate-llm-request nil)
-
-(defvar my/dictionary-buffer-name "*my/dictionary*")
-(defvar my/dictionary-buffer nil)
-(defvar my/dictionary-llm-request nil)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Model Registration
-
-(llm-models-add
- :name "qwen3:14b" :symbol 'qwen3:14b
- :capabilities '(generation free-software tool-use reasoning)
- :context-length 40960
- :regex "qwen3:14b")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Core Utilities
-
-(defun my/llm-prompt-get (name)
-  "Get template content for NAME.  Read from file if not in cache."
-  (let ((cache-val (gethash name my/llm-prompt-cache)))
-    (if cache-val
-        cache-val
-      (let ((file-path (expand-file-name (format "%s.md" name) my/llm-prompt-dir)))
-        (if (file-exists-p file-path)
-            (with-temp-buffer
-              (insert-file-contents file-path)
-              (let ((content (buffer-string)))
-                (puthash name content my/llm-prompt-cache)
-                content))
-          (error "Template file not found: %s" file-path))))))
-
-(defun my/llm-prompt-render (name alist)
-  "Render template NAME with variables in ALIST.
-Returns a plist (:system \"...\" :user \"...\")."
-  (let* ((full-template (my/llm-prompt-get name))
-         (rendered (dolist (pair alist full-template)
-                     (let ((key (symbol-name (car pair)))
-                           (val (cdr pair)))
-                       (setq full-template
-                             (replace-regexp-in-string
-                              (regexp-quote (format "{{%s}}" key))
-                              (or val "") full-template t t)))))
-         (parts (split-string rendered "^---\\s-*$" t)))
-    (if (>= (length parts) 2)
-        (list :system (string-trim (car parts))
-              :user (string-trim (mapconcat 'identity (cdr parts) "\n---\n")))
-      (list :system nil
-            :user (string-trim rendered)))))
-
-(defun my/llm-prompt-clear-cache ()
-  "Clear LLM prompt cache."
-  (interactive)
-  (clrhash my/llm-prompt-cache)
-  (message "LLM prompt cache cleared."))
-
-(defun my/get-llm-provider (provider)
-  "Return llm provider stored in PROVIDER."
-  (if (functionp provider)
-      (funcall provider)
-    provider))
-
-(defun my/llm-streaming-json (provider prompt buffer on-success &optional on-error)
-  "Stream output from PROVIDER with PROMPT to BUFFER, parsing JSON on completion.
-ON-SUCCESS is called with the parsed JSON object.
-ON-ERROR is called with an error message if parsing or request fails."
-  (with-current-buffer buffer
-    (let ((inhibit-read-only t))
-      (erase-buffer)))
-  (llm-chat-streaming
-   provider
-   prompt
-   (lambda (text)
-     (with-current-buffer buffer
-       (let ((inhibit-read-only t))
-         (erase-buffer)
-         (insert text))))
-   (lambda (text)
-     (with-current-buffer buffer
-       (let ((inhibit-read-only t))
-         (erase-buffer)
-         (insert text)))
-     (let ((json-data nil))
-       ;; Try to clean up markdown code blocks if present
-       (when (string-match "```json\\s-*\n?\\(\\(.\\|\n\\)*?\\)\n?```" text)
-         (setq text (match-string 1 text)))
-       (condition-case err
-           (setq json-data (json-read-from-string text))
-         (error
-          (if on-error
-              (funcall on-error (format "JSON Parse Error: %s" (error-message-string err)))
-            (message "JSON Parse Error: %s" err))))
-       (when json-data
-         (let ((inhibit-read-only t))
-           (funcall on-success json-data)))))
-   (lambda (_type msg)
-     (if on-error
-         (funcall on-error msg)
-       (message "LLM Error: %s" msg)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Context & Block Info
-
 (defun my/current-buffer-block-info (&optional in-place)
   "Current buffer block info with IN-PLACE."
   (cond
@@ -234,86 +124,21 @@ ON-ERROR is called with an error message if parsing or request fails."
     (list :beginning (region-beginning)
           :end (region-end)
           :major-mode 'fundamental-mode))
-   ((and (not in-place) (memq major-mode my/translate-major-modes))
+   ((and (not in-place) (memq major-mode my/block-info-major-modes))
     (list :beginning (point-min)
           :end (point-max)
           :major-mode major-mode))
    (t (separedit--block-info))))
 
-(defun my/select-sentence-at-point ()
-  "Select sentence at point, return (stripped-text beg end original-text)."
-  (let* ((sentence-end-double-space nil)
-         (source-buffer (current-buffer))
-         (selection
-          (cond
-           ((use-region-p)
-            (list (region-beginning) (region-end)))
-           ((derived-mode-p 'prog-mode)
-            (if-let ((block (separedit--block-info)))
-                (let ((beg (plist-get block :beginning))
-                      (end (plist-get block :end)))
-                  (if (and (>= (point) beg) (<= (point) end))
-                      (save-restriction
-                        (narrow-to-region beg end)
-                        (let ((bounds (bounds-of-thing-at-point 'sentence)))
-                          (if bounds
-                              (list (car bounds) (cdr bounds))
-                            (list beg end))))
-                    nil))
-              nil))
-           (t (let ((bounds (bounds-of-thing-at-point 'sentence)))
-                (when bounds
-                  (list (car bounds) (cdr bounds))))))))
-    (when selection
-      (let* ((beg (car selection))
-             (end (cadr selection))
-             (original-text (buffer-substring-no-properties beg end))
-             (stripped-text nil))
-        ;; Use separedit to get clean content if in a code buffer
-        (let ((separedit-inhibit-edit-window-p t))
-          (save-excursion
-            (save-restriction
-              (narrow-to-region beg end)
-              (goto-char beg)
-              (condition-case nil
-                  (let ((edit-buf (separedit)))
-                    (when (buffer-live-p edit-buf)
-                      (with-current-buffer edit-buf
-                        (setq stripped-text (buffer-string))
-                        (separedit-abort))))
-                (error nil)))))
-        ;; Fallback to simple strip or original text
-        (unless stripped-text
-          (setq stripped-text (string-trim original-text)))
-        (list stripped-text beg end original-text)))))
-
-(defun my/apply-text-replacement (source-buffer beg end new-text)
-  "Replace text from BEG to END in SOURCE-BUFFER with NEW-TEXT safely."
-  (with-current-buffer source-buffer
-    (save-excursion
-      (save-restriction
-        (narrow-to-region beg end)
-        (goto-char beg)
-        (let ((separedit-inhibit-edit-window-p t))
-          (condition-case nil
-              (let ((edit-buf (separedit)))
-                (if (buffer-live-p edit-buf)
-                    (with-current-buffer edit-buf
-                      (erase-buffer)
-                      (insert new-text)
-                      (separedit-commit))
-                  (delete-region (point-min) (point-max))
-                  (insert new-text)))
-            (error
-             (delete-region (point-min) (point-max))
-             (insert new-text))))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Interactive Commands
-
-(defun my/translate-change-dwim ()
-  "Change text to translate text."
+(defun my/translate-rewrite-dwim ()
+  "Rewrite text to translate text."
   (interactive)
+  
+  (gptel-request my/translate-directive
+    :buffer my/translate-buffer
+    :stream t
+    )
+  
   (let* ((source-buffer (current-buffer))
          (selection (my/select-sentence-at-point))
          (text (nth 0 selection))
@@ -339,27 +164,20 @@ ON-ERROR is called with an error message if parsing or request fails."
          (end (plist-get block :end))
          (block-major-mode (plist-get block :major-mode))
          (parent-buffer-read-only buffer-read-only)
-         (content (buffer-substring-no-properties beg end))
-         (buffer (or (get-buffer my/translate-buffer-name)
-                     (generate-new-buffer my/translate-buffer-name)))
-         (prompt-data (my/llm-prompt-render "translate" `((text . ,content) (language . "中文")))))
-    (with-current-buffer buffer
-      (erase-buffer)
-      (when my/translate-llm-request
-        (llm-cancel-request my/translate-llm-request))
-      (if parent-buffer-read-only
-          (funcall 'fundamental-mode)
-        (funcall (or block-major-mode 'fundamental-mode)))
-      (setq my/translate-llm-request
-            (llm-chat-streaming-to-point
-             (my/get-llm-provider my/translate-llm-provider)
-             (llm-make-chat-prompt (plist-get prompt-data :user)
-                                   :context (plist-get prompt-data :system)
-                                   :reasoning 'light
-                                   :non-standard-params my/local-llm-extra-params)
-             buffer (point-max)
-             (lambda ()))))
-    (display-buffer buffer)))
+         (content (buffer-substring-no-properties beg end)))
+    (with-current-buffer (get-buffer-create my/translate-buffer)
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (if parent-buffer-read-only
+            (funcall 'fundamental-mode)
+          (funcall (or block-major-mode 'fundamental-mode)))
+        (setq-local gptel-prompts-template-variables
+                    `(("source_language" . "English")
+                      ("target_language" . "Simple Chinese")))
+        (gptel-request content
+          :system (gptel-prompts-interpolate (alist-get 'translate gptel-directives))
+          :stream t)
+        (display-buffer (current-buffer))))))
 
 (defun my/dictionary-query-word ()
   "Query word from AI."
@@ -467,7 +285,6 @@ ON-ERROR is called with an error message if parsing or request fails."
        (with-current-buffer buffer
          (insert (format "\n\n❌ Error: %s" msg)))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; UI Rendering
 
 (defun my/render-improve-result (buffer source-buffer start-pos end-pos data)
@@ -629,7 +446,6 @@ START-POS and END-POS define the sentence bounds."
                   errors))
         (goto-char (point-min))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Model Selection UI
 
 (defun my/completing-read-local-models ()

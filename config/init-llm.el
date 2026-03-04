@@ -42,13 +42,30 @@
             "--noproxy" "127.0.0.1"
             ,@(when-let (proxy (getenv "ALL_PROXY")) (list "-x" proxy)))))
 
-(use-package llm
-  :straight (:type git :host github
-                   :repo "yydcnjjw/llm"
-                   :branch "main")
+(use-package opencode
+  :straight (opencode :type git :host codeberg :repo "sczi/opencode.el")
   :defer t
   :config
-  (setopt llm-warn-on-nonfree nil))
+  (setq opencode-host "127.0.0.1"))
+
+(use-package gptel
+  :defer t
+  :defines gptel-backend
+  :functions gptel-make-gh-copilot
+  :config
+  (setopt gptel-backend (gptel-make-gh-copilot "Copilot")
+          gptel-model 'gpt-41))
+
+(use-package gptel-prompts
+  :straight (gptel-prompts :type git :host github :repo "jwiegley/gptel-prompts")
+  :after (gptel)
+  :config
+  (setopt gptel-prompts-directory (expand-file-name "ai-prompts" my/emacs-assets-dir))
+  (gptel-prompts-update)
+  ;; Ensure prompts are updated if prompt files change
+  (gptel-prompts-add-update-watchers))
+
+(use-package templatel)
 
 (use-package emacs
   :ensure separedit
@@ -57,12 +74,6 @@
   ("C-c o" . my/ai-menu)
   :config
   (require 'my-llm))
-
-(use-package opencode
-  :straight (opencode :type git :host codeberg :repo "sczi/opencode.el")
-  :defer t
-  :config
-  (setq opencode-host "127.0.0.1"))
 
 (provide 'init-llm)
 
