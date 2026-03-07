@@ -76,7 +76,8 @@
 
 (use-package emacs
   :after treesit
-  :mode (("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
+  :mode
+  (("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
   :init
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
@@ -92,6 +93,22 @@
    '(:lang cmake
            :source ("https://github.com/uyha/tree-sitter-cmake")
            :mode (cmake-ts-mode))))
+
+(use-package emacs
+  :after treesit
+  :mode
+  (("\\.ts\\'" . typescript-ts-mode)
+   ("\\.tsx\\'" . tsx-ts-mode))
+  :init
+  (my/lsp-register-major-mode 'typescript-ts-mode 'tsx-ts-mode)
+  (my/treesit-register
+   '(:lang typescript
+           :source ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+           :mode (typescript-ts-mode))
+   '(:lang tsx
+           :source ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+           :mode (tsx-ts-mode))))
+
 ;; go
 (use-package emacs
   :mode (("\\.go\\'" . go-ts-mode)
