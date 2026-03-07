@@ -43,11 +43,7 @@
     (require 'telega-transient)
     (telega-transient-mode))
   :config
-  (setopt telega-server-libs-prefix "/usr"
-          telega-proxies
-          (list
-           '(:server "127.0.0.1" :port 8888 :enable t
-                     :type (:@type "proxyTypeSocks5"))))
+  (setopt telega-server-libs-prefix "/usr")
   :hook
   ((telega-load-hook . my/telega-load)))
 
