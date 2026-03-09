@@ -169,14 +169,15 @@
    ("M-S" . caser-snakecase-dwim)
    ("M-D" . caser-dashcase-dwim)))
 
-(use-package combobulate
+(use-package fingertip
+  :straight (:host github :repo "manateelazycat/fingertip"
+                   :branch "master")
   :defer t
-  :defines combobulate-key-prefix
-  :init
-  (setq combobulate-key-prefix "C-c u")
-  :hook ((prog-mode . combobulate-mode)))
-
-(electric-pair-mode)
+  :hook
+  (prog-mode . my/fingertip-mode)
+  :config
+  (require 'my-fingertip)
+  (my/setup-fingertip-default-bindings))
 
 (provide 'init-edit)
 

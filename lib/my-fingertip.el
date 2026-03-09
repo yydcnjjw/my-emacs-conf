@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'fingertip)
+(require 'my-treesit)
 
 (defun my/setup-fingertip-default-bindings ()
   "Fingertip key bind."
@@ -53,8 +54,8 @@
              ("'" . fingertip-single-quote)
              ("SPC" . fingertip-space)
              ("RET" . fingertip-newline)
-             ;; ("M-o" . fingertip-backward-delete)
-             ;; ("C-d" . fingertip-forward-delete)
+             ("M-o" . fingertip-backward-delete)
+             ("C-d" . fingertip-forward-delete)
              ("C-k" . fingertip-kill)
              ("M-\"" . fingertip-wrap-double-quote)
              ("M-'" . fingertip-wrap-single-quote)
@@ -68,14 +69,10 @@
              ("C-j" . fingertip-jump-up))
   )
 
-;; (use-package fingertip
-;;   :straight (:host github :repo "manateelazycat/fingertip"
-;;                    :branch "master")
-;;   :hook
-;;   ((prog-mode) . fingertip-mode)
-;;   :config
-;;   (require 'my-fingertip)
-;;   (my/setup-fingertip-default-bindings))
+(defun my/fingertip-mode ()
+  "Fingertip mode."
+  (when (my/treesitp major-mode)
+    (fingertip-mode)))
 
 (provide 'my-fingertip)
 

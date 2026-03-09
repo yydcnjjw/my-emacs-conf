@@ -43,6 +43,10 @@
       (dolist (mode modes)
         (puthash mode `(,lang . ,source) my/treesit-mode-table)))))
 
+(defun my/treesitp (mode)
+  "Is support treesit for MODE."
+  (gethash mode my/treesit-mode-table))
+
 (defun my/set-auto-mode-0-before (mode &rest _)
   "My `advice-add' `set-auto-mode-0' MODE :before."
   (let ((lang (car (gethash mode my/treesit-mode-table))))
