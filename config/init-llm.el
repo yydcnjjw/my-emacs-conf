@@ -58,11 +58,16 @@
   :config
   (require 'my-llm))
 
-(use-package opencode
-  :straight (opencode :type git :host codeberg :repo "sczi/opencode.el")
+(use-package agent-shell
+  :ensure t
   :defer t
+  :functions
+  (agent-shell-opencode-make-agent-config)
   :config
-  (setq opencode-host "127.0.0.1"))
+  (setopt
+   shell-maker-root-path (expand-file-name "shell-marker" my/emacs-cache-dir)
+   agent-shell-preferred-agent-config
+          (agent-shell-opencode-make-agent-config)))
 
 (provide 'init-llm)
 
