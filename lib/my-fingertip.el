@@ -74,6 +74,17 @@
   (when (my/treesitp major-mode)
     (fingertip-mode)))
 
+(defun my/fingertip-setup-prog-mode ()
+  "Fingertip setup used prog mode."
+  (dolist (hook (list
+                 'emacs-lisp-mode-hook
+                 'lisp-interaction-mode-hook
+                 'lisp-mode-hook
+                 'sh-mode-hook
+                 'markdown-mode-hook
+                 ))
+    (add-hook hook #'(lambda () (fingertip-mode 1)))))
+
 (provide 'my-fingertip)
 
 ;;; my-fingertip.el ends here

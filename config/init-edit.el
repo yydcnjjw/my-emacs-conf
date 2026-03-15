@@ -177,6 +177,7 @@
   (prog-mode . my/fingertip-mode)
   :config
   (require 'my-fingertip)
+  (my/fingertip-setup-prog-mode)
   (my/setup-fingertip-default-bindings))
 
 (provide 'init-edit)
