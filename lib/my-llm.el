@@ -696,10 +696,17 @@ START-POS and END-POS define the sentence bounds."
     ("c" "Select cloud chat model" my/select-cloud-chat-model)
     ("t" "Select translate provider" my/select-translate-provider)]])
 
+(transient-define-prefix my/ai-agent-shell-menu ()
+  "AI settings Menu."
+  ["AI Agent shell"
+   [("b" "List agent shell buffers" agent-shell-manager-toggle)
+    ("a" "Start agent shell" agent-shell)
+    ("r" "Start agent review" agent-review)]])
+
 (transient-define-prefix my/ai-menu ()
   "AI Menu."
   ["AI tools"
-   [("c" "Opencode" opencode)
+   [("a" "Agent shell" my/ai-agent-shell-menu)
     ("l" "Language tool" my/language-tool-menu)
     ("s" "Settings" my/ai-settings-menu)]]
   (interactive)

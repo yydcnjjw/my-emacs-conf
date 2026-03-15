@@ -50,16 +50,7 @@
   :config
   (setopt llm-warn-on-nonfree nil))
 
-(use-package emacs
-  :ensure separedit
-  :defer t
-  :bind
-  ("C-c o" . my/ai-menu)
-  :config
-  (require 'my-llm))
-
 (use-package agent-shell
-  :ensure t
   :defer t
   :functions
   (agent-shell-opencode-make-agent-config)
@@ -68,6 +59,25 @@
    shell-maker-root-path (expand-file-name "shell-marker" my/emacs-cache-dir)
    agent-shell-preferred-agent-config
           (agent-shell-opencode-make-agent-config)))
+
+(use-package agent-shell-manager
+  :straight (:host github :repo "jethrokuan/agent-shell-manager"
+                   :branch "main")
+  :defer t)
+
+(use-package agent-review
+  :straight (:host github :repo "nineluj/agent-review"
+                   :branch "main")
+  :defer t)
+
+(use-package emacs
+  :ensure separedit
+  :defer t
+  :functions my/ai-menu
+  :bind
+  ("C-c o" . my/ai-menu)
+  :config
+  (require 'my-llm))
 
 (provide 'init-llm)
 
