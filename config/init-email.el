@@ -31,15 +31,18 @@
 ;;; Code:
 
 (use-package mu4e
-  :straight (:host github
-                   :repo "djcb/mu"
-                   :branch "release/1.12"
-                   :files ("build/mu4e/*")
-                   :pre-build (("./autogen.sh")
-                               ("make")))
+  :ensure nil
+  ;; :ensure-system-package
+  ;; (meson cmake gmime3 xapian-core ninja)
+  ;; :straight (:host github
+  ;;                  :repo "djcb/mu"
+  ;;                  :branch "release/1.12"
+  ;;                  :files ("build/mu4e/*")
+  ;;                  :pre-build (("./autogen.sh")
+  ;;                              ("make")))
   :config
   (setopt mail-user-agent 'mu4e-user-agent
-          mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu"))
+          ;; mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu"))
           mu4e-sent-messages-behavior 'sent
           mu4e-sent-folder "/Sent"
           mu4e-drafts-folder "/Drafts"
