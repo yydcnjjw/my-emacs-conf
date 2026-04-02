@@ -59,7 +59,7 @@
              ("C-k" . fingertip-kill)
              ("M-\"" . fingertip-wrap-double-quote)
              ("M-'" . fingertip-wrap-single-quote)
-             ("M-[" . fingertip-wrap-bracket)
+             ;; ("M-[" . fingertip-wrap-bracket)
              ("M-{" . fingertip-wrap-curly)
              ("M-(" . fingertip-wrap-round)
              ("M-)" . fingertip-unwrap)
