@@ -40,6 +40,16 @@
 ;;   (my/push-load-org-babel-language 'python)
 ;;   (my/push-load-org-babel-language 'ipython))
 
+(use-package emacs
+  :after treesit
+  :functions (my/treesit-register)
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  (my/treesit-register
+   '(:lang python
+           :source ("https://github.com/tree-sitter/tree-sitter-python")
+           :mode (python-ts-mode))))
+
 (use-package pet
   :defer t
   :init
