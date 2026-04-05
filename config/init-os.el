@@ -33,15 +33,15 @@
 (require 'my-platform)
 (require 'my-path)
 
-(use-package exec-path-from-shell
-  :if (daemonp)
-  :functions
-  (exec-path-from-shell-initialize)
-  :config
-  ;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
-  (setq process-connection-type nil)
-  (exec-path-from-shell-initialize)
-  (setenv "LANG" "en_US.UTF-8"))
+;; (use-package exec-path-from-shell
+;;   :if (daemonp)
+;;   :functions
+;;   (exec-path-from-shell-initialize)
+;;   :config
+;;   ;; FIXME: https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
+;;   (setq process-connection-type nil)
+;;   (exec-path-from-shell-initialize)
+;;   (setenv "LANG" "en_US.UTF-8"))
 
 (use-package browse-url
   :straight nil
