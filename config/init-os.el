@@ -30,6 +30,7 @@
 
 ;;; Code:
 
+(require 'term/tmux)
 (require 'my-platform)
 (require 'my-path)
 
@@ -53,6 +54,10 @@
 (when my/wsl-p
   ;; https://www.lukas-barth.net/blog/emacs-wsl-copy-clipboard/
   (setq-default select-active-regions nil))
+
+(setq xterm-tmux-extra-capabilities
+      '(modifyOtherKeys
+        setSelection))
 
 (use-package atomic-chrome
   :if (daemonp)
