@@ -31,6 +31,8 @@
 ;;; Code:
 
 (use-package telega
+  :straight (:host github :repo "zevlg/telega.el"
+                   :branch "master")
   :commands (telega)
   :defer t
   :bind-keymap
@@ -45,7 +47,8 @@
   :config
   (setopt telega-server-libs-prefix "/usr")
   :hook
-  ((telega-load-hook . my/telega-load)))
+  ((telega-load-hook . my/telega-load)
+   (telega-chat-mode-hook . telega-completions-setup-capf)))
 
 (use-package ement
   :straight (:host github :repo "alphapapa/ement.el")
