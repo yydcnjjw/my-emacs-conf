@@ -37,18 +37,16 @@
   :defer t
   :bind-keymap
   ("C-c r" . telega-prefix-map)
-  :commands
-  (telega-mode-line-mode telega-transient-mode)
   :init
   (defun my/telega-load ()
     (telega-mode-line-mode)
     (require 'telega-transient)
-    (telega-transient-mode))
+    (telega-transient-keymaps-mode))
   :config
   (setopt telega-server-libs-prefix "/usr")
   :hook
-  ((telega-load-hook . my/telega-load)
-   (telega-chat-mode-hook . telega-completions-setup-capf)))
+  ((telega-load . my/telega-load)
+   (telega-chat-mode . telega-completions-setup-capf)))
 
 (use-package ement
   :straight (:host github :repo "alphapapa/ement.el")
