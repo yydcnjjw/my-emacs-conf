@@ -40,8 +40,14 @@
   :init
   (defun my/telega-load ()
     (telega-mode-line-mode)
+    (require 'telega-adblock)
+    (telega-adblock-mode)
     (require 'telega-transient)
-    (telega-transient-keymaps-mode))
+    (telega-transient-keymaps-mode)
+    (unless my/wsl-p
+      (require 'telega-alert)
+      (telega-alert-mode)
+      (telega-appindicator-mode)))
   :config
   (setopt telega-server-libs-prefix "/usr")
   :hook
