@@ -49,7 +49,8 @@
       (telega-alert-mode)
       (telega-appindicator-mode)))
   :config
-  (setopt telega-server-libs-prefix "/usr")
+  (setopt telega-server-libs-prefix "/usr"
+          telega-msg-delimiter (propertize "\n" 'line-spacing 0.5))
   :hook
   ((telega-load . my/telega-load)
    (telega-chat-mode . telega-completions-setup-capf)))
