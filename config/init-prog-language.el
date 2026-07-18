@@ -190,10 +190,15 @@
 (use-package markdown-mode
   :defer t
   :ensure valign
-  :mode ("\\.md\\'" . gfm-mode)
+  :mode ("\\.md\\'" . markdown-mode)
+  :functions (olivetti-mode)
+  :init
+  (defun my/markdown-mode ()
+    (valign-mode)
+    (setq-local olivetti-body-width 120)
+    (olivetti-mode))
   :config
-  (setopt markdown-command "pandoc")
-  :hook (gfm-mode . valign-mode))
+  :hook (markdown-mode . my/markdown-mode))
 
 (use-package protobuf-mode
   :defer t
