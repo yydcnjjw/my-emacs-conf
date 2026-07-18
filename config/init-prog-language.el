@@ -109,6 +109,19 @@
            :source ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
            :mode (tsx-ts-mode))))
 
+(use-package kotlin-ts-mode
+  :after treesit
+  :mode
+  (("\\.kt[s]?\\'" . kotlin-ts-mode))
+  :init
+  (my/lsp-register-major-mode 'kotlin-ts-mode)
+  (my/treesit-register
+   '(:lang kotlin
+           :source ("https://github.com/fwcd/tree-sitter-kotlin" "main" "src")
+           :mode (kotlin-ts-mode)))
+  :config
+  (require 'my-kotlin))
+
 ;; go
 (use-package emacs
   :mode (("\\.go\\'" . go-ts-mode)
