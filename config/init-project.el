@@ -33,7 +33,10 @@
 (require 'my-path)
 
 (use-package ripgrep
-  :defer t)
+  :defer t
+  :config
+  (require 'my-ripgrep)
+  (advice-add 'ripgrep-regexp :around #'my/ripgrep-regexp-quote-globs))
 
 (use-package projectile
   :defer t
