@@ -214,9 +214,10 @@
 
 (use-package nov
   :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   :config
-  (setopt nov-save-place-file (expand-file-name "nov-places" my/emacs-cache-dir))
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+  (setopt nov-save-place-file (expand-file-name "nov-places" my/emacs-cache-dir)))
 
 ;; TODO
 ;; (use-package org-transclusion
