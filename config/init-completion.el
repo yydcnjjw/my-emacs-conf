@@ -57,11 +57,6 @@
   (setopt tab-always-indent 'complete
           text-mode-ispell-word-completion nil))
 
-(use-package corfu-terminal
-  :straight (:repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
-  :init
-  (my/eval-if-terminal (lambda (_) (corfu-terminal-mode))))
-
 (use-package dabbrev
   :defer t
   :bind (("M-/" . dabbrev-completion)
